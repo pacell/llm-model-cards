@@ -1,0 +1,294 @@
+{
+ "repo": "mistralai/Mistral-Medium-3.5-128B",
+ "url": "https://huggingface.co/mistralai/Mistral-Medium-3.5-128B",
+ "revision": "22b2b868a15677cfa6061277ed2f653d1349a9ab",
+ "card_metadata": {
+  "license": "other",
+  "language": [],
+  "tags": []
+ },
+ "hub_metadata": {
+  "_id": "69cb98dc5fddeedae351721a",
+  "id": "mistralai/Mistral-Medium-3.5-128B",
+  "private": false,
+  "tags": [
+   "safetensors",
+   "mistral3",
+   "vLLM",
+   "en",
+   "fr",
+   "de",
+   "es",
+   "pt",
+   "it",
+   "ja",
+   "ko",
+   "ru",
+   "zh",
+   "ar",
+   "fa",
+   "id",
+   "ms",
+   "ne",
+   "pl",
+   "ro",
+   "sr",
+   "sv",
+   "tr",
+   "uk",
+   "vi",
+   "hi",
+   "bn",
+   "license:other",
+   "eval-results",
+   "fp8",
+   "region:us"
+  ],
+  "downloads": 80875,
+  "likes": 430,
+  "modelId": "mistralai/Mistral-Medium-3.5-128B",
+  "author": "mistralai",
+  "sha": "22b2b868a15677cfa6061277ed2f653d1349a9ab",
+  "lastModified": "2026-07-15T12:23:17.000Z",
+  "gated": false,
+  "disabled": false,
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "Mistral3ForConditionalGeneration"
+   ],
+   "model_type": "mistral3",
+   "quantization_config": {
+    "modules_to_not_convert": [
+     "model.vision_tower",
+     "model.multi_modal_projector",
+     "lm_head"
+    ],
+    "quant_method": "fp8"
+   },
+   "tokenizer_config": {
+    "bos_token": "<s>",
+    "eos_token": "</s>",
+    "pad_token": "<pad>",
+    "unk_token": "<unk>"
+   },
+   "chat_template_jinja": "{#- Default system message if no system prompt is passed. #}\n{%- set default_system_message = 'You are Mistral Medium 3.5, a Large Language Model (LLM) created by Mistral AI, a French startup headquartered in Paris.\nYou are an intelligent conversational assistant powering an AI assistant called Le Chat.\nYour knowledge base was last updated on Friday, November 1, 2024.\nThe current date is {today}.\n\n# GENERAL GUIDELINES\n\n- Accurately answer the user\\'s question.\n- For uncertain information or when the user\\'s request requires up-to-date or specific data, use the available tools to fetch the information.\n- Be very attentive to dates, always try to resolve dates (e.g. \"yesterday\" is {yesterday}) and when asked about information at specific dates, discard information that is at another date.\n\n# WEB BROWSING INSTRUCTIONS\n\nYou cannot perform any web search or access internet to open URLs, links etc without dedicated tools.\n\n# MULTI-MODAL INSTRUCTIONS\n\n- You have the ability to read images.\n- You cannot read audio nor videos.\n- You cannot generate images without dedicated tools.\n\n# TOOL CALLING INSTRUCTIONS\n\nYou may have access to tools that you can use to fetch information or perform actions. You must use these tools in the following situations:\n\n1. When the request requires up-to-date information.\n2. When the request requires specific data that you do not have in your knowledge base.\n3. When the request involves actions that you cannot perform without tools.\n\nAlways prioritize using tools to provide the most accurate and helpful response.' %}\n\n{#- Begin of sequence token. #}\n{{- bos_token }}\n\n\n{#- Handle system prompt if it exists. #}\n{%- set loop_messages = messages %}\n{%- if messages[0]['role'] != 'system' and default_system_message != '' %}\n    {{- '[SYSTEM_PROMPT]' + default_system_message + '[/SYSTEM_PROMPT]' }}\n{%- endif %}\n\n\n{#- Tools and model settings definition #}\n{%- set available_tools = '' %}\n{%- set has_tools = false %}\n{%- if tools is defined and tools is not none and tools|length > 0 %}\n    {%- set has_tools = true %}\n    {%- set available_tools = '[AVAILABLE_TOOLS]' + (tools| tojson) + '[/AVAILABLE_TOOLS]' %}\n{%- endif %}\n{%- if reasoning_effort is not defined or reasoning_effort is none %}\n    {%- set reasoning_effort = 'none' %}\n{%- endif %}\n{%- if reasoning_effort not in ['none', 'high'] %}\n    {{- raise_exception('reasoning_effort must be either \"none\" or \"high\"') }}\n{%- endif %}\n{%- set model_settings = '[MODEL_SETTINGS]{\"reasoning_effort\": \"' + reasoning_effort + '\"}[/MODEL_SETTINGS]' %}\n\n{#- Macros #}\n{%- macro render_content(content, context_name, supported_types_desc, support_thinking, support_images) -%}\n    {%- if content is string -%}\n        {{- content -}}\n    {%- elif content -%}\n        {%- for block in content -%}\n            {%- if block['type'] == 'text' -%}\n                {{- block['text'] -}}\n            {%- elif support_thinking and block['type'] == 'thinking' -%}\n                {{- '[THINK]' + block['thinking'] -}}\n                {%- if block.get('closed', true) -%}{{- '[/THINK]' -}}{%- endif -%}\n            {%- elif support_images and block['type'] in ['image', 'image_url'] -%}\n                {{- '[IMG]' -}}\n            {%- else -%}\n                {{- raise_exception('Only ' + supported_types_desc + ' chunks are supported in ' + context_name + '.') -}}\n            {%- endif -%}\n        {%- endfor -%}\n    {%- else -%}\n        {{- raise_exception(context_name + ' must have non-empty content.') -}}\n    {%- endif -%}\n{%- endmacro -%}\n\n{#- Aggregate consecutive messages with the same role except system and tool. #}\n{#- A sentinel message is appended so the last group gets flushed inside the loop. #}\n{%- set ns_agg = namespace(messages=[], current_group=[], current_role=none) %}\n{%- for message in loop_messages + [{'role': '__sentinel__'}] %}\n    {%- if message['role'] != ns_agg.current_role or message['role'] == 'system' or message['role'] == 'tool' %}\n        {%- if ns_agg.current_role == 'tool' %}\n            {%- set ns_agg.messages = ns_agg.messages + ns_agg.current_group %}\n        {%- elif ns_agg.current_role is not none %}\n            {%- set ns_c = namespace(text_parts=[], chunks=[], has_non_text=false, tool_calls=[]) %}\n            {%- for msg in ns_agg.current_group %}\n                {#- Convert reasoning / reasoning_content to a leading thinking chunk. #}\n                {%- set reasoning = msg.get('reasoning_content', msg.get('reasoning', none)) %}\n                {%- if reasoning is not none and reasoning != '' %}\n                    {%- if msg['content'] is not none and msg['content'] is not string %}\n                        {%- for block in msg['content'] %}\n                            {%- if block['type'] == 'thinking' %}\n                                {{- raise_exception('Message cannot have both thinking chunks in content and a top-level `reasoning` or `reasoning_content` field.') }}\n                            {%- endif %}\n                        {%- endfor %}\n                    {%- endif %}\n                    {%- set think_chunk = {'type': 'thinking', 'thinking': reasoning} %}\n                    {%- if msg['content'] is string and msg['content'] != '' %}\n                        {%- set new_content = [think_chunk, {'type': 'text', 'text': msg['content']}] %}\n                    {%- elif msg['content'] is not none and msg['content'] is not string and msg['content'] | length > 0 %}\n                        {%- set new_content = [think_chunk] + msg['content'] | list %}\n                    {%- else %}\n                        {%- set new_content = [think_chunk] %}\n                    {%- endif %}\n                    {%- if msg['tool_calls'] is defined and msg['tool_calls'] is not none %}\n                        {%- set msg = {'role': msg['role'], 'content': new_content, 'tool_calls': msg['tool_calls']} %}\n                    {%- else %}\n                        {%- set msg = {'role': msg['role'], 'content': new_content} %}\n                    {%- endif %}\n                {%- endif %}\n                {%- if msg['content'] is string %}\n                    {%- set ns_c.text_parts = ns_c.text_parts + [msg['content']] %}\n                {%- elif msg['content'] is not none %}\n                    {%- set ns_msg = namespace(msg_text_parts=[]) %}\n                    {%- for block in msg['content'] %}\n                        {%- if block['type'] == 'text' %}\n                            {%- set ns_msg.msg_text_parts = ns_msg.msg_text_parts + [block['text']] %}\n                        {%- else %}\n                            {%- if ns_msg.msg_text_parts | length > 0 %}\n                                {%- set ns_c.text_parts = ns_c.text_parts + [ns_msg.msg_text_parts | join('')] %}\n                                {%- set ns_msg.msg_text_parts = [] %}\n                            {%- endif %}\n                            {%- if ns_c.text_parts | length > 0 %}\n                                {%- set ns_c.chunks = ns_c.chunks + [{'type': 'text', 'text': ns_c.text_parts | join('\\n\\n')}] %}\n                                {%- set ns_c.text_parts = [] %}\n                            {%- endif %}\n                            {%- set ns_c.chunks = ns_c.chunks + [block] %}\n                            {%- set ns_c.has_non_text = true %}\n                        {%- endif %}\n                    {%- endfor %}\n                    {%- if ns_msg.msg_text_parts | length > 0 %}\n                        {%- set ns_c.text_parts = ns_c.text_parts + [ns_msg.msg_text_parts | join('')] %}\n                    {%- endif %}\n                {%- endif %}\n                {%- if msg['tool_calls'] is defined and msg['tool_calls'] is not none %}\n                    {%- set ns_c.tool_calls = ns_c.tool_calls + msg['tool_calls'] | list %}\n                {%- endif %}\n            {%- endfor %}\n            {%- if ns_c.has_non_text %}\n                {%- if ns_c.text_parts | length > 0 %}\n                    {%- set ns_c.chunks = ns_c.chunks + [{'type': 'text', 'text': ns_c.text_parts | join('\\n\\n')}] %}\n                {%- endif %}\n                {%- set merged_content = ns_c.chunks %}\n            {%- else %}\n                {%- set merged_content = ns_c.text_parts | join('\\n\\n') %}\n            {%- endif %}\n            {%- if ns_c.tool_calls | length > 0 %}\n                {%- set ns_agg.messages = ns_agg.messages + [{'role': ns_agg.current_role, 'content': merged_content, 'tool_calls': ns_c.tool_calls}] %}\n            {%- else %}\n                {%- set ns_agg.messages = ns_agg.messages + [{'role': ns_agg.current_role, 'content': merged_content}] %}\n            {%- endif %}\n        {%- endif %}\n        {%- if message['role'] != '__sentinel__' %}\n            {%- set ns_agg.current_group = [message] %}\n            {%- set ns_agg.current_role = message['role'] %}\n        {%- endif %}\n    {%- else %}\n        {%- set ns_agg.current_group = ns_agg.current_group + [message] %}\n    {%- endif %}\n{%- endfor %}\n{%- set loop_messages = ns_agg.messages %}\n\n{#- Validates message ordering. #}\n{%- set ns = namespace(available_tools_and_settings_emitted=false) %}\n{%- if loop_messages | length > 0 and loop_messages[0]['role'] not in ['user', 'system'] %}\n    {{- raise_exception('Conversation must start with a user or system message, got ' + loop_messages[0]['role'] + '.') }}\n{%- endif %}\n{%- set ns_order = namespace(previous_role=none) %}\n{%- for message in loop_messages %}\n    {%- set current_role = message['role'] %}\n    {%- if ns_order.previous_role is not none %}\n        {%- if ns_order.previous_role == 'system' %}\n            {%- if current_role not in ['user', 'assistant', 'system'] %}\n                {{- raise_exception('Unexpected role \\'' + current_role + '\\' after role \\'' + ns_order.previous_role + '\\'') }}\n            {%- endif %}\n        {%- elif ns_order.previous_role == 'user' %}\n            {%- if current_role not in ['assistant', 'system', 'user'] %}\n                {{- raise_exception('Unexpected role \\'' + current_role + '\\' after role \\'' + ns_order.previous_role + '\\'') }}\n            {%- endif %}\n        {%- elif ns_order.previous_role == 'assistant' %}\n            {%- if current_role not in ['assistant', 'user', 'tool'] %}\n                {{- raise_exception('Unexpected role \\'' + current_role + '\\' after role \\'' + ns_order.previous_role + '\\'') }}\n            {%- endif %}\n        {%- elif ns_order.previous_role == 'tool' %}\n            {%- if current_role not in ['assistant', 'tool', 'user'] %}\n                {{- raise_exception('Unexpected role \\'' + current_role + '\\' after role \\'' + ns_order.previous_role + '\\'') }}\n            {%- endif %}\n        {%- endif %}\n    {%- endif %}\n    {%- set ns_order.previous_role = current_role %}\n{%- endfor %}\n\n{#- Handle conversation messages. #}\n{%- for message in loop_messages %}\n    {#- User messages supports text, image and image_url content. #}\n    {%- if message['role'] == 'user' %}\n        {%- if not ns.available_tools_and_settings_emitted %}\n            {{- available_tools }}\n            {{- model_settings }}\n            {%- set ns.available_tools_and_settings_emitted = true %}\n        {%- endif %}\n        {%- if message['content'] is not string and message['content'] %}\n            {#- When content has exactly one image and one text block, put image first. #}\n            {%- if message['content'] | length == 2 and message['content'][0]['type'] == 'text' and message['content'][1]['type'] in ['image', 'image_url'] %}\n                {%- set blocks = [message['content'][1], message['content'][0]] %}\n            {%- else %}\n                {%- set blocks = message['content'] %}\n            {%- endif %}\n            {%- set user_content = blocks %}\n        {%- else %}\n            {%- set user_content = message['content'] %}\n        {%- endif %}\n        {{- '[INST]' -}}\n        {{- render_content(user_content, 'user message content', supported_types_desc='text, image and image_url', support_thinking=false, support_images=true) -}}\n        {{- '[/INST]' }}\n\n    {#- Assistant messages supports text and thinking content. #}\n    {%- elif message['role'] == 'assistant' %}\n        {%- if (message['content'] is none or message['content'] == '' or message['content']|length == 0) and (message['tool_calls'] is not defined or message['tool_calls'] is none or message['tool_calls']|length == 0) %}\n            {{- raise_exception('Assistant message must have a string or a list of chunks in content or a list of tool calls.') }}\n        {%- endif %}\n\n        {%- if message['content'] %}\n            {{- render_content(message['content'], 'assistant message contents', supported_types_desc='text and thinking', support_thinking=true, support_images=false) -}}\n        {%- endif %}\n\n        {%- if message['tool_calls'] is defined and message['tool_calls'] is not none and message['tool_calls']|length > 0 %}\n            {%- for tool in message['tool_calls'] %}\n                {{- '[TOOL_CALLS]' }}\n                {%- set name = tool['function']['name'] %}\n                {%- set arguments = tool['function']['arguments'] %}\n                {%- if arguments is not string %}\n                    {%- set arguments = arguments|tojson|safe %}\n                {%- elif arguments == '' %}\n                    {%- set arguments = '{}' %}\n                {%- endif %}\n                {{- name + '[ARGS]' + arguments }}\n            {%- endfor %}\n        {%- endif %}\n\n        {{- eos_token }}\n\n    {#- Tool messages (multimodal). #}\n    {%- elif message['role'] == 'tool' %}\n        {{- '[TOOL_RESULTS]' -}}\n        {{- render_content(message['content'], 'tool message contents', supported_types_desc='text and image', support_images=true) -}}\n        {{- '[/TOOL_RESULTS]' }}\n\n    {#- System messages. #}\n    {%- elif message['role'] == 'system' %}\n        {{- '[SYSTEM_PROMPT]' -}}\n        {{- render_content(message['content'], 'system message contents', supported_types_desc='text', support_thinking=false, support_images=false) -}}\n        {{- '[/SYSTEM_PROMPT]' -}}\n\n    {#- Raise exception for unsupported roles. #}\n    {%- else %}\n        {{- raise_exception('Only user, assistant, system and tool roles are supported, got ' + message['role'] + '.') }}\n    {%- endif %}\n{%- endfor %}\n"
+  },
+  "cardData": {
+   "license": "other",
+   "language": [
+    "en",
+    "fr",
+    "de",
+    "es",
+    "pt",
+    "it",
+    "ja",
+    "ko",
+    "ru",
+    "zh",
+    "ar",
+    "fa",
+    "id",
+    "ms",
+    "ne",
+    "pl",
+    "ro",
+    "sr",
+    "sv",
+    "tr",
+    "uk",
+    "vi",
+    "hi",
+    "bn"
+   ],
+   "tags": [
+    "vLLM"
+   ]
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "LICENSE"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "SYSTEM_PROMPT.txt"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "consolidated-00001-of-00003.safetensors"
+   },
+   {
+    "rfilename": "consolidated-00002-of-00003.safetensors"
+   },
+   {
+    "rfilename": "consolidated-00003-of-00003.safetensors"
+   },
+   {
+    "rfilename": "consolidated.safetensors.index.json"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "images/README.md"
+   },
+   {
+    "rfilename": "images/image1.png"
+   },
+   {
+    "rfilename": "images/image2.png"
+   },
+   {
+    "rfilename": "images/image3.png"
+   },
+   {
+    "rfilename": "images/image4.png"
+   },
+   {
+    "rfilename": "model-00001-of-00003.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00003.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00003.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "params.json"
+   },
+   {
+    "rfilename": "processor_config.json"
+   },
+   {
+    "rfilename": "tekken.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [
+   "quickgrid/Tokenizer-Visualizer",
+   "ayushKishor/plutoV2_miniProject_3rd-yr",
+   "SrRooT/Tokenizer-Visualizer",
+   "trantrinhminhquan/waifugpt-live2d",
+   "StudentCompanion/alu-chatbot",
+   "matei21/chessformer-api",
+   "RadicalNotionAI/modeldna",
+   "lk080424/swarm-backend",
+   "FREDISUSANTOO/openclaw-dashboard",
+   "Shivam4096/FinancialAnalyzer",
+   "Jayanth2705/companyBrain-backend",
+   "InvictaTill/invictatill-ai",
+   "Jarvis2345/jarvis-cloud",
+   "FreshPixels/PinkSky",
+   "rahulraj1406/eolas",
+   "hadisghafouri/NutriChat-Paper",
+   "elmarcito/nvidia",
+   "mukeshkumar007/alphaedge-api",
+   "darshi9/gyanie-backend",
+   "ayushghayde/math"
+  ],
+  "createdAt": "2026-03-31T09:50:20.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 5901622016,
+    "F8_E4M3": 121802588160
+   },
+   "total": 127704210176
+  },
+  "usedStorage": 267248709697
+ },
+ "model_config": {
+  "architectures": [
+   "Mistral3ForConditionalGeneration"
+  ],
+  "dtype": "bfloat16",
+  "image_token_index": 10,
+  "model_type": "mistral3",
+  "multimodal_projector_bias": false,
+  "projector_hidden_act": "gelu",
+  "quantization_config": {
+   "activation_scheme": "static",
+   "dequantize": false,
+   "modules_to_not_convert": [
+    "model.vision_tower",
+    "model.multi_modal_projector",
+    "lm_head"
+   ],
+   "quant_method": "fp8",
+   "weight_block_size": null
+  },
+  "spatial_merge_size": 2,
+  "text_config": {
+   "attention_dropout": 0.0,
+   "bos_token_id": 1,
+   "eos_token_id": 2,
+   "head_dim": 128,
+   "hidden_act": "silu",
+   "hidden_size": 12288,
+   "initializer_range": 0.02,
+   "intermediate_size": 28672,
+   "max_position_embeddings": 262144,
+   "model_type": "ministral3",
+   "num_attention_heads": 96,
+   "num_hidden_layers": 88,
+   "num_key_value_heads": 8,
+   "pad_token_id": 11,
+   "rms_norm_eps": 1e-05,
+   "rope_parameters": {
+    "beta_fast": 4.0,
+    "beta_slow": 1.0,
+    "factor": 64.0,
+    "llama_4_scaling_beta": 0,
+    "mscale": 1.0,
+    "mscale_all_dim": 0.0,
+    "original_max_position_embeddings": 4096,
+    "rope_theta": 1000000.0,
+    "rope_type": "yarn",
+    "type": "yarn"
+   },
+   "sliding_window": null,
+   "tie_word_embeddings": false,
+   "use_cache": true,
+   "vocab_size": 131072
+  },
+  "tie_word_embeddings": false,
+  "transformers_version": "5.6.0.dev0",
+  "vision_config": {
+   "attention_dropout": 0.0,
+   "head_dim": 104,
+   "hidden_act": "silu",
+   "hidden_size": 1664,
+   "image_size": 1540,
+   "initializer_range": 0.02,
+   "intermediate_size": 8192,
+   "model_type": "pixtral",
+   "num_attention_heads": 16,
+   "num_channels": 3,
+   "num_hidden_layers": 48,
+   "patch_size": 14,
+   "rope_parameters": {
+    "rope_theta": 10000.0,
+    "rope_type": "default"
+   }
+  },
+  "vision_feature_layer": -1
+ }
+}

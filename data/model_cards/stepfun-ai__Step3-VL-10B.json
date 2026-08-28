@@ -1,0 +1,230 @@
+{
+ "repo": "stepfun-ai/Step3-VL-10B",
+ "url": "https://huggingface.co/stepfun-ai/Step3-VL-10B",
+ "revision": "5026053b0c2f5dfaa08fc2d149384162c3c8bca1",
+ "card_metadata": {
+  "license": "apache-2.0",
+  "base_model": [
+   "stepfun-ai/Step3-VL-10B-Base"
+  ],
+  "pipeline_tag": "image-text-to-text"
+ },
+ "hub_metadata": {
+  "_id": "6965fa6abe65ec9bdd480d9d",
+  "id": "stepfun-ai/Step3-VL-10B",
+  "private": false,
+  "pipeline_tag": "image-text-to-text",
+  "tags": [
+   "safetensors",
+   "step_robotics",
+   "image-text-to-text",
+   "conversational",
+   "custom_code",
+   "arxiv:2601.09668",
+   "base_model:stepfun-ai/Step3-VL-10B-Base",
+   "base_model:finetune:stepfun-ai/Step3-VL-10B-Base",
+   "license:apache-2.0",
+   "region:us"
+  ],
+  "downloads": 49010,
+  "likes": 413,
+  "modelId": "stepfun-ai/Step3-VL-10B",
+  "author": "stepfun-ai",
+  "sha": "5026053b0c2f5dfaa08fc2d149384162c3c8bca1",
+  "lastModified": "2026-02-04T05:40:55.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "StepVLForConditionalGeneration"
+   ],
+   "auto_map": {
+    "AutoConfig": "configuration_step_vl.StepRoboticsConfig",
+    "AutoModelForCausalLM": "modeling_step_vl.Step3VL10BForCausalLM"
+   },
+   "model_type": "step_robotics",
+   "tokenizer_config": {
+    "bos_token": null,
+    "eos_token": "<|im_end|>",
+    "pad_token": "<|endoftext|>",
+    "unk_token": null
+   },
+   "chat_template_jinja": "{% macro render_content(content) %}{% if content is none %}{{- '' }}{% elif content is string %}{{- content }}{% elif content is mapping %}{{- content['value'] if 'value' in content else content['text'] }}{% elif content is iterable %}{% for item in content %}{% if item.type == 'text' %}{{- item['value'] if 'value' in item else item['text'] }}{% elif item.type == 'image' %}<im_patch>{% endif %}{% endfor %}{% endif %}{% endmacro %}\n{%- if tools %}\n    {{- '<|im_start|>system\\n' }}\n    {%- if messages[0].role == 'system' %}\n        {{- render_content(messages[0].content) + '\\n\\n' }}\n    {%- endif %}\n    {{- \"# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>\" }}\n    {%- for tool in tools %}\n        {{- \"\\n\" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- \"\\n</tools>\\n\\nAlways adhere to this exact format for tool use:\\n<tool_calls>\\n<tool_call>\\n{\\\"name\\\": <function-name>, \\\"arguments\\\": <args-json-object>}\\n</tool_call>\\n{additional_tool_calls}</tool_calls>\\n\\nNote:\\n- For each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags.\\n- `<function-name>` must be an exact match to one of the available tools.\\n- `<args-json-object>` must be valid JSON that strictly follows the tool's parameters schema.<|im_end|>\\n\" }}\n{%- else %}\n    {%- if messages[0].role == 'system' %}\n        {{- '<|im_start|>system\\n' + render_content(messages[0].content) + '<|im_end|>\\n' }}\n    {%- endif %}\n{%- endif %}\n{%- set ns = namespace(multi_step_tool=true, last_query_index=messages|length - 1) %}\n{%- for message in messages[::-1] %}\n    {%- set index = (messages|length - 1) - loop.index0 %}\n    {%- if ns.multi_step_tool and message.role == \"user\" and render_content(message.content) is string and not(render_content(message.content).startswith('<tool_response>') and render_content(message.content).endswith('</tool_response>')) %}\n        {%- set ns.multi_step_tool = false %}\n        {%- set ns.last_query_index = index %}\n    {%- endif %}\n{%- endfor %}\n{%- for message in messages %}\n    {%- set content = render_content(message.content) %}\n    {%- if (message.role == \"user\") or (message.role == \"system\" and not loop.first) %}\n        {%- set role_name = 'observation' if (message.role == \"system\" and not loop.first and message.name == 'observation') else message.role %}\n        {{- '<|im_start|>' + role_name + '\\n' + content + '<|im_end|>' + '\\n' }}\n    {%- elif message.role == \"assistant\" %}\n        {%- if message.reasoning_content is string %}\n            {%- set reasoning_content = render_content(message.reasoning_content) %}\n        {%- else %}\n            {%- if '</think>' in content %}\n                {%- set reasoning_content = content.split('</think>')[0].rstrip('\\n').split('<think>')[-1].lstrip('\\n') %}\n                {%- set content = content.split('</think>')[-1].lstrip('\\n') %}\n            {%- else %}\n                {%- set reasoning_content = '' %}\n            {%- endif %}\n        {%- endif %}\n        {%- if loop.index0 > ns.last_query_index %}\n            {{- '<|im_start|>' + message.role + '\\n<think>\\n' + reasoning_content + '\\n</think>\\n' + content }}\n        {%- else %}\n            {{- '<|im_start|>' + message.role + '\\n' + content }}\n        {%- endif %}\n        {%- if message.tool_calls %}\n            {{- '\\n<tool_calls>' }}\n            {%- for tool_call in message.tool_calls %}\n                {{- '\\n' }}\n                {%- if tool_call.function %}\n                    {%- set tool_call = tool_call.function %}\n                {%- endif %}\n                {{- '<tool_call>\\n{\"name\": \"' }}\n                {{- tool_call.name }}\n                {{- '\", \"arguments\": ' }}\n                {%- if tool_call.arguments is string %}\n                    {{- tool_call.arguments }}\n                {%- else %}\n                    {{- tool_call.arguments | tojson }}\n                {%- endif %}\n                {{- '}\\n</tool_call>' }}\n            {%- endfor %}\n            {{- '\\n</tool_calls>' }}\n        {%- endif %}\n        {{- '<|im_end|>\\n' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if loop.first or (messages[loop.index0 - 1].role != \"tool\") %}\n            {{- '<|im_start|>tool_response' }}\n        {%- endif %}\n        {{- '\\n<tool_response>\\n' }}\n        {{- content }}\n        {{- '\\n</tool_response>' }}\n        {%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}\n            {{- '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|im_start|>assistant\\n<think>\\n' }}\n{%- endif %}"
+  },
+  "cardData": {
+   "license": "apache-2.0",
+   "base_model": [
+    "stepfun-ai/Step3-VL-10B-Base"
+   ],
+   "pipeline_tag": "image-text-to-text"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "added_tokens.json"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "configuration_step_vl.py"
+   },
+   {
+    "rfilename": "figures/performance.png"
+   },
+   {
+    "rfilename": "figures/stepfun.svg"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "merges.txt"
+   },
+   {
+    "rfilename": "model-00001.safetensors"
+   },
+   {
+    "rfilename": "model-00002.safetensors"
+   },
+   {
+    "rfilename": "model-00003.safetensors"
+   },
+   {
+    "rfilename": "model-00004.safetensors"
+   },
+   {
+    "rfilename": "model-00005.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "modeling_step_vl.py"
+   },
+   {
+    "rfilename": "processing_step3.py"
+   },
+   {
+    "rfilename": "processor_config.json"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   },
+   {
+    "rfilename": "vision_encoder.py"
+   },
+   {
+    "rfilename": "vocab.json"
+   }
+  ],
+  "spaces": [
+   "stepfun-ai/Step3-VL-10B",
+   "fzjmt25/Step3-VL-10B"
+  ],
+  "createdAt": "2026-01-13T07:55:22.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 10171750144
+   },
+   "total": 10171750144
+  },
+  "usedStorage": 20356527332
+ },
+ "model_config": {
+  "architectures": [
+   "StepVLForConditionalGeneration"
+  ],
+  "auto_map": {
+   "AutoConfig": "configuration_step_vl.StepRoboticsConfig",
+   "AutoModelForCausalLM": "modeling_step_vl.Step3VL10BForCausalLM"
+  },
+  "model_type": "step_robotics",
+  "im_end_token": "<im_end>",
+  "im_patch_token": "<im_patch>",
+  "im_start_token": "<im_start>",
+  "image_token_len": 169,
+  "patch_token_len": 81,
+  "image_token_id": 151679,
+  "understand_projector_stride": 2,
+  "use_im_start_end": "true",
+  "vision_select_layer": -1,
+  "projector_bias": false,
+  "vision_config": {
+   "image_size": 728,
+   "patch_size": 14,
+   "width": 1536,
+   "layers": 47,
+   "heads": 16,
+   "pool_type": "none",
+   "output_dim": null,
+   "use_cls_token": false,
+   "ls_init_value": 0.1,
+   "use_ln_post": false,
+   "hidden_act": "quick_gelu"
+  },
+  "text_config": {
+   "architectures": [
+    "Qwen3ForCausalLM"
+   ],
+   "attention_bias": false,
+   "attention_dropout": 0.0,
+   "bos_token_id": 151643,
+   "eos_token_id": [
+    151643,
+    151645,
+    151679
+   ],
+   "head_dim": 128,
+   "hidden_act": "silu",
+   "hidden_size": 4096,
+   "initializer_range": 0.02,
+   "intermediate_size": 12288,
+   "max_position_embeddings": 65536,
+   "max_window_layers": 36,
+   "model_type": "qwen3",
+   "num_attention_heads": 32,
+   "num_hidden_layers": 36,
+   "num_key_value_heads": 8,
+   "rms_norm_eps": 1e-06,
+   "rope_scaling": null,
+   "rope_theta": 1000000,
+   "sliding_window": null,
+   "tie_word_embeddings": false,
+   "torch_dtype": "bfloat16",
+   "transformers_version": "4.51.0",
+   "use_cache": true,
+   "use_sliding_window": false,
+   "vocab_size": 151936
+  }
+ }
+}

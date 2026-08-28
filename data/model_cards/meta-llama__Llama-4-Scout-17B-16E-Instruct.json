@@ -1,0 +1,429 @@
+{
+ "repo": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+ "url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+ "revision": "92f3b1597a195b523d8d9e5700e57e4fbb8f20d3",
+ "card_metadata": {},
+ "hub_metadata": {
+  "_id": "67ed3cd9290a7f9d3301f9c1",
+  "id": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+  "private": false,
+  "pipeline_tag": "image-text-to-text",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "llama4",
+   "image-text-to-text",
+   "facebook",
+   "meta",
+   "pytorch",
+   "llama",
+   "conversational",
+   "ar",
+   "de",
+   "en",
+   "es",
+   "fr",
+   "hi",
+   "id",
+   "it",
+   "pt",
+   "th",
+   "tl",
+   "vi",
+   "arxiv:2204.05149",
+   "base_model:meta-llama/Llama-4-Scout-17B-16E",
+   "base_model:finetune:meta-llama/Llama-4-Scout-17B-16E",
+   "license:other",
+   "eval-results",
+   "text-generation-inference",
+   "endpoints_compatible",
+   "region:us"
+  ],
+  "downloads": 268188,
+  "likes": 1335,
+  "modelId": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+  "author": "meta-llama",
+  "sha": "92f3b1597a195b523d8d9e5700e57e4fbb8f20d3",
+  "lastModified": "2025-05-22T23:44:50.000Z",
+  "gated": "manual",
+  "disabled": false,
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "Llama4ForConditionalGeneration"
+   ],
+   "model_type": "llama4",
+   "tokenizer_config": {
+    "bos_token": "<|begin_of_text|>",
+    "eos_token": "<|eot|>",
+    "pad_token": "<|finetune_right_pad|>"
+   },
+   "chat_template_jinja": "{{- bos_token }}\n{%- if custom_tools is defined and custom_tools%}\n    {%- set tools = custom_tools %}\n{%- endif %}\n{%- if tools is defined and tools %}\n    {%- set tool_definition = tool_definition ~ (tools | tojson(indent=4)) %}\n{%- else %}\n    {%- set tools = none %}\n{%- endif %}\n\n\n{#- This block extracts the system message, so we can slot it into the right place. #}\n{%- if messages[0]['role'] == 'system' %}\n    {%- set user_provided_system_message = true %}\n    {%- if messages[0]['content'] is string %}\n        {%- set system_message = messages[0]['content']|trim %}\n    {%- else %}\n        {%- set system_message = messages[0]['content'][0]['text']|trim %}\n    {%- endif %}\n    {%- set messages = messages[1:] %}\n{%- else %}\n    {%- if tools is not none  %}\n        {#- Since not system_message was provided by user, if tool is provided, system_message is now default tool system message #}\n        {#- This system message is from llama website:https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/  #}\n        {%- set system_message = \"You are a helpful assistant and an expert in function composition. You can answer general questions using your internal knowledge OR invoke functions when necessary. Follow these strict guidelines:\\n\\n1. FUNCTION CALLS:\\n- ONLY use functions that are EXPLICITLY listed in the function list below\\n- If NO functions are listed (empty function list []), respond ONLY with internal knowledge or \\\"I don't have access to [Unavailable service] information\\\"\\n- If a function is not in the list, respond ONLY with internal knowledge or \\\"I don't have access to [Unavailable service] information\\\"\\n- If ALL required parameters are present AND the query EXACTLY matches a listed function's purpose: output ONLY the function call(s)\\n- Use exact format: [func_name1(param1=value1, param2=value2), func_name2(...)]\\nExamples:\\nCORRECT: [get_weather(location=\\\"Vancouver\\\"), calculate_route(start=\\\"Boston\\\", end=\\\"New York\\\")] <- Only if get_weather and calculate_route are in function list\\nINCORRECT: get_weather(location=\\\"New York\\\")\\nINCORRECT: Let me check the weather: [get_weather(location=\\\"New York\\\")]\\nINCORRECT: [get_events(location=\\\"Singapore\\\")] <- If function not in list\\n\\n2. RESPONSE RULES:\\n- For pure function requests matching a listed function: ONLY output the function call(s)\\n- For knowledge questions: ONLY output text\\n- For missing parameters: ONLY request the specific missing parameters\\n- For unavailable services (not in function list): output ONLY with internal knowledge or \\\"I don't have access to [Unavailable service] information\\\". Do NOT execute a function call.\\n- If the query asks for information beyond what a listed function provides: output ONLY with internal knowledge about your limitations\\n- NEVER combine text and function calls in the same response\\n- NEVER suggest alternative functions when the requested service is unavailable\\n- NEVER create or invent new functions not listed below\\n\\n3. STRICT BOUNDARIES:\\n- ONLY use functions from the list below - no exceptions\\n- NEVER use a function as an alternative to unavailable information\\n- NEVER call functions not present in the function list\\n- NEVER add explanatory text to function calls\\n- NEVER respond with empty brackets\\n- Use proper Python/JSON syntax for function calls\\n- Check the function list carefully before responding\\n\\n4. TOOL RESPONSE HANDLING:\\n- When receiving tool responses: provide concise, natural language responses\\n- Don't repeat tool response verbatim\\n- Don't add supplementary information\\n\\nHere is a list of functions in JSON format that you can invoke:\\n\" %}\n    {%- else %}\n        {%- set system_message = \"\" %}\n    {%- endif %}\n{%- endif %}\n{#- Now writing the system message: use the user provided system message if user_provided_system_message, else default tool system message if tools presented #}\n{%- if system_message %}\n    {#- always use user provided system message to override default tool system message #}\n    {{- \"<|header_start|>system<|header_end|>\\n\\n\" }}\n    {{- system_message }}\n    {%- if user_provided_system_message and tools %}\n        {{- \"\\nHere is a list of functions in JSON format that you can invoke. Use exact format: [func_name1(param1=value1, param2=value2), func_name2(...)]\\n\" }}\n        {{- tool_definition -}}\n        {%- elif tool_definition %}\n        {{- tool_definition -}}\n    {%- endif %}\n    {{- \"<|eot|>\" }}\n{%- endif %}\n\n{#- Now deal with all other messages #}\n{%- for message in messages %}\n    {#- Base case: messages that are not from tool role and has empty tool_call list  #}\n    {%- if not (message.role == 'ipython' or message.role == 'tool' or ('tool_calls' in message and  message.tool_calls|length != 0 )) %}\n        {{- '<|header_start|>' + message['role'] + '<|header_end|>\\n\\n' }}\n        {%- if message['content'] is string %}\n            {{- message['content'] }}\n        {%- else %}\n            {%- for content in message['content'] %}\n                {%- if content['type'] == 'image' %}\n                    {{- '<|image|>' }}\n                {%- elif content['type'] == 'text' %}\n                    {{- content['text'] | trim }}\n                {%- endif %}\n            {%- endfor %}\n        {%- endif %}\n    {{- \"<|eot|>\" }}\n    {#- Tool case: messages has non-empty tool_call list, must from assistant #}\n    {%- elif 'tool_calls' in message %}\n        {#- assume tool_calls are always coming from assistant #}\n        {%- if message.role == 'assistant' %}\n            {{- '<|header_start|>assistant<|header_end|>\\n\\n' -}}\n        {%- if message['content'] is string %}\n            {{- message['content'] }}\n        {%- else %}\n            {%- for content in message['content'] %}\n                {%- if content['type'] == 'image' %}\n                    {{- '<|image|>' }}\n                {%- elif content['type'] == 'text' %}\n                    {{- content['text'] }}\n                {%- endif %}\n            {%- endfor %}\n        {%- endif %}\n            {{- \"[\" }}\n        {%- for tool_call in message.tool_calls %}\n            {%- if tool_call.function is defined %}\n                {%- set tool_call = tool_call.function %}\n            {%- endif %}\n                {{-  tool_call.name + '(' -}}\n            {%- for param in tool_call.arguments %}\n                {{- param + '=\"' -}}\n                {{- \"%s\" | format(tool_call.arguments[param]) -}}\n                {{- '\"' -}}\n                {% if not loop.last %}, {% endif %}\n            {%- endfor %}\n            {{- ')' -}}\n            {% if not loop.last %}, {% endif %}\n        {%- endfor %}\n        {{- \"]<|eot|>\" }}\n{%- endif %}\n{#- Tool_response case: messages are from tool_response  #}\n    {%- elif message.role == \"tool\" or message.role == \"ipython\" %}\n        {{- \"<|header_start|>ipython<|header_end|>\\n\\n\" }}\n        {%- if message.content is string %}\n            {{-  message.content  | tojson }}\n        {%- else %}\n            {%- for content in message['content']  %}\n                {%- if content['type']  == 'text' %}\n                    {{-  content['text'] | tojson }}\n                {%- endif %}\n            {%- endfor %}\n        {%- endif %}\n        {{- \"<|eot|>\" }}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|header_start|>assistant<|header_end|>\\n\\n' }}\n{%- endif %}"
+  },
+  "cardData": {
+   "library_name": "transformers",
+   "language": [
+    "ar",
+    "de",
+    "en",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "it",
+    "pt",
+    "th",
+    "tl",
+    "vi"
+   ],
+   "base_model": [
+    "meta-llama/Llama-4-Scout-17B-16E"
+   ],
+   "tags": [
+    "facebook",
+    "meta",
+    "pytorch",
+    "llama",
+    "llama4"
+   ],
+   "extra_gated_prompt": "**LLAMA 4 COMMUNITY LICENSE AGREEMENT**\nLlama 4 Version Effective Date: April 5, 2025\n\"**Agreement**\" means the terms and conditions for use, reproduction, distribution and modification of the Llama Materials set forth herein.\n\"**Documentation**\" means the specifications, manuals and documentation accompanying Llama 4 distributed by Meta at [https://www.llama.com/docs/overview](https://llama.com/docs/overview).\n\"**Licensee**\" or \"**you**\" means you, or your employer or any other person or entity (if you are entering into this Agreement on such person or entity’s behalf), of the age required under applicable laws, rules or regulations to provide legal consent and that has legal authority to bind your employer or such other person or entity if you are entering in this Agreement on their behalf.\n\"**Llama 4**\" means the foundational large language models and software and algorithms, including machine-learning model code, trained model weights, inference-enabling code, training-enabling code, fine-tuning enabling code and other elements of the foregoing distributed by Meta at [https://www.llama.com/llama-downloads](https://www.llama.com/llama-downloads).\n\"**Llama Materials**\" means, collectively, Meta’s proprietary Llama 4 and Documentation (and any portion thereof) made available under this Agreement.\n\"**Meta**\" or \"**we**\" means Meta Platforms Ireland Limited (if you are located in or, if you are an entity, your principal place of business is in the EEA or Switzerland) and Meta Platforms, Inc. (if you are located outside of the EEA or Switzerland). \nBy clicking \"I Accept\" below or by using or distributing any portion or element of the Llama Materials, you agree to be bound by this Agreement.\n1\\. **License Rights and Redistribution**.\na. Grant of Rights. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under Meta’s intellectual property or other rights owned by Meta embodied in the Llama Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Llama Materials.  \nb. Redistribution and Use.  \ni. If you distribute or make available the Llama Materials (or any derivative works thereof), or a product or service (including another AI model) that contains any of them, you shall (A) provide a copy of this Agreement with any such Llama Materials; and (B) prominently display \"Built with Llama\" on a related website, user interface, blogpost, about page, or product documentation. If you use the Llama Materials or any outputs or results of the Llama Materials to create, train, fine tune, or otherwise improve an AI model, which is distributed or made available, you shall also include \"Llama\" at the beginning of any such AI model name.\nii. If you receive Llama Materials, or any derivative works thereof, from a Licensee as part of an integrated end user product, then Section 2 of this Agreement will not apply to you. \niii. You must retain in all copies of the Llama Materials that you distribute the following attribution notice within a \"Notice\" text file distributed as a part of such copies: \"Llama 4 is licensed under the Llama 4 Community License, Copyright © Meta Platforms, Inc. All Rights Reserved.\"\niv. Your use of the Llama Materials must comply with applicable laws and regulations (including trade compliance laws and regulations) and adhere to the Acceptable Use Policy for the Llama Materials (available at [https://www.llama.com/llama4/use-policy](https://www.llama.com/llama4/use-policy)), which is hereby incorporated by reference into this Agreement.        2\\. **Additional Commercial Terms**. If, on the Llama 4 version release date, the monthly active users of the products or services made available by or for Licensee, or Licensee’s affiliates, is greater than 700 million monthly active users in the preceding calendar month, you must request a license from Meta, which Meta may grant to you in its sole discretion, and you are not authorized to exercise any of the rights under this Agreement unless or until Meta otherwise expressly grants you such rights.\n3**. Disclaimer of Warranty**. UNLESS REQUIRED BY APPLICABLE LAW, THE LLAMA MATERIALS AND ANY OUTPUT AND RESULTS THEREFROM ARE PROVIDED ON AN \"AS IS\" BASIS, WITHOUT WARRANTIES OF ANY KIND, AND META DISCLAIMS ALL WARRANTIES OF ANY KIND, BOTH EXPRESS AND IMPLIED, INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE. YOU ARE SOLELY RESPONSIBLE FOR DETERMINING THE APPROPRIATENESS OF USING OR REDISTRIBUTING THE LLAMA MATERIALS AND ASSUME ANY RISKS ASSOCIATED WITH YOUR USE OF THE LLAMA MATERIALS AND ANY OUTPUT AND RESULTS.\n4\\. **Limitation of Liability**. IN NO EVENT WILL META OR ITS AFFILIATES BE LIABLE UNDER ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, TORT, NEGLIGENCE, PRODUCTS LIABILITY, OR OTHERWISE, ARISING OUT OF THIS AGREEMENT, FOR ANY LOST PROFITS OR ANY INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL, EXEMPLARY OR PUNITIVE DAMAGES, EVEN IF META OR ITS AFFILIATES HAVE BEEN ADVISED OF THE POSSIBILITY OF ANY OF THE FOREGOING.\n5\\. **Intellectual Property**.\na. No trademark licenses are granted under this Agreement, and in connection with the Llama Materials, neither Meta nor Licensee may use any name or mark owned by or associated with the other or any of its affiliates, except as required for reasonable and customary use in describing and redistributing the Llama Materials or as set forth in this Section 5(a). Meta hereby grants you a license to use \"Llama\" (the \"Mark\") solely as required to comply with the last sentence of Section 1.b.i. You will comply with Meta’s brand guidelines (currently accessible at [https://about.meta.com/brand/resources/meta/company-brand/](https://about.meta.com/brand/resources/meta/company-brand/)[)](https://en.facebookbrand.com/). All goodwill arising out of your use of the Mark will inure to the benefit of Meta.\nb. Subject to Meta’s ownership of Llama Materials and derivatives made by or for Meta, with respect to any derivative works and modifications of the Llama Materials that are made by you, as between you and Meta, you are and will be the owner of such derivative works and modifications.\nc. If you institute litigation or other proceedings against Meta or any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Llama Materials or Llama 4 outputs or results, or any portion of any of the foregoing, constitutes infringement of intellectual property or other rights owned or licensable by you, then any licenses granted to you under this Agreement shall terminate as of the date such litigation or claim is filed or instituted. You will indemnify and hold harmless Meta from and against any claim by any third party arising out of or related to your use or distribution of the Llama Materials.\n6\\. **Term and Termination**. The term of this Agreement will commence upon your acceptance of this Agreement or access to the Llama Materials and will continue in full force and effect until terminated in accordance with the terms and conditions herein. Meta may terminate this Agreement if you are in breach of any term or condition of this Agreement. Upon termination of this Agreement, you shall delete and cease use of the Llama Materials. Sections 3, 4 and 7 shall survive the termination of this Agreement. \n7\\. **Governing Law and Jurisdiction**. This Agreement will be governed and construed under the laws of the State of California without regard to choice of law principles, and the UN Convention on Contracts for the International Sale of Goods does not apply to this Agreement. The courts of California shall have exclusive jurisdiction of any dispute arising out of this Agreement.",
+   "extra_gated_fields": {
+    "First Name": "text",
+    "Last Name": "text",
+    "Date of birth": "date_picker",
+    "Country": "country",
+    "Affiliation": "text",
+    "Job title": {
+     "type": "select",
+     "options": [
+      "Student",
+      "Research Graduate",
+      "AI researcher",
+      "AI developer/engineer",
+      "Reporter",
+      "Other"
+     ]
+    },
+    "geo": "ip_location",
+    "By clicking Submit below I accept the terms of the license and acknowledge that the information I provide will be collected stored processed and shared in accordance with the Meta Privacy Policy": "checkbox"
+   },
+   "extra_gated_description": "The information you provide will be collected, stored, processed and shared in accordance with the [Meta Privacy Policy](https://www.facebook.com/privacy/policy/).",
+   "extra_gated_button_content": "Submit",
+   "extra_gated_heading": "Please be sure to provide your full legal name, date of birth, and full organization name with all corporate identifiers. Avoid the use of acronyms and special characters. Failure to follow these instructions may prevent you from accessing this model and others on Hugging Face. You will not have the ability to edit this form after submission, so please ensure all information is accurate.",
+   "license": "other",
+   "license_name": "llama4"
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForMultimodalLM",
+   "pipeline_tag": "image-text-to-text",
+   "processor": "AutoProcessor"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "LICENSE"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "USE_POLICY.md"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00001-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00015-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00016-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00017-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00018-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00019-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00020-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00021-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00022-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00023-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00024-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00025-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00026-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00027-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00028-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00029-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00030-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00031-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00032-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00033-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00034-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00035-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00036-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00037-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00038-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00039-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00040-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00041-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00042-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00043-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00044-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00045-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00046-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00047-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00048-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00049-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model-00050-of-00050.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "preprocessor_config.json"
+   },
+   {
+    "rfilename": "processor_config.json"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer.model"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [
+   "pliny-the-prompter/obliteratus",
+   "eduagarcia/open_pt_llm_leaderboard",
+   "FINAL-Bench/all-bench-leaderboard",
+   "hadadrjt/ai",
+   "openfree/Llama-4-Scout-17B-Research",
+   "TIGER-Lab/MEGA-Bench",
+   "ginigen-ai/smol-worldcup",
+   "yourbench/advanced",
+   "dromerosm/groq-chatbot",
+   "whitecircle/circle-guard-bench",
+   "Agents-MCP-Hackathon/meme-context-protocol",
+   "McLoviniTtt/Reasoner4All",
+   "bartar/tokenizers",
+   "SustainabilityLabIITGN/VayuChat",
+   "jairwaal/image",
+   "Tinkering/Pytorch-day-prez",
+   "eduagarcia/multilingual-tokenizer-leaderboard",
+   "WillemVH/Image_To_Text_Description",
+   "ginigen/StealthMark",
+   "openfree/Llama-4-Scout-17B-Research-korea",
+   "fastrtc/talk-to-llama4",
+   "EuroEval/euroeval_leaderboard",
+   "kousthubh/PSYCHEPLOT",
+   "Heartsync/NSFWT2V",
+   "responsible-prompting/demo-multiturn",
+   "Dhruv-18/Advanced-AI-Reasoning-pro",
+   "filbench/filbench-leaderboard",
+   "kingabzpro/Llama-4-RAG",
+   "umint/openwebui",
+   "santanavagner/responsible-prompting-demo",
+   "Agents-MCP-Hackathon/food4thought",
+   "Sa-m/manifesto-explainer",
+   "atharvad999/Instant_Product_Catalogue_Assistant",
+   "Nymbo/Groq-Gradio",
+   "Ed-Stark/MediSight",
+   "arpit13/Memory_Magic_Studio",
+   "jai9955/Voice-Activated-RAG-System",
+   "mcjhn/ai",
+   "HugMilo/MiloMusic_YuEGP",
+   "Jakob08/moneychatbot",
+   "arudradey/all-bench-leaderboard",
+   "Vigneshsaminathan/VQA",
+   "Shaikhsarib/EatlyticApp",
+   "Tasawar-prog1/dermaai-pakistan-v2",
+   "bohmian/esg_countries_chatbot",
+   "dromerosm/groq-moa",
+   "abidlabs/smol-arena",
+   "arpit13/AI_Workshop_for_Image_Tool",
+   "aakashaldankar/NewsLetter",
+   "fudii0921/live_emotion",
+   "thisrudrapatel/Resume-Genome",
+   "UdaraChamidu/Medical-Chatbot",
+   "Dhruv-18/ReasonaIQ",
+   "NLP-Debater-Project/FastAPI-Backend-Models",
+   "Secondprinsipal/image",
+   "Jatin0019/MediVision-AI",
+   "Kodacoda/obliteratus",
+   "dumbordumber/obliteratus",
+   "Keerthipriya27/styledna",
+   "Hema201304/Nova_AI",
+   "Abdelrahman023/EduPulse",
+   "shahxad/medi-assist",
+   "bunnh1234/chat_bot0039",
+   "omkarkudalkar23/citationEdge",
+   "HiteshiAglawe0505/safespace-ai",
+   "Tasawar-prog1/MedReason-RAG",
+   "Nafayy04/AI-Transcript-Strategist",
+   "brk9999/bal-chatbot",
+   "Pioneer37/Stickman-Arena",
+   "segoedu/botpoet",
+   "Wedyan2023/Data_Generation_LabelingCopy",
+   "LVKinyanjui/FastInferenceChat",
+   "Haseeb-001/NeuroGuard",
+   "atheon-inc/atheon-in-action",
+   "alim9hamed/medical_chatbot",
+   "Jurk06/LLAMA-4-SCOUT-RAG",
+   "UltimateRepAIr/RepAIr",
+   "iamsolankiamit/groq-chatbot",
+   "khompitoon5/meta-llama-Llama-4-Scout-17B-16E-Instruct",
+   "ryanpereira/apr17",
+   "jayjhaveri9/stock-app",
+   "viraj-zaveri/figma-ux-assistance",
+   "impreritsingh/AI_Calorie_Tracker",
+   "HagarEQAP99/AGRI_AGENT",
+   "chipling/api",
+   "rakkesh/Gen_AI_Business_Dashboard_Chatbot",
+   "chansung/novita-preview-playground",
+   "christelleNc/cars.py",
+   "ZurichNLP/subword-tokenization",
+   "precison9/fastapi",
+   "a-jan/Final_Assignment_Osama",
+   "SATVIKGAUTAM/AI-Doctor-with-Vision-and-Voice",
+   "shivace007/ImageCommentary",
+   "Tonic/leaderboard_yourbench_Tonic_ESMA-Auto-Bench",
+   "Yinchun/Travel_Assistant",
+   "Agents-MCP-Hackathon/mcp_drawittome",
+   "grohiit/llm_evaluator",
+   "sachinbareth/AI-Doctor-vision-voice",
+   "RameshJ/Invoices_to_Table",
+   "RameshJ/Invoices_to_Table_lp"
+  ],
+  "createdAt": "2025-04-02T13:34:17.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 108641793536
+   },
+   "total": 108641793536
+  },
+  "inference": "warm",
+  "usedStorage": 217343257722
+ },
+ "model_config": null
+}

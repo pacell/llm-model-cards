@@ -1,0 +1,296 @@
+{
+ "repo": "meituan-longcat/LongCat-Flash-Lite",
+ "url": "https://huggingface.co/meituan-longcat/LongCat-Flash-Lite",
+ "revision": "b62b68827ead0b7fef3ba98b57f18484acaaec06",
+ "card_metadata": {
+  "license": "mit",
+  "library_name": "LongCat-Flash-Lite",
+  "pipeline_tag": "text-generation",
+  "tags": []
+ },
+ "hub_metadata": {
+  "_id": "69787149460b54f64fa79ad5",
+  "id": "meituan-longcat/LongCat-Flash-Lite",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "LongCat-Flash-Lite",
+  "tags": [
+   "LongCat-Flash-Lite",
+   "safetensors",
+   "text-generation",
+   "transformers",
+   "conversational",
+   "custom_code",
+   "arxiv:2601.21204",
+   "license:mit",
+   "eval-results",
+   "region:us"
+  ],
+  "downloads": 15540,
+  "likes": 207,
+  "modelId": "meituan-longcat/LongCat-Flash-Lite",
+  "author": "meituan-longcat",
+  "sha": "b62b68827ead0b7fef3ba98b57f18484acaaec06",
+  "lastModified": "2026-02-06T09:03:18.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "LongcatFlashNgramForCausalLM"
+   ],
+   "auto_map": {
+    "AutoConfig": "configuration_longcat_ngram.LongcatFlashNgramConfig",
+    "AutoModel": "modeling_longcat_ngram.LongcatFlashNgramModel",
+    "AutoModelForCausalLM": "modeling_longcat_ngram.LongcatFlashNgramForCausalLM"
+   },
+   "tokenizer_config": {
+    "bos_token": {
+     "__type": "AddedToken",
+     "content": "<longcat_s>",
+     "lstrip": false,
+     "normalized": true,
+     "rstrip": false,
+     "single_word": false
+    },
+    "eos_token": {
+     "__type": "AddedToken",
+     "content": "</longcat_s>",
+     "lstrip": false,
+     "normalized": true,
+     "rstrip": false,
+     "single_word": false
+    },
+    "pad_token": {
+     "__type": "AddedToken",
+     "content": "<longcat_pad>",
+     "lstrip": false,
+     "normalized": true,
+     "rstrip": false,
+     "single_word": false
+    },
+    "unk_token": {
+     "__type": "AddedToken",
+     "content": "<longcat_unk>",
+     "lstrip": false,
+     "normalized": true,
+     "rstrip": false,
+     "single_word": false
+    },
+    "chat_template": "{%- set tool_choice = tool_choice | default('auto') %}\n{%- set ns = namespace(tool_types = [], last_query_index = -1) %}\n\n{%- if tools and tool_choice != 'none' %}\n    {{- \"<longcat_tool_declare>\\n\"-}}\n    {{- \"# Tools\\n\" }}\n    {{- \"You have access to the following tools:\\n\\n\" }}\n    {%- for tool in tools %}\n        {%- if tool.type not in ns.tool_types %}\n            {%- set ns.tool_types = ns.tool_types + [tool.type] %}\n            {{- \"## Tool namespace: \" ~ tool.type ~ \"\\n\\n\" }}\n        {%- endif %}\n        {%- if tool.type == 'code_interpreter' %}\n            {%- set tool = {\"type\":\"code_interpreter\",\"function\":{\"name\":\"code_interpreter_preview\",\"description\":\"The code will be executed in a stateful Jupyter notebook sandbox environment, only supports local computation, data processing, and file operations.\\nCode sandbox environment (network isolated) Any external network requests or online API calls are prohibited.\\nIf online functionality is needed, please use other permitted tools.\\nCode will respond with the output of the execution or time out after 60.0 seconds. \",\"parameters\":{\"type\":\"object\",\"properties\":{\"language\":{\"type\":\"string\",\"description\":\"The programming language of the code to be executed. Available values: python (Default), java, go, js, ts, c, c++.\"},\"code\":{\"type\":\"string\",\"description\":\"Python code to be executed must not include the following:\\n- Importing network libraries such as requests, httplib, etc.\\n- Any form of HTTP requests.\\n- External API calls.\\n- Network port operations. Example: ```python\\nimport pandas as pd\\npd.DataFrame({'A':[1,2]})\\n```\"},\"timeout\":{\"type\":\"number\",\"description\":\"The maximum execution time of the code, in seconds. Default is 60.0.\"}}},\"required\":[\"code\"]}} %}\n        {%- endif %}\n        {{- \"### Tool name: \" + tool.function.name + \"\\n\" }}\n        {{- \"Description: \" + tool.function.description + \"\\n\\n\" }}\n        {{- \"InputSchema: \" + tool.function.parameters | tojson(ensure_ascii=False) + \"\\n\\n\" }}\n    {%- endfor %}\n    {{- '**Note**: For each function call, output the function name and arguments within the following XML format:\\n<longcat_tool_call>{function-name}\\n<longcat_arg_key>{arg-key-1}</longcat_arg_key>\\n<longcat_arg_value>{arg-value-1}</longcat_arg_value>\\n<longcat_arg_key>{arg-key-2}</longcat_arg_key>\\n<longcat_arg_value>{arg-value-2}</longcat_arg_value>\\n...\\n</longcat_tool_call>\\n' }}\n    {{- \"</longcat_tool_declare>\"-}}\n    {%- for idx in range(messages|length - 1) %}\n        {%- set msg = messages[idx] %}\n        {%- if msg.role == 'assistant' and not msg.tool_calls %}\n            {%- set ns.last_query_index = idx %}\n        {%- endif %}\n    {%- endfor%}\n{%- endif %}\n\n{%- for msg in messages %}\n    {%- if msg.role == \"system\" %}\n        {{- \"<longcat_system>\" + msg.content }}\n    {%- elif msg.role == \"user\" %}\n        {{- \"<longcat_user>\" }}\n        {%- if msg[\"files\"] %}\n            {{- '<longcat_files>\\n' ~ msg.files | tojson(indent=2) ~ '\\n</longcat_files>' }}\n        {%- endif %}\n        {{- msg.content }}\n    {%- elif msg.role == \"assistant\" %}\n        {{- \"<longcat_assistant>\" }}\n        {%- if enable_thinking == true and msg.reasoning_content and ns.tool_types != [] and loop.index0 > ns.last_query_index %}\n            {{- \"\\n<longcat_think>\\n\" ~ msg.reasoning_content ~ \"\\n</longcat_think>\\n\" }}\n        {%- endif %}\n        {%- if msg.content%}\n            {{- msg.content }}\n        {%- endif %}\n        {%- if msg.tool_calls %}\n            {%- for tool_call in msg.tool_calls -%}\n                {{- \"<longcat_tool_call>\" ~ tool_call.function.name ~ \"\\n\" -}}\n                {% set _args = tool_call.function.arguments %}\n                {% for k, v in _args.items() %}\n                    {{- \"<longcat_arg_key>\" ~ k ~ \"</longcat_arg_key>\\n\" -}}\n                    {{- \"<longcat_arg_value>\" ~ (v if v is string else v | tojson(ensure_ascii=False)) ~ \"</longcat_arg_value>\\n\" -}}\n                {% endfor %}\n                {{- \"</longcat_tool_call>\\n\" }}\n            {%- endfor %}\n        {%- endif %}\n        {{- \"</longcat_s>\" -}}\n    {%- elif msg.role == \"tool\" %}\n        {%- if messages[loop.index0 - 1].role != \"tool\"%}\n            {{- \"<longcat_user>\" -}}\n        {%- endif %}\n        {{- \"<longcat_tool_response>\" ~ msg.content ~ \"</longcat_tool_response>\"-}}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {%- if enable_thinking == true %}\n        {{- \" /think_on\" }}\n        {%- if thinking_budget %}\n            {%- if thinking_budget < 1024 %}\n                {%- set thinking_budget = 1024 %}\n            {%- endif%}\n            {{- \"\\nthinking_budget: < \" ~ thinking_budget ~ \".\"}}\n        {%- endif %}\n        {{- \" <longcat_assistant><longcat_think>\\n\"}}\n    {%- elif enable_thinking == false %}\n        {{- \" /think_off <longcat_assistant><longcat_think>\\n\\n</longcat_think>\\n\" }}\n    {%- else %}\n        {{- \"<longcat_assistant>\" }}\n    {%- endif %}\n{%- endif %}"
+   }
+  },
+  "cardData": {
+   "license": "mit",
+   "library_name": "LongCat-Flash-Lite",
+   "pipeline_tag": "text-generation",
+   "tags": [
+    "transformers"
+   ]
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForCausalLM",
+   "custom_class": "modeling_longcat_ngram.LongcatFlashNgramForCausalLM",
+   "pipeline_tag": "text-generation"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": ".gitignore"
+   },
+   {
+    "rfilename": "LICENSE"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "configuration_longcat_ngram.py"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00000-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00001-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00015-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00016-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00017-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00018-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00019-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00020-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00021-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00022-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00023-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00024-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model-00025-of-00026.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "model_hashes.txt"
+   },
+   {
+    "rfilename": "modeling_longcat_ngram.py"
+   },
+   {
+    "rfilename": "parse_model_response.py"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tech_report.pdf"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [],
+  "createdAt": "2026-01-27T08:03:21.000Z",
+  "safetensors": {
+   "parameters": {
+    "F32": 16520448,
+    "BF16": 69056815104
+   },
+   "total": 69073335552
+  },
+  "usedStorage": 339196524190
+ },
+ "model_config": {
+  "architectures": [
+   "LongcatFlashNgramForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "auto_map": {
+   "AutoConfig": "configuration_longcat_ngram.LongcatFlashNgramConfig",
+   "AutoModel": "modeling_longcat_ngram.LongcatFlashNgramModel",
+   "AutoModelForCausalLM": "modeling_longcat_ngram.LongcatFlashNgramForCausalLM"
+  },
+  "vocab_size": 131072,
+  "hidden_size": 3072,
+  "ffn_hidden_size": 6144,
+  "expert_ffn_hidden_size": 1024,
+  "num_layers": 14,
+  "num_attention_heads": 32,
+  "kv_lora_rank": 512,
+  "q_lora_rank": 1536,
+  "qk_rope_head_dim": 64,
+  "v_head_dim": 128,
+  "qk_nope_head_dim": 128,
+  "mla_scale_q_lora": true,
+  "mla_scale_kv_lora": true,
+  "routed_scaling_factor": 6.0,
+  "n_routed_experts": 256,
+  "rms_norm_eps": 1e-05,
+  "use_cache": true,
+  "bos_token_id": 1,
+  "eos_token_id": 2,
+  "rope_theta": 5000000.0,
+  "max_position_embeddings": 327680,
+  "rope_scaling": {
+   "original_max_position_embeddings": 32768,
+   "rope_type": "yarn",
+   "factor": 10,
+   "beta_fast": 32,
+   "beta_slow": 1,
+   "mscale": 1,
+   "mscale_all_dim": 1
+  },
+  "zero_expert_num": 128,
+  "zero_expert_type": "identity",
+  "moe_topk": 12,
+  "ngram_vocab_size_ratio": 78,
+  "emb_neighbor_num": 4,
+  "emb_split_num": 4,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.57.6"
+ }
+}

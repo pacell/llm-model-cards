@@ -1,0 +1,1017 @@
+{
+ "repo": "deepcogito/cogito-671b-v2.1",
+ "url": "https://huggingface.co/deepcogito/cogito-671b-v2.1",
+ "revision": "556104cc940a69be9417d3579041ff0009a50382",
+ "card_metadata": {
+  "license": "mit",
+  "library_name": "transformers",
+  "base_model": []
+ },
+ "hub_metadata": {
+  "_id": "68fbfb28ffc6d36d6ae62c87",
+  "id": "deepcogito/cogito-671b-v2.1",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "deepseek_v3",
+   "text-generation",
+   "conversational",
+   "custom_code",
+   "base_model:deepseek-ai/DeepSeek-V3-Base",
+   "base_model:finetune:deepseek-ai/DeepSeek-V3-Base",
+   "license:mit",
+   "text-generation-inference",
+   "endpoints_compatible",
+   "region:us"
+  ],
+  "downloads": 793,
+  "likes": 32,
+  "modelId": "deepcogito/cogito-671b-v2.1",
+  "author": "deepcogito",
+  "sha": "556104cc940a69be9417d3579041ff0009a50382",
+  "lastModified": "2025-11-21T13:46:02.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "DeepseekV3ForCausalLM"
+   ],
+   "auto_map": {
+    "AutoConfig": "configuration_deepseek.DeepseekV3Config",
+    "AutoModel": "modeling_deepseek.DeepseekV3Model",
+    "AutoModelForCausalLM": "modeling_deepseek.DeepseekV3ForCausalLM"
+   },
+   "model_type": "deepseek_v3",
+   "num_experts_per_tok": 8,
+   "tokenizer_config": {
+    "bos_token": "<｜begin▁of▁sentence｜>",
+    "eos_token": "<｜end▁of▁sentence｜>",
+    "pad_token": "<｜▁pad▁｜>",
+    "unk_token": null,
+    "use_default_system_prompt": false
+   },
+   "chat_template_jinja": "{# ==================================================================== #}\n{#  Deepseek v3 template with enable_thinking and tools support          #}\n{# ==================================================================== #}\n{%- if not enable_thinking is defined %}{% set enable_thinking = false %}{% endif -%}\n{%- if not tools is defined %}{% set tools = none %}{% endif -%}\n{%- if not add_generation_prompt is defined %}{% set add_generation_prompt = false %}{% endif -%}\n\n{# --------------------------- Defaults -------------------------------- #}\n{%- set default_prompt = \"You are Cogito, an AI assistant created by Deep Cogito, which is an AI research lab based in San Francisco.\" -%}\n\n{# --------------------------- Collect system prompt -------------------- #}\n{%- set ns = namespace(system_prompt='', is_last_user=false, outputs_open=false, first_output=true) -%}\n\n{%- if messages and messages[0].role == 'system' -%}\n  {%- set raw = messages[0].content -%}\n  {%- set ns.system_prompt = raw if raw is string else raw[0].text -%}\n  {%- set messages = messages[1:] -%}\n{%- endif -%}\n\n{# --------------------------- Inject deep thinking --------------------- #}\n{%- set user_prompt = ns.system_prompt -%}\n{%- if enable_thinking -%}\n  {# Thinking enabled #}\n  {%- set ns.system_prompt = \"Enable deep thinking subroutine.\\n\\n\" ~ default_prompt -%}\n  {%- if user_prompt -%}\n    {%- set ns.system_prompt = ns.system_prompt ~ \"\\n\\n\" ~ user_prompt ~ \"\\n\\n\" -%}\n  {%- endif -%}\n{%- else -%}\n  {# Thinking disabled #}\n  {%- set ns.system_prompt = default_prompt -%}\n  {%- if user_prompt -%}\n    {%- set ns.system_prompt = ns.system_prompt ~ \"\\n\\n\" ~ user_prompt -%}\n  {%- endif -%}\n{%- endif -%}\n\n{# --------------------------- Append tools block ----------------------- #}\n{%- if tools is not none -%}\n  {%- if ns.system_prompt -%}\n    {%- set ns.system_prompt = ns.system_prompt ~ '\n\nYou have the following functions available:\n\n' -%}\n  {%- else -%}\n    {%- set ns.system_prompt = 'You have the following functions available:\n\n' -%}\n  {%- endif -%}\n  {%- for t in tools -%}\n    {%- set ns.system_prompt = ns.system_prompt ~ \"```json\n\" ~ (t | tojson(indent=4)) ~ \"\n```\n\n\" -%}\n  {%- endfor -%}\n{%- endif -%}\n\n{{- bos_token -}}{{- ns.system_prompt -}}\n\n{# --------------------------- Iterate conversation --------------------- #}\n{%- for m in messages -%}\n  {# --------------------------- USER ---------------------------------- #}\n  {%- if m.role == 'user' -%}\n    {%- set ns.is_last_user = true -%}\n    {%- set txt = m.content if m.content is string else m.content | selectattr('type','equalto','text') | map(attribute='text') | join('') -%}\n    {{- \"<｜User｜>\" -}}{{- txt -}}{{- \"<｜Assistant｜>\" -}}\n  {%- endif -%}\n\n  {# --------------------------- ASSISTANT with TOOL CALLS -------------- #}\n  {%- if m.role == 'assistant' and m.tool_calls is defined and m.tool_calls -%}\n    {%- set ns.is_last_user = false -%}\n    {%- set lead = m.content is string and m.content|trim or (m.content and m.content | selectattr('type','equalto','text') | map(attribute='text') | join('')) or '' -%}\n    {{- lead -}}{{- \"<｜tool▁calls▁begin｜>\" -}}\n    {%- for call in m.tool_calls -%}\n      {{- \"<｜tool▁call▁begin｜>\" -}}{{- call.type -}}{{- \"<｜tool▁sep｜>\" -}}{{- call.function.name -}}\n      {{- \"\n```json\n\" -}}{{- call.function.arguments -}}{{- \"\n```\" -}}{{- \"<｜tool▁call▁end｜>\" -}}\n      {%- if not loop.last -%}{{- \"\n\" -}}{%- endif -%}\n    {%- endfor -%}\n    {{- \"<｜tool▁calls▁end｜>\" -}}{{- \"<｜end▁of▁sentence｜>\" -}}\n  {%- endif -%}\n\n  {# --------------------------- ASSISTANT plain ------------------------ #}\n  {%- if m.role == 'assistant' and (m.tool_calls is not defined or not m.tool_calls) -%}\n    {%- set ns.is_last_user = false -%}\n    {%- set txt = m.content if m.content is string else m.content | selectattr('type','equalto','text') | map(attribute='text') | join('') -%}\n    {{- txt -}}{{- \"<｜end▁of▁sentence｜>\" -}}\n  {%- endif -%}\n\n  {# --------------------------- TOOL output ---------------------------- #}\n  {%- if m.role == 'tool' -%}\n    {%- set ns.is_last_user = false -%}\n    {%- set out_txt = m.content if m.content is string else m.content | selectattr('type','equalto','text') | map(attribute='text') | join('') -%}\n    {%- if not ns.outputs_open -%}\n      {{- \"<｜tool▁outputs▁begin｜>\" -}}\n      {%- set ns.outputs_open = true -%}\n    {%- endif -%}\n    {{- \"<｜tool▁output▁begin｜>\" -}}{{- out_txt -}}{{- \"<｜tool▁output▁end｜>\" -}}\n    {%- if loop.nextitem is defined and loop.nextitem.role == 'tool' -%}\n      {{- \"\n\" -}}\n    {%- endif -%}\n    {%- if loop.nextitem is undefined or loop.nextitem.role != 'tool' -%}\n      {{- \"<｜tool▁outputs▁end｜>\" -}}\n      {%- set ns.outputs_open = false -%}\n    {%- endif -%}\n  {%- endif -%}\n{%- endfor -%}\n\n{%- if ns.outputs_open -%}\n  {{- \"<｜tool▁outputs▁end｜>\" -}}\n{%- endif -%}\n\n{%- if add_generation_prompt and not ns.is_last_user -%}\n  {{- \"<｜Assistant｜>\" -}}\n{%- endif -%}\n\n{%- if add_generation_prompt and enable_thinking -%}\n  {{- '<think>\\n' -}}\n{%- endif -%}"
+  },
+  "cardData": {
+   "license": "mit",
+   "library_name": "transformers",
+   "base_model": [
+    "deepseek-ai/DeepSeek-V3-Base"
+   ]
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForCausalLM",
+   "pipeline_tag": "text-generation",
+   "processor": "AutoTokenizer"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "configuration_deepseek.py"
+   },
+   {
+    "rfilename": "images/deep-cogito-logo.png"
+   },
+   {
+    "rfilename": "images/v2-1-benchmark-1.png"
+   },
+   {
+    "rfilename": "images/v2-1-benchmark-2.png"
+   },
+   {
+    "rfilename": "images/v2-1-benchmark-3.png"
+   },
+   {
+    "rfilename": "model-00001-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00015-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00016-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00017-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00018-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00019-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00020-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00021-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00022-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00023-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00024-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00025-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00026-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00027-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00028-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00029-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00030-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00031-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00032-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00033-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00034-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00035-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00036-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00037-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00038-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00039-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00040-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00041-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00042-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00043-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00044-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00045-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00046-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00047-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00048-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00049-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00050-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00051-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00052-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00053-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00054-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00055-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00056-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00057-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00058-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00059-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00060-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00061-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00062-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00063-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00064-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00065-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00066-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00067-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00068-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00069-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00070-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00071-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00072-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00073-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00074-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00075-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00076-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00077-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00078-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00079-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00080-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00081-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00082-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00083-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00084-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00085-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00086-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00087-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00088-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00089-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00090-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00091-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00092-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00093-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00094-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00095-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00096-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00097-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00098-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00099-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00100-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00101-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00102-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00103-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00104-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00105-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00106-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00107-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00108-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00109-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00110-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00111-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00112-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00113-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00114-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00115-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00116-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00117-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00118-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00119-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00120-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00121-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00122-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00123-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00124-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00125-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00126-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00127-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00128-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00129-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00130-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00131-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00132-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00133-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00134-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00135-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00136-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00137-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00138-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00139-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00140-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00141-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00142-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00143-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00144-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00145-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00146-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00147-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00148-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00149-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00150-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00151-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00152-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00153-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00154-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00155-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00156-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00157-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00158-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00159-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00160-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00161-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00162-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00163-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00164-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00165-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00166-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00167-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00168-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00169-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00170-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00171-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00172-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00173-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00174-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00175-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00176-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00177-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00178-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00179-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00180-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00181-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00182-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00183-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00184-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00185-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00186-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00187-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00188-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00189-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00190-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00191-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00192-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00193-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00194-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00195-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00196-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00197-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00198-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00199-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00200-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00201-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00202-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00203-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00204-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00205-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00206-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00207-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00208-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00209-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00210-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00211-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00212-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00213-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00214-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00215-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00216-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00217-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00218-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00219-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00220-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00221-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00222-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00223-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00224-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00225-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00226-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00227-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00228-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00229-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00230-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00231-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00232-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00233-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00234-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00235-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00236-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00237-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00238-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00239-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00240-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00241-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00242-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00243-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00244-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00245-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00246-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00247-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00248-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00249-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00250-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00251-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00252-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00253-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00254-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00255-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00256-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00257-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00258-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00259-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00260-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00261-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00262-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00263-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00264-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00265-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00266-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00267-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00268-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00269-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model-00270-of-00270.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "modeling_deepseek.py"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [
+   "FECUOY/Autogen-multy-agent",
+   "1yahoo/Autogen-multy-agent"
+  ],
+  "createdAt": "2025-10-24T22:18:16.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 671019752960
+   },
+   "total": 671019752960
+  },
+  "usedStorage": 1342045947616
+ },
+ "model_config": {
+  "architectures": [
+   "DeepseekV3ForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "auto_map": {
+   "AutoConfig": "configuration_deepseek.DeepseekV3Config",
+   "AutoModel": "modeling_deepseek.DeepseekV3Model",
+   "AutoModelForCausalLM": "modeling_deepseek.DeepseekV3ForCausalLM"
+  },
+  "aux_loss_alpha": 0.001,
+  "bos_token_id": 0,
+  "dtype": "bfloat16",
+  "eos_token_id": 1,
+  "ep_size": 1,
+  "first_k_dense_replace": 3,
+  "head_dim": 64,
+  "hidden_act": "silu",
+  "hidden_size": 7168,
+  "initializer_range": 0.02,
+  "intermediate_size": 18432,
+  "kv_lora_rank": 512,
+  "max_position_embeddings": 163840,
+  "model_type": "deepseek_v3",
+  "moe_intermediate_size": 2048,
+  "moe_layer_freq": 1,
+  "n_group": 8,
+  "n_routed_experts": 256,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 128,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 61,
+  "num_key_value_heads": 128,
+  "num_nextn_predict_layers": 1,
+  "pretraining_tp": 1,
+  "q_lora_rank": 1536,
+  "qk_head_dim": 192,
+  "qk_nope_head_dim": 128,
+  "qk_rope_head_dim": 64,
+  "rms_norm_eps": 1e-06,
+  "rope_interleave": true,
+  "rope_scaling": {
+   "beta_fast": 32.0,
+   "beta_slow": 1.0,
+   "factor": 40.0,
+   "mscale": 1.0,
+   "mscale_all_dim": 1.0,
+   "original_max_position_embeddings": 4096,
+   "rope_type": "yarn",
+   "type": "yarn"
+  },
+  "rope_theta": 10000,
+  "routed_scaling_factor": 2.5,
+  "scoring_func": "sigmoid",
+  "seq_aux": true,
+  "tie_word_embeddings": false,
+  "topk_group": 4,
+  "topk_method": "noaux_tc",
+  "transformers_version": "4.57.1",
+  "use_cache": true,
+  "v_head_dim": 128,
+  "vocab_size": 128815
+ }
+}

@@ -1,0 +1,240 @@
+{
+ "repo": "trillionlabs/Tri-21B-Think",
+ "url": "https://huggingface.co/trillionlabs/Tri-21B-Think",
+ "revision": "301724769f88cd71f0207f44d021178217a77ad6",
+ "card_metadata": {
+  "license": "apache-2.0",
+  "tags": [],
+  "language": [],
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "base_model": []
+ },
+ "hub_metadata": {
+  "_id": "699583627c8207785f8ec7e6",
+  "id": "trillionlabs/Tri-21B-Think",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "trillion",
+   "text-generation",
+   "finetuned",
+   "chat",
+   "reasoning",
+   "conversational",
+   "custom_code",
+   "en",
+   "ko",
+   "ja",
+   "base_model:trillionlabs/Tri-21B",
+   "base_model:finetune:trillionlabs/Tri-21B",
+   "license:apache-2.0",
+   "region:us"
+  ],
+  "downloads": 342,
+  "likes": 29,
+  "modelId": "trillionlabs/Tri-21B-Think",
+  "author": "trillionlabs",
+  "sha": "301724769f88cd71f0207f44d021178217a77ad6",
+  "lastModified": "2026-02-19T12:55:43.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "TrillionForCausalLM"
+   ],
+   "auto_map": {
+    "AutoConfig": "configuration_trillion.TrillionConfig",
+    "AutoModelForCausalLM": "modeling_trillion.TrillionForCausalLM",
+    "AutoModel": "modeling_trillion.TrillionModel"
+   },
+   "model_type": "trillion",
+   "tokenizer_config": {
+    "bos_token": "<|begin_of_text|>",
+    "eos_token": "<|im_end|>",
+    "pad_token": "<|pad_token|>"
+   },
+   "chat_template_jinja": "{% if not add_generation_prompt is defined %}{% set add_generation_prompt = false %}{% endif %}\n{%- if tools %}\n    {{- '<|im_start|>system\\n' }}\n    {%- if messages[0]['role'] == 'system' %}\n        {{- messages[0]['content'] }}\n    {%- else %}\n        {{- 'You are Trillion, created by TrillionLabs. You are a helpful assistant.' }}\n    {%- endif %}\n    {{- \"\\n\\n# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>\" }}\n    {%- for tool in tools %}\n        {{- \"\\n\" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- '\\n</tools>\\n\\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\\n<tool_call>\\n{\"name\": <function-name>, \"arguments\": <args-json-object>}\\n</tool_call><|im_end|>\\n' }}\n{%- else %}\n    {%- if messages[0]['role'] == 'system' %}\n        {{- '<|im_start|>system\\n' + messages[0]['content'] + '<|im_end|>\\n' }}\n    {%- else %}\n        {{- '<|im_start|>system\\nYou are Trillion, created by TrillionLabs. You are a helpful assistant.<|im_end|>\\n' }}\n    {%- endif %}\n{%- endif %}\n{%- for message in messages %}\n    {%- if (message.role == \"user\") or (message.role == \"system\" and not loop.first) %}\n        {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>' + '\\n' }}\n    {%- elif message.role == \"assistant\" %}\n        {{- '<|im_start|>' + message.role }}\n        {%- if message.content %}\n            {{- '\\n' + message.content }}\n        {%- endif %}\n        {%- if message.tool_calls %}\n            {%- for tool_call in message.tool_calls %}\n                {%- if tool_call.function is defined %}\n                    {%- set tool_call = tool_call.function %}\n                {%- endif %}\n                {{- '\\n<tool_call>\\n' }}\n                {{- '{\"name\": \"' + tool_call.name + '\", \"arguments\": ' + tool_call.arguments | tojson + '}' -}}\n                {{- '\\n</tool_call>' }}\n            {%- endfor %}\n        {%- endif %}\n        {{- '<|im_end|>\\n' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if (loop.index0 == 0) or (messages[loop.index0 - 1].role != \"tool\") %}\n            {{- '<|im_start|>tool' }}\n        {%- endif %}\n        {{- '\\n' + message.content }}\n        {%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}\n            {{- '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|im_start|>assistant\\n' }}\n{%- endif %}"
+  },
+  "cardData": {
+   "license": "apache-2.0",
+   "tags": [
+    "finetuned",
+    "chat",
+    "reasoning"
+   ],
+   "language": [
+    "en",
+    "ko",
+    "ja"
+   ],
+   "pipeline_tag": "text-generation",
+   "library_name": "transformers",
+   "base_model": [
+    "trillionlabs/Tri-21B"
+   ]
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForCausalLM",
+   "custom_class": "modeling_trillion.TrillionForCausalLM",
+   "pipeline_tag": "text-generation"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "configuration_trillion.py"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00001-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00015-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00016-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00017-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00018-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model-00019-of-00019.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "modeling_trillion.py"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [],
+  "createdAt": "2026-02-18T09:16:18.000Z",
+  "safetensors": {
+   "parameters": {
+    "F32": 20725519360
+   },
+   "total": 20725519360
+  },
+  "usedStorage": 82925688112
+ },
+ "model_config": {
+  "architectures": [
+   "TrillionForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "attn_scale": 1.0,
+  "attn_temperature_tuning": false,
+  "auto_map": {
+   "AutoConfig": "configuration_trillion.TrillionConfig",
+   "AutoModelForCausalLM": "modeling_trillion.TrillionForCausalLM",
+   "AutoModel": "modeling_trillion.TrillionModel"
+  },
+  "bos_token_id": 123964,
+  "dtype": "float32",
+  "eos_token_id": 123965,
+  "floor_scale": 1.0,
+  "head_dim": 160,
+  "hidden_act": "silu",
+  "hidden_size": 5120,
+  "initializer_range": 0.02,
+  "intermediate_size": 27392,
+  "max_position_embeddings": 32768,
+  "mlp_bias": false,
+  "model_type": "trillion",
+  "num_attention_heads": 32,
+  "num_hidden_layers": 40,
+  "num_key_value_heads": 8,
+  "pad_token_id": 124415,
+  "pretraining_tp": 1,
+  "rms_norm_eps": 1e-05,
+  "rope_scaling": null,
+  "rope_theta": 1000000.0,
+  "tie_word_embeddings": false,
+  "transformers_version": "4.57.3",
+  "use_cache": true,
+  "vocab_size": 124416
+ }
+}

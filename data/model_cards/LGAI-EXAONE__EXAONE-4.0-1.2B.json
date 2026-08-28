@@ -1,0 +1,218 @@
+{
+ "repo": "LGAI-EXAONE/EXAONE-4.0-1.2B",
+ "url": "https://huggingface.co/LGAI-EXAONE/EXAONE-4.0-1.2B",
+ "revision": "3abf2810673c7c0778df64a73c2d52eab32d91c4",
+ "card_metadata": {
+  "license": "other",
+  "license_name": "exaone",
+  "license_link": "LICENSE",
+  "language": [],
+  "tags": [],
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers"
+ },
+ "hub_metadata": {
+  "_id": "6870b708a09cb0bdf3898657",
+  "id": "LGAI-EXAONE/EXAONE-4.0-1.2B",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "exaone4",
+   "text-generation",
+   "lg-ai",
+   "exaone",
+   "exaone-4.0",
+   "conversational",
+   "en",
+   "ko",
+   "es",
+   "arxiv:2507.11407",
+   "license:other",
+   "endpoints_compatible",
+   "region:us"
+  ],
+  "downloads": 15761,
+  "likes": 190,
+  "modelId": "LGAI-EXAONE/EXAONE-4.0-1.2B",
+  "author": "LGAI-EXAONE",
+  "sha": "3abf2810673c7c0778df64a73c2d52eab32d91c4",
+  "lastModified": "2025-08-04T02:19:35.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "Exaone4ForCausalLM"
+   ],
+   "model_type": "exaone4",
+   "tokenizer_config": {
+    "bos_token": "[BOS]",
+    "eos_token": "[|endofturn|]",
+    "pad_token": "[PAD]",
+    "unk_token": "[UNK]"
+   },
+   "chat_template_jinja": "{%- if not skip_think is defined %}\n  {%- set skip_think = true %}\n{%- endif %}\n\n{%- set role_indicators = {\n    'user': '[|user|]\\n',\n    'assistant': '[|assistant|]\\n',\n    'system': '[|system|]\\n',\n    'tool': '[|tool|]\\n'\n} %}\n{%- set end_of_turn = '[|endofturn|]\\n' %}\n\n\n{%- macro available_tools(tools) %}\n    {{- \"# Available Tools\" }}\n    {{- \"\\nYou can use none, one, or multiple of the following tools by calling them as functions to help with the user’s query.\" }}\n    {{- \"\\nHere are the tools available to you in JSON format within <tool> and </tool> tags:\\n\" }}\n    {%- for tool in tools %}\n        {{- \"<tool>\" }}\n        {{- tool | tojson(ensure_ascii=False) | safe }}\n        {{- \"</tool>\\n\" }}\n    {%- endfor %}\n\n    {{- \"\\nFor each function call you want to make, return a JSON object with function name and arguments within <tool_call> and </tool_call> tags, like:\" }}\n    {{- \"\\n<tool_call>{\\\"name\\\": function_1_name, \\\"arguments\\\": {argument_1_name: argument_1_value, argument_2_name: argument_2_value}}</tool_call>\" }}\n    {{- \"\\n<tool_call>{\\\"name\\\": function_2_name, \\\"arguments\\\": {...}}</tool_call>\\n...\" }}\n    {{- \"\\nNote that if no argument name is specified for a tool, you can just print the argument value directly, without the argument name or JSON formatting.\" }}\n{%- endmacro %}\n\n\n{%- set ns = namespace(last_query_index = messages|length - 1) %}\n{%- for message in messages %}\n    {%- if message.role == \"user\" and message.content is string %}\n        {%- set ns.last_query_index = loop.index0 -%}\n    {%- endif %}\n{%- endfor %}\n\n{%- for i in range(messages | length) %}\n    {%- set msg = messages[i] %}\n    {%- set role = msg.role %}\n    {%- if role not in role_indicators %}\n        {{- raise_exception('Unknown role: ' ~ role) }}\n    {%- endif %}\n    \n    {%- if i == 0 %}\n        {%- if role == 'system' %}\n            {{- role_indicators['system'] }}\n            {{- msg.content }}\n            {%- if tools is defined and tools %}\n                {{- \"\\n\\n\" }}{{- available_tools(tools) }}\n            {%- endif %}\n            {{- end_of_turn -}}\n            {%- continue %}\n        {%- elif tools is defined and tools %}            \n            {{- role_indicators['system'] }}\n            {{- available_tools(tools) }}\n            {{- end_of_turn -}}            \n        {%- endif %}\n    {%- endif %}\n\n    {%- if role == 'assistant' %}\n        {{- role_indicators['assistant'] }}\n\n        {%- if msg.content %}        \n            {%- if \"</think>\" in msg.content %}\n                {%- set content = msg.content.split('</think>')[-1].strip() %}\n                {%- set reasoning_content = msg.content.split('</think>')[0].strip() %}\n                {%- if reasoning_content.startswith(\"<think>\") %}\n                    {%- set reasoning_content = reasoning_content[9:].strip() %}\n                {%- endif %}\n            {%- else %}\n                {%- set content = msg.content %}\n            {%- endif %}\n\n            {%- if msg.reasoning_content %}\n                {%- set reasoning_content = msg.reasoning_content %}\n            {%- endif %}\n\n            {%- if (not skip_think and loop.last) and reasoning_content is defined %}\n                {{- \"<think>\\n\" }}\n                {{- reasoning_content}}\n                {{- \"\\n</think>\\n\\n\" }}\n            {%- else %}\n                {{- \"<think>\\n\\n</think>\\n\\n\" }}\n            {%- endif %}\n            {{- content }}\n        {%- endif %}\n\n        {%- if msg.tool_calls %}\n            {%- if msg.content %}\n                {{- \"\\n\" }}\n            {%- else %}\n                {{- \"<think>\\n\\n</think>\\n\\n\" }}\n            {%- endif %}\n            {%- for tool_call in msg.tool_calls %}\n                {%- if tool_call.function is defined %}\n                    {%- set tool_call = tool_call.function %}\n                {%- endif %}\n\n                {%- if tool_call.arguments is defined %}\n                    {%- set arguments = tool_call.arguments %}\n                {%- elif tool_call.parameters is defined %}\n                    {%- set arguments = tool_call.parameters %}\n                {%- else %}\n                    {{- raise_exception('arguments or parameters are mandatory: ' ~ tool_call) }}\n                {%- endif %}\n\n                {{- \"<tool_call>\" }}{\"name\": \"{{- tool_call.name }}\", \"arguments\": {{ arguments | tojson(ensure_ascii=False) | safe }}}{{- \"</tool_call>\" }}\n\n                {%- if not loop.last %}\n                    {{- \"\\n\" }}\n                {%- endif %}\n\n            {%- endfor %}\n        {%- endif %}\n        {{- end_of_turn -}}\n\n    {%- elif role == \"tool\" %}\n        {%- if i == 0 or messages[i - 1].role != \"tool\" %}\n            {{- role_indicators['tool'] }}\n        {%- endif %}\n        {%- if msg.content is defined %}            \n            {{- \"<tool_result>\" }}{\"result\": {{ msg.content | tojson(ensure_ascii=False) | safe }}}{{- \"</tool_result>\" }}            \n        {%- endif %}\n        {%- if loop.last or messages[i + 1].role != \"tool\" %}\n            {{- end_of_turn -}}\n        {%- else %}\n            {{- \"\\n\" }}\n        {%- endif %}\n\n    {%- else %}\n        {{- role_indicators[role] }}\n        {{- msg.content }}\n        {{- end_of_turn -}}\n    {%- endif %}\n{% endfor %}\n\n\n{%- if add_generation_prompt %}\n    {{- role_indicators['assistant'] }}\n    {%- if enable_thinking is defined and enable_thinking is true %}\n        {{- \"<think>\\n\" }}\n    {%- else %}\n        {{- \"<think>\\n\\n</think>\\n\\n\" }}\n    {%- endif %}\n{%- endif %}"
+  },
+  "cardData": {
+   "license": "other",
+   "license_name": "exaone",
+   "license_link": "LICENSE",
+   "language": [
+    "en",
+    "ko",
+    "es"
+   ],
+   "tags": [
+    "lg-ai",
+    "exaone",
+    "exaone-4.0"
+   ],
+   "pipeline_tag": "text-generation",
+   "library_name": "transformers"
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForCausalLM",
+   "pipeline_tag": "text-generation",
+   "processor": "AutoTokenizer"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "LICENSE"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "assets/EXAONE_Symbol+BI_3d.png"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "merges.txt"
+   },
+   {
+    "rfilename": "model.safetensors"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   },
+   {
+    "rfilename": "vocab.json"
+   }
+  ],
+  "spaces": [
+   "ykvns/testonly_exaone4.0-1.2B",
+   "amis5895/exaone-finetuning",
+   "paddacoco/exaone-llm",
+   "HKhangg/exaone-korean-chatbot"
+  ],
+  "createdAt": "2025-07-11T07:02:32.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 1279391488
+   },
+   "total": 1279391488
+  },
+  "usedStorage": 2559070372
+ },
+ "model_config": {
+  "architectures": [
+   "Exaone4ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 1,
+  "eos_token_id": 361,
+  "head_dim": 64,
+  "hidden_act": "silu",
+  "hidden_size": 2048,
+  "initializer_range": 0.02,
+  "intermediate_size": 4096,
+  "layer_types": [
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention",
+   "full_attention"
+  ],
+  "max_position_embeddings": 65536,
+  "model_type": "exaone4",
+  "num_attention_heads": 32,
+  "num_hidden_layers": 30,
+  "num_key_value_heads": 8,
+  "pad_token_id": 0,
+  "rms_norm_eps": 1e-05,
+  "rope_scaling": {
+   "factor": 16.0,
+   "high_freq_factor": 4.0,
+   "low_freq_factor": 1.0,
+   "original_max_position_embeddings": 8192,
+   "rope_type": "llama3"
+  },
+  "rope_theta": 1000000.0,
+  "sliding_window": null,
+  "sliding_window_pattern": null,
+  "tie_word_embeddings": true,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.54.0",
+  "use_cache": true,
+  "vocab_size": 102400
+ }
+}

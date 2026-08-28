@@ -1,0 +1,299 @@
+{
+ "repo": "inclusionAI/Ling-3.0-tiny",
+ "url": "https://huggingface.co/inclusionAI/Ling-3.0-tiny",
+ "revision": "b61f4338de3e68ffc9c0bc1ed5e902981a4a929e",
+ "card_metadata": {
+  "license": "mit",
+  "pipeline_tag": "text-generation"
+ },
+ "hub_metadata": {
+  "_id": "6a793af67e4e34d640220071",
+  "id": "inclusionAI/Ling-3.0-tiny",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "tags": [
+   "safetensors",
+   "bailing_hybrid",
+   "text-generation",
+   "conversational",
+   "custom_code",
+   "license:mit",
+   "region:us"
+  ],
+  "downloads": 17322,
+  "likes": 373,
+  "modelId": "inclusionAI/Ling-3.0-tiny",
+  "author": "inclusionAI",
+  "sha": "b61f4338de3e68ffc9c0bc1ed5e902981a4a929e",
+  "lastModified": "2026-08-19T10:53:14.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "BailingMoeV3ForCausalLM"
+   ],
+   "auto_map": {
+    "AutoConfig": "configuration_bailing_moe_v3.BailingMoeV3Config",
+    "AutoModel": "modeling_bailing_moe_v3.BailingMoeV3Model",
+    "AutoModelForCausalLM": "modeling_bailing_moe_v3.BailingMoeV3ForCausalLM"
+   },
+   "num_experts": 128,
+   "num_experts_per_tok": 8,
+   "model_type": "bailing_hybrid",
+   "tokenizer_config": {
+    "bos_token": "<|startoftext|>",
+    "cls_token": "[CLS]",
+    "eos_token": "<|role_end|>",
+    "pad_token": "<|endoftext|>"
+   },
+   "chat_template_jinja": "{#- Bailing V3 chat template -#}\n{#- Supports: thinking option, tool calling -#}\n\n{#- ==================== thinking option normalization ==================== -#}\n{%- if enable_thinking is defined %}\n{%- if enable_thinking %}\n{%- set thinking_option = 'on' %}\n{%- else %}\n{%- set thinking_option = 'off' %}\n{%- endif %}\n{%- elif thinking_option is not defined %}\n{%- set thinking_option = 'on' %}\n{%- endif %}\n\n{#- ==================== preserved thinking  ==================== -#}\n{% set preserved_thinking = true %}\n\n{#- ==================== system message ==================== -#}\n{{- '<role>SYSTEM</role>' }}\n{%- if tools %}\n    {%- if messages[0].role == 'system' %}\n        {{- messages[0].content + '\\n' }}\n    {%- endif %}\n    {{- \"# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>\" }}\n    {%- for tool in tools %}\n        {{- \"\\n\" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- \"\\n</tools>\\n\\nIf none of the functions can be used, point it out. If the given question lacks the parameters required by the function, also point it out.\\nIf you need to use a function, for each function call, output the function name and arguments within the following XML format:\\n<tool_call>{function-name}\\n<arg_key>{arg-key-1}</arg_key>\\n<arg_value>{arg-value-1}</arg_value>\\n<arg_key>{arg-key-2}</arg_key>\\n<arg_value>{arg-value-2}</arg_value>\\n...\\n</tool_call>\\n\" }}\n    {%- if messages[0].role == 'system' and messages[0].content is string and ('detailed thinking on' in messages[0].content or 'detailed thinking off' in messages[0].content) %}\n        {{- '<|role_end|>' }}\n    {%- else %}\n        {{- 'detailed thinking ' + thinking_option + '<|role_end|>' }}\n    {%- endif %}\n{%- else %}\n    {%- if messages[0].role == 'system' %}\n        {%- if 'detailed thinking on' in messages[0].content or 'detailed thinking off' in messages[0].content %}\n            {{- messages[0].content + '<|role_end|>' }}\n        {%- else %}\n            {{- messages[0].content + '\\n' }}\n            {{- 'detailed thinking ' + thinking_option + '<|role_end|>' }}\n        {%- endif %}\n    {% else %}\n        {{- 'detailed thinking ' + thinking_option + '<|role_end|>' }}\n    {%- endif %}\n{%- endif %}\n{%- set ns = namespace(multi_step_tool=true, last_query_index=messages|length - 1) %}\n{%- for message in messages[::-1] %}\n    {%- set index = (messages|length - 1) - loop.index0 %}\n    {%- if ns.multi_step_tool and message.role == \"user\" and message.content is string and not(message.content.startswith('<tool_response>') and message.content.endswith('</tool_response>')) %}\n        {%- set ns.multi_step_tool = false %}\n        {%- set ns.last_query_index = index %}\n    {%- endif %}\n{%- endfor %}\n{%- for message in messages %}\n    {%- if message.content is string %}\n        {%- set content = message.content %}\n    {%- else %}\n        {%- set content = '' %}\n    {%- endif %}\n    {%- if message.role == \"user\" %}\n        {{- '<role>HUMAN</role>' + message.content + '<|role_end|>' }}\n    {%- elif message.role == \"system\" and not loop.first %}\n        {{- '<role>SYSTEM</role>' + message.content + '<|role_end|>' }}\n    {%- elif message.role == \"assistant\" %}\n        {%- set reasoning_content = '' %}\n        {%- if message.reasoning_content is string and message.reasoning_content != '' %}\n            {%- set reasoning_content = message.reasoning_content %}\n        {%- else %}\n            {%- if '</think>' in content %}\n                {%- set reasoning_content = content.split('</think>')[0].rstrip('\\n').split('<think>')[-1].lstrip('\\n') %}\n                {%- set content = content.split('</think>')[-1].lstrip('\\n') %}\n            {%- endif %}\n        {%- endif %}\n        {%- if preserved_thinking or loop.index0 > ns.last_query_index %}\n            {%- if reasoning_content != '' %}\n                {{- '<role>ASSISTANT</role>' + '\\n<think>' + reasoning_content.strip('\\n') + '</think>' + content.lstrip('\\n') }}\n            {%- else %}\n                {{- '<role>ASSISTANT</role>\\n<think></think>' + content }}\n            {%- endif %}\n        {%- else %}\n            {{- '<role>ASSISTANT</role>\\n<think></think>' + content }}\n        {%- endif %}\n        {%- if message.tool_calls %}\n            {%- for tool_call in message.tool_calls %}\n                {%- if (loop.first and content) or (not loop.first) %}\n                    {{- '\\n' }}\n                {%- endif %}\n                {%- set tc = tool_call %}\n                {%- if tool_call.function %}\n                    {%- set tc = tool_call.function %}\n                {%- endif %}\n                {{- '<tool_call>' + tc.name }}\n                {% set _args = tc.arguments %}\n                {%- for k, v in _args.items() %}\n                    {{- '<arg_key>' + k + '</arg_key>' }}\n                    {{- '\\n<arg_value>' }}\n                    {%- if v is string %}\n                        {{- v }}\n                    {%- else %}\n                        {{- v | tojson(ensure_ascii=False) }}\n                    {%- endif %}\n                    {{- '</arg_value>' }}\n                {%- endfor %}\n                {{- '\\n</tool_call>' }}\n            {%- endfor %}\n        {%- endif %}\n        {{- '<|role_end|>' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if loop.first or (messages[loop.index0 - 1].role != \"tool\") %}\n            {{- '<role>OBSERVATION</role>' }}\n        {%- endif %}\n        {{- '\\n<tool_response>\\n' }}\n        {{- content }}\n        {{- '\\n</tool_response>' }}\n        {%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}\n            {{- '<|role_end|>' }}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n\n{#- ==================== generation prompt ==================== -#}\n{%- if add_generation_prompt %}\n    {{- '<role>ASSISTANT</role>' }}\n    {%- if thinking_option == 'on' %}\n        {{- '\\n<think>' }}\n    {%- elif thinking_option == 'off' %}\n        {{- '\\n<think></think>' }}\n    {%- endif %}\n{%- endif %}"
+  },
+  "cardData": {
+   "license": "mit",
+   "pipeline_tag": "text-generation"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "configuration_bailing_moe_v3.py"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00000-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00001-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00015-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00016-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00017-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00018-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00019-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00020-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00021-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00022-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00023-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00024-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00025-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00026-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00027-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00028-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00029-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00030-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model-00031-of-00032.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "modeling_bailing_moe_v3.py"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [
+   "bep40/Space-Mutiverse-Control",
+   "AlanGiglio/gaia-final-agent",
+   "Zididragon/qatar-gov-chat"
+  ],
+  "createdAt": "2026-08-10T02:44:06.000Z",
+  "safetensors": {
+   "parameters": {
+    "F32": 40096,
+    "BF16": 7893352704
+   },
+   "total": 7893392800
+  },
+  "usedStorage": 15800198148
+ },
+ "model_config": {
+  "architectures": [
+   "BailingMoeV3ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "auto_map": {
+   "AutoConfig": "configuration_bailing_moe_v3.BailingMoeV3Config",
+   "AutoModel": "modeling_bailing_moe_v3.BailingMoeV3Model",
+   "AutoModelForCausalLM": "modeling_bailing_moe_v3.BailingMoeV3ForCausalLM"
+  },
+  "embedding_dropout": 0.0,
+  "eos_token_id": 156895,
+  "expert_swiglu_limit_list": null,
+  "first_k_dense_replace": 1,
+  "gated_attention_proj_granularity_type": "head_wise",
+  "group_norm_size": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 1536,
+  "initializer_range": 0.02,
+  "intermediate_size": 4608,
+  "kda_lower_bound": -5,
+  "kda_safe_gate": true,
+  "kv_lora_rank": 512,
+  "layer_group_size": 4,
+  "linear_silu": true,
+  "max_position_embeddings": 131072,
+  "max_window_layers": 20,
+  "moe_intermediate_size": 512,
+  "moe_router_enable_expert_bias": true,
+  "moe_shared_expert_intermediate_size": 512,
+  "mtp_loss_scaling_factor": 0,
+  "mtp_use_kda": false,
+  "n_group": 8,
+  "no_kda_lora": true,
+  "norm_topk_prob": true,
+  "num_attention_heads": 16,
+  "num_experts": 128,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 24,
+  "num_key_value_heads": 16,
+  "num_kv_heads_for_linear_attn": 0,
+  "num_nextn_predict_layers": 0,
+  "num_shared_experts": 1,
+  "output_dropout": 0.0,
+  "output_router_logits": false,
+  "pad_token_id": 156892,
+  "partial_rotary_factor": 0.5,
+  "q_lora_rank": 256,
+  "qk_head_dim": 192,
+  "qk_nope_head_dim": 128,
+  "qk_rope_head_dim": 64,
+  "rms_norm_eps": 1e-06,
+  "rope_interleave": true,
+  "rope_scaling": null,
+  "rope_theta": 6000000,
+  "rotary_dim": 64,
+  "routed_scaling_factor": 2.5,
+  "router_dtype": "fp32",
+  "scale_router_input": false,
+  "score_function": "sigmoid",
+  "scoring_func": "sigmoid",
+  "seq_aux": true,
+  "share_expert_swiglu_limit_list": null,
+  "short_conv_kernel_size": 4,
+  "tie_word_embeddings": false,
+  "topk_group": 4,
+  "topk_method": "noaux_tc",
+  "transformers_version": "4.45.0",
+  "up_proj_norm": false,
+  "use_bias": false,
+  "use_cache": true,
+  "use_kda_lora": false,
+  "use_mla_nope": false,
+  "use_nGPT": false,
+  "use_qk_norm": true,
+  "use_qkv_bias": false,
+  "v_head_dim": 128,
+  "value_norm": false,
+  "vocab_size": 157184,
+  "model_type": "bailing_hybrid",
+  "torch_dtype": "bfloat16"
+ }
+}

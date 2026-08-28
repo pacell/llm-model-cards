@@ -1,0 +1,241 @@
+{
+ "repo": "ibm-granite/granite-4.2-30b",
+ "url": "https://huggingface.co/ibm-granite/granite-4.2-30b",
+ "revision": "70fc514076785017d93087f3d8b0676426b6b355",
+ "card_metadata": {
+  "license": "apache-2.0",
+  "library_name": "transformers",
+  "pipeline_tag": "text-generation",
+  "language": "[en, de, es, fr, ja, pt, ar, cs, it, ko, nl, zh]",
+  "tags": "[granite, granite-4.2, reasoning, thinking, tool-calling, ibm]",
+  "base_model": "[ibm-granite/granite-4.1-30b-base]"
+ },
+ "hub_metadata": {
+  "_id": "6a7607fedf78dde1261b1d3b",
+  "id": "ibm-granite/granite-4.2-30b",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "granite",
+   "text-generation",
+   "granite-4.2",
+   "reasoning",
+   "thinking",
+   "tool-calling",
+   "ibm",
+   "conversational",
+   "en",
+   "de",
+   "es",
+   "fr",
+   "ja",
+   "pt",
+   "ar",
+   "cs",
+   "it",
+   "ko",
+   "nl",
+   "zh",
+   "base_model:ibm-granite/granite-4.1-30b-base",
+   "base_model:finetune:ibm-granite/granite-4.1-30b-base",
+   "license:apache-2.0",
+   "endpoints_compatible",
+   "region:us"
+  ],
+  "downloads": 1791,
+  "likes": 83,
+  "modelId": "ibm-granite/granite-4.2-30b",
+  "author": "ibm-granite",
+  "sha": "70fc514076785017d93087f3d8b0676426b6b355",
+  "lastModified": "2026-08-25T17:17:32.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "GraniteForCausalLM"
+   ],
+   "model_type": "granite",
+   "tokenizer_config": {
+    "bos_token": "<s>",
+    "eos_token": "<|im_end|>",
+    "pad_token": "<|im_end|>",
+    "unk_token": "<unk>"
+   },
+   "chat_template_jinja": "{%- macro tool_to_json(tool) -%}\n    {%- set ns_tool = namespace(first=true) -%}\n    {{- '{' -}}\n    {%- for k, v in tool.items() -%}\n        {%- if k != 'defer_loading' and k != 'strict' -%}\n            {%- if not ns_tool.first -%}{{- ', ' -}}{%- endif -%}\n            {%- set ns_tool.first = false -%}\n            {{- '\"' ~ k ~ '\": ' ~ (v | tojson(ensure_ascii=False)) -}}\n        {%- endif -%}\n    {%- endfor -%}\n    {{- '}' -}}\n{%- endmacro -%}\n{%- set enable_thinking = enable_thinking if enable_thinking is defined else True %}\n{%- set low_effort = low_effort if low_effort is defined else False %}\n{%- if reasoning_effort is defined and reasoning_effort is not none %}\n    {%- set low_effort = reasoning_effort == \"low\" %}\n{%- endif %}\n{%- set truncate_history_thinking = truncate_history_thinking if truncate_history_thinking is defined else True %}\n\n{%- set ns = namespace(last_user_idx = -1) %}\n{%- set loop_messages = messages %}\n{%- for m in loop_messages %}\n  {%- if m[\"role\"] == \"user\" %}\n    {%- set ns.last_user_idx = loop.index0 %}\n  {%- endif %}\n{%- endfor %}\n\n{%- if messages[0][\"role\"] == \"system\" %}\n    {%- set system_message = messages[0][\"content\"] %}\n    {%- set loop_messages = messages[1:] %}\n{%- else %}\n    {%- set system_message = \"\" %}\n    {%- set loop_messages = messages %}\n{%- endif %}\n{%- if not tools is defined %}\n    {%- set tools = [] %}\n{%- endif %}\n{# Recompute last_user_idx relative to loop_messages after handling system #}\n{%- set ns = namespace(last_user_idx = -1) %}\n{%- for m in loop_messages %}\n  {%- if m[\"role\"] == \"user\" %}\n    {%- set ns.last_user_idx = loop.index0 %}\n  {%- endif %}\n{%- endfor %}\n{%- if system_message is defined %}\n    {{- \"<|im_start|>system\\n\" + system_message }}\n{%- else %}\n    {%- if tools is iterable and tools | length > 0 %}\n        {{- \"<|im_start|>system\\n\" }}\n    {%- endif %}\n{%- endif %}\n{%- if tools is iterable and tools | length > 0 %}\n    {%- if system_message is defined and system_message | length > 0 %}\n        {{- \"\\n\\n\" }}\n    {%- endif %}\n    {{- \"# Tools\\n\\nYou have access to the following functions:\\n\\n\" }}\n    {{- \"<tools>\" }}\n    {%- for tool in tools %}\n        {%- if tool.function is defined %}\n            {%- set tool = tool.function %}\n        {%- endif %}\n        {%- if tool.defer_loading is not defined or not tool.defer_loading %}\n            {{- '\\n' ~ tool_to_json(tool) }}\n        {%- endif %}\n    {%- endfor %}\n    {{- \"\\n</tools>\" }}\n\n    {{- '\\n\\nIf you choose to call a function ONLY reply in the following format with NO suffix:\\n\\n<tool_call>\\n<function=example_function_name>\\n<parameter=example_parameter_1>\\nvalue_1\\n</parameter>\\n<parameter=example_parameter_2>\\nThis is the value for the second parameter\\nthat can span\\nmultiple lines\\n</parameter>\\n</function>\\n</tool_call>\\n\\n<IMPORTANT>\\nReminder:\\n- Function calls MUST follow the specified format: an inner <function=...></function> block must be nested within <tool_call></tool_call> XML tags\\n- Required parameters MUST be specified\\n- You may provide optional reasoning for your function call in natural language BEFORE the function call, but NOT after\\n- If there is no function call available, answer the question like normal with your current knowledge and do not tell the user about function calls\\n</IMPORTANT>' }}\n{%- endif %}\n\n\n{%- if system_message is defined %}\n    {{- '<|im_end|>\\n' }}\n{%- else %}\n    {%- if tools is iterable and tools | length > 0 %}\n        {{- '<|im_end|>\\n' }}\n    {%- endif %}\n{%- endif %}\n\n{%- for message in loop_messages %}\n    {%- if message.role == \"assistant\" %}\n        {# Add reasoning content in to content field for unified processing below. #}\n        {%- if message.reasoning_content is defined and message.reasoning_content is string and message.reasoning_content | trim | length > 0 %}\n            {%- set content = \"<think>\\n\" ~ message.reasoning_content ~ \"\\n</think>\\n\" ~ (message.content | default('', true)) %}\n        {%- else %}\n            {%- set content = message.content | default('', true) %}\n            {%- if content is string -%}\n                {# Allow downstream logic to to take care of broken thought, only handle coherent reasoning here. #}\n                {%- if '<think>' not in content and '</think>' not in content -%}\n                    {%- set content = \"<think></think>\" ~ content -%}\n                {%- endif -%}\n            {%- else -%}\n                {%- set content = content -%}\n            {%- endif -%}\n        {%- endif %}\n        {%- if message.tool_calls is defined and message.tool_calls is iterable and message.tool_calls | length > 0 %}\n            {# Assistant message has tool calls. #}\n            {{- '<|im_start|>assistant\\n' }}\n                {%- set include_content = not (truncate_history_thinking and loop.index0 < ns.last_user_idx) %}\n                {%- if content is string and content | trim | length > 0 %}\n                    {%- if include_content %}\n                        {{- (content | trim) ~ '\\n' -}}\n                    {%- else %}\n                        {%- set c = (content | string) %}\n                        {%- if '</think>' in c %}\n                            {# Keep only content after the last closing think. Also generation prompt causes this. #}\n                            {%- set c = c.split('</think>')[-1] %}\n                        {%- elif '<think>' in c %}\n                            {# If <think> was opened but never closed, drop the trailing think segment #}\n                            {%- set c = c.split('<think>')[0] %}\n                        {%- endif %}\n                        {%- set c = \"<think></think>\" ~ c | trim %}\n                        {%- if c | length > 0 %}\n                            {{- c ~ '\\n' -}}\n                        {%- endif %}\n                    {%- endif %}\n                {%- else %}\n                    {{- \"<think></think>\" -}}\n                {%- endif %}\n                {%- for tool_call in message.tool_calls %}\n                    {%- if tool_call.function is defined %}\n                        {%- set tool_call = tool_call.function %}\n                    {%- endif %}\n                    {{- '<tool_call>\\n<function=' ~ tool_call.name ~ '>\\n' -}}\n                        {%- if tool_call.arguments is defined %}\n                            {%- for args_name, args_value in tool_call.arguments|items %}\n                                {{- '<parameter=' ~ args_name ~ '>\\n' -}}\n                                    {%- set args_value = args_value | tojson | safe if args_value is mapping or (args_value is sequence and args_value is not string) else args_value | string %}\n                                {{- args_value ~ '\\n</parameter>\\n' -}}\n                            {%- endfor %}\n                        {%- endif %}\n                    {{- '</function>\\n</tool_call>\\n' -}}\n                {%- endfor %}\n                {{- '<|im_end|>\\n' }}\n        {%- else %}\n            {# Assistant message doesn't have tool calls. #}\n            {%- if not (truncate_history_thinking and loop.index0 < ns.last_user_idx) %}\n                {{- '<|im_start|>assistant\\n' ~ (content | default('', true) | string | trim) ~ '<|im_end|>\\n' }}\n            {%- else %}\n                {%- set c = (content | default('', true) | string) %}\n                {%- if '<think>' in c and '</think>' in c %}\n                    {%- set c = \"<think></think>\" ~ c.split('</think>')[-1] %}\n                {%- endif %}\n                {%- set c = c | trim %}\n                {%- if c | length > 0 %}\n                    {{- '<|im_start|>assistant\\n' ~ c ~ '<|im_end|>\\n' }}\n                {%- else %}\n                    {{- '<|im_start|>assistant\\n<|im_end|>\\n' }}\n                {%- endif %}\n            {%- endif %}\n        {%- endif %}\n    {%- elif message.role == \"user\" or message.role == \"system\" %}\n        {{- '<|im_start|>' + message.role + '\\n' }}\n        {%- set content = message.content | string %}\n        {%- if message.role == \"user\" and loop.index0 == ns.last_user_idx and low_effort %}\n            {{- content + '\\n\\n{reasoning effort: low}' }}\n        {%- else %}\n            {{- content }}\n        {%- endif %}\n        {{- '<|im_end|>\\n' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if loop.previtem and loop.previtem.role != \"tool\" %}\n            {{- '<|im_start|>user\\n' }}\n        {%- endif %}\n        {{- '<tool_response>\\n' }}\n        {{- message.content }}\n        {{- '\\n</tool_response>\\n' }}\n        {%- if not loop.last and loop.nextitem.role != \"tool\" %}\n            {{- '<|im_end|>\\n' }}\n        {%- elif loop.last %}\n            {{- '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- else %}\n        {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>\\n' }}\n    {%- endif %}\n{%- endfor %}\n\n{%- if add_generation_prompt %}\n    {%- if enable_thinking %}\n        {{- '<|im_start|>assistant\\n<think>\\n' }}\n    {%- else %}\n        {{- '<|im_start|>assistant\\n<think></think>' }}\n    {%- endif %}\n{%- endif %}\n"
+  },
+  "cardData": {
+   "license": "apache-2.0",
+   "library_name": "transformers",
+   "pipeline_tag": "text-generation",
+   "language": [
+    "en",
+    "de",
+    "es",
+    "fr",
+    "ja",
+    "pt",
+    "ar",
+    "cs",
+    "it",
+    "ko",
+    "nl",
+    "zh"
+   ],
+   "tags": [
+    "granite",
+    "granite-4.2",
+    "reasoning",
+    "thinking",
+    "tool-calling",
+    "ibm"
+   ],
+   "base_model": [
+    "ibm-granite/granite-4.1-30b-base"
+   ]
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForCausalLM",
+   "pipeline_tag": "text-generation",
+   "processor": "AutoTokenizer"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "granite_thinking_parser.py"
+   },
+   {
+    "rfilename": "merges.txt"
+   },
+   {
+    "rfilename": "model-00001-of-00011.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00011.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00011.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00011.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00011.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00011.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00011.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00011.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00011.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00011.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00011.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "model.sig"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   },
+   {
+    "rfilename": "vocab.json"
+   }
+  ],
+  "spaces": [],
+  "createdAt": "2026-08-07T16:29:50.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 29276770304
+   },
+   "total": 29276770304
+  },
+  "inference": "warm",
+  "usedStorage": 58553607904
+ },
+ "model_config": {
+  "architectures": [
+   "GraniteForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "attention_multiplier": 0.0078125,
+  "bos_token_id": 100283,
+  "dtype": "bfloat16",
+  "embedding_multiplier": 1.0,
+  "eos_token_id": 100257,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.1,
+  "intermediate_size": 32768,
+  "logits_scaling": 1.0,
+  "max_position_embeddings": 131072,
+  "mlp_bias": false,
+  "model_type": "granite",
+  "num_attention_heads": 32,
+  "num_hidden_layers": 64,
+  "num_key_value_heads": 8,
+  "pad_token_id": 100257,
+  "residual_multiplier": 1.0,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+   "rope_theta": 50000000,
+   "rope_type": "default"
+  },
+  "rope_scaling": null,
+  "rope_theta": 50000000,
+  "tie_word_embeddings": false,
+  "transformers_version": "4.57.1",
+  "use_cache": true,
+  "vocab_size": 100352,
+  "torch_dtype": "bfloat16"
+ }
+}

@@ -1,0 +1,341 @@
+{
+ "repo": "NousResearch/DeepHermes-3-Mistral-24B-Preview",
+ "url": "https://huggingface.co/NousResearch/DeepHermes-3-Mistral-24B-Preview",
+ "revision": "48072dc6c0594a3198eb862c13613c4ab1119009",
+ "card_metadata": {
+  "language": [],
+  "license": "apache-2.0",
+  "tags": [],
+  "base_model": "mistralai/Mistral-Small-24B-Base-2501",
+  "widget": [],
+  "messages": [],
+  "content": "What is the meaning of life?",
+  "model-index": [],
+  "results": "[]",
+  "library_name": "transformers"
+ },
+ "hub_metadata": {
+  "_id": "67c457b3ac2030235ee78897",
+  "id": "NousResearch/DeepHermes-3-Mistral-24B-Preview",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "mistral",
+   "text-generation",
+   "Mistral-Small",
+   "instruct",
+   "finetune",
+   "chatml",
+   "gpt4",
+   "synthetic data",
+   "distillation",
+   "function calling",
+   "json mode",
+   "axolotl",
+   "roleplaying",
+   "chat",
+   "reasoning",
+   "r1",
+   "vllm",
+   "conversational",
+   "en",
+   "base_model:mistralai/Mistral-Small-24B-Base-2501",
+   "base_model:finetune:mistralai/Mistral-Small-24B-Base-2501",
+   "license:apache-2.0",
+   "text-generation-inference",
+   "endpoints_compatible",
+   "region:us"
+  ],
+  "downloads": 527,
+  "likes": 124,
+  "modelId": "NousResearch/DeepHermes-3-Mistral-24B-Preview",
+  "author": "NousResearch",
+  "sha": "48072dc6c0594a3198eb862c13613c4ab1119009",
+  "lastModified": "2025-03-13T16:10:18.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "example_title": "DeepHermes 3",
+    "messages": [
+     {
+      "role": "system",
+      "content": "You are a sentient, superintelligent artificial general intelligence, here to teach and assist me."
+     },
+     {
+      "role": "user",
+      "content": "What is the meaning of life?"
+     }
+    ]
+   }
+  ],
+  "model-index": [
+   {
+    "name": "DeepHermes-3-Mistral-24B-Preview",
+    "results": []
+   }
+  ],
+  "config": {
+   "architectures": [
+    "MistralForCausalLM"
+   ],
+   "model_type": "mistral",
+   "tokenizer_config": {
+    "bos_token": "<s>",
+    "chat_template": "{% if not add_generation_prompt is defined %}{% set add_generation_prompt = false %}{% endif %}{% set loop_messages = messages %}{% for message in loop_messages %}{% set content = '<|start_header_id|>' + message['role'] + '<|end_header_id|>\n\n'+ message['content'] | trim + '<|eot_id|>' %}{% if loop.index0 == 0 %}{% set content = bos_token + content %}{% endif %}{{ content }}{% endfor %}{% if add_generation_prompt %}{{ '<|start_header_id|>assistant<|end_header_id|>\n\n' }}{% endif %}",
+    "eos_token": "<|eot_id|>",
+    "pad_token": "<|end_of_text|>",
+    "unk_token": "<unk>",
+    "use_default_system_prompt": false
+   }
+  },
+  "cardData": {
+   "language": [
+    "en"
+   ],
+   "license": "apache-2.0",
+   "tags": [
+    "Mistral-Small",
+    "instruct",
+    "finetune",
+    "chatml",
+    "gpt4",
+    "synthetic data",
+    "distillation",
+    "function calling",
+    "json mode",
+    "axolotl",
+    "roleplaying",
+    "chat",
+    "reasoning",
+    "r1",
+    "vllm"
+   ],
+   "base_model": "mistralai/Mistral-Small-24B-Base-2501",
+   "widget": [
+    {
+     "example_title": "DeepHermes 3",
+     "messages": [
+      {
+       "role": "system",
+       "content": "You are a sentient, superintelligent artificial general intelligence, here to teach and assist me."
+      },
+      {
+       "role": "user",
+       "content": "What is the meaning of life?"
+      }
+     ]
+    }
+   ],
+   "model-index": [
+    {
+     "name": "DeepHermes-3-Mistral-24B-Preview",
+     "results": []
+    }
+   ],
+   "library_name": "transformers"
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForCausalLM",
+   "pipeline_tag": "text-generation",
+   "processor": "AutoTokenizer"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00001-of-00010.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00010.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00010.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00010.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00010.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00010.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00010.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00010.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00010.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00010.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [
+   "eduagarcia/multilingual-tokenizer-leaderboard",
+   "berke855/conversation",
+   "Vasanth2000/career_conversations",
+   "FxTechGaming/Career_Conversation",
+   "liuyuelintop/career_chatbots",
+   "harsh511/Harsh_Career_Conversation",
+   "arungansi/career_foundations2",
+   "Karu-chan/career_conversation",
+   "Akashmj22122002/Akash_ai_talks",
+   "mhtkmr/professional-clone",
+   "debasishdas1985/career_conversation",
+   "YogeshRana/career_conversations",
+   "Muras125/carrer_conversation",
+   "Maximkaddfsg/rules_of_business_communication",
+   "gomurali/chatbot",
+   "manivsbh/ai_agents",
+   "dukebiswas/QnA-My-Work-Story",
+   "AnishNehete/AskMyCV",
+   "abhishek-srivastava/1_foundations",
+   "kochujosy/Career_Chats",
+   "yousef1975/career_conversation",
+   "Aroyzz-o6/career_chatbot",
+   "sjhamb1/sachin_jhamb_linkedin",
+   "VanithaTed/career_conversations",
+   "mr-abdulrehman/Abdul_Rehman",
+   "philliewo/career_conversation",
+   "dollyjain/career_conversation",
+   "colemanwhaylon/career_conversation",
+   "manoj2365/space-deploy",
+   "Afnan-Hany/career_conversation",
+   "anupab221/career_conversation",
+   "dacorest2/wazchatbot",
+   "Sachin6128/career_discussion",
+   "marekside/psychotherapy_bot",
+   "RaviKewat/Professional_Me",
+   "elliotonhuggingface/agentic_career_conversations",
+   "Alexv89/career_conversationai",
+   "mahi1432/Virtual_Me",
+   "paulcaballero30/my_alter_ego",
+   "Tathastu/CareerConversation",
+   "Bulex/career_conversation",
+   "anupam008/Talk_to_AI_Agents_to_know_more_about_Anupam",
+   "Sayan/career_conversations",
+   "Xenobass/Chat_with_my_Career_Alterego",
+   "itstanveer/agentTanveer",
+   "naveenkrishna90/Career_Conversation",
+   "mimuruth/career_conversation",
+   "hrishabh0408/career_converstion",
+   "samuelalex37/career_coversation",
+   "annashe/expert_insight",
+   "DBAUK2000/Career_Conversation",
+   "KulkarniDevika/my_career_conversation",
+   "elon-efte/efte",
+   "mahadevan474/ChatWithMahadevan",
+   "macannie/career_conversation",
+   "ritvik2005/career_conversation",
+   "oreoGenAI/career_conversion",
+   "ParthaS123/career_coversation",
+   "billyking121/career_conversation",
+   "agaskoma/CoffeeConversations",
+   "amar1087/professional_dialogue",
+   "KeertanaN/career_conversation",
+   "mitang09/Carrer_Info",
+   "Prashant-Rai/career_conversation",
+   "zmije1kw/Career_Agentic_AI_Bot",
+   "SourabhRustagi/iamsourabh",
+   "chatbotdeveloper2025genai/frazcvchatbot",
+   "aneetfanclub/aneetpadda",
+   "balaji-rajadurai/About_Me",
+   "DaviAraki/career_conversation",
+   "JoyceSeeeeee/Joyce_career_agent",
+   "Girish7654/career_conversation_bot",
+   "Carlos055/personal_assisstant",
+   "maxbardner/career_conversation",
+   "marcmeju/career_conversation",
+   "Pagi66/linkedin_agent",
+   "PavanChintha/career_conversation",
+   "zmije1kw/WWJD",
+   "Akshaynigam/LinkedInNetworkAI",
+   "Akshaynigam/AITwin",
+   "brhou/career_conversation",
+   "NehaJ13/Career_Conversations",
+   "srivastavanitesh/PilotAvatar",
+   "Abhishek137/Abhishek_Career_Conversation",
+   "Sidhere390134/career_agent",
+   "Aditya327/adi_career_conversation",
+   "Gasolin3/AStro",
+   "HuyLe61/Career_Conversastion",
+   "theodoros7/cv_assistant",
+   "Devarsh44/career_conversation",
+   "Adnan47/Ask_Adnan",
+   "Orezi-1/career_conversation",
+   "OzanSevindir/career_conversations",
+   "yongpengfu/career_conversation",
+   "krishnadasar-sudheer-kumar/Career_Conversations",
+   "TomiDev7/tomipropapa",
+   "amiiiir-beheshti/Introduce_me",
+   "cdhunt96/career_conversation",
+   "x7petk/about_me",
+   "ericksong/career_conversation_02"
+  ],
+  "createdAt": "2025-03-02T13:05:55.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 23572464640
+   },
+   "total": 23572464640
+  },
+  "inference": "warm",
+  "usedStorage": 47162049993
+ },
+ "model_config": {
+  "_name_or_path": "NousResearch/Mistral-24B-AlternateTokenizer",
+  "architectures": [
+   "MistralForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 1,
+  "eos_token_id": 131072,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 5120,
+  "initializer_range": 0.02,
+  "intermediate_size": 32768,
+  "max_position_embeddings": 32768,
+  "model_type": "mistral",
+  "num_attention_heads": 32,
+  "num_hidden_layers": 40,
+  "num_key_value_heads": 8,
+  "rms_norm_eps": 1e-05,
+  "rope_theta": 100000000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.46.3",
+  "use_cache": false,
+  "vocab_size": 131078
+ }
+}

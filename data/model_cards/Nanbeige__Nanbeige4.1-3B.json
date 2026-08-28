@@ -1,0 +1,221 @@
+{
+ "repo": "Nanbeige/Nanbeige4.1-3B",
+ "url": "https://huggingface.co/Nanbeige/Nanbeige4.1-3B",
+ "revision": "9c4555c37921c0982af8fffeee1e0a6e6b953c4f",
+ "card_metadata": {
+  "license": "apache-2.0",
+  "language": [],
+  "library_name": "transformers",
+  "pipeline_tag": "text-generation",
+  "tags": [],
+  "base_model": []
+ },
+ "hub_metadata": {
+  "_id": "698aa9f4ab53f6db1285ed18",
+  "id": "Nanbeige/Nanbeige4.1-3B",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "llama",
+   "text-generation",
+   "llm",
+   "nanbeige",
+   "conversational",
+   "en",
+   "zh",
+   "arxiv:2602.13367",
+   "base_model:Nanbeige/Nanbeige4-3B-Base",
+   "base_model:finetune:Nanbeige/Nanbeige4-3B-Base",
+   "license:apache-2.0",
+   "eval-results",
+   "text-generation-inference",
+   "endpoints_compatible",
+   "deploy:azure",
+   "region:us"
+  ],
+  "downloads": 16699,
+  "likes": 1164,
+  "modelId": "Nanbeige/Nanbeige4.1-3B",
+  "author": "Nanbeige",
+  "sha": "9c4555c37921c0982af8fffeee1e0a6e6b953c4f",
+  "lastModified": "2026-03-25T01:56:21.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "LlamaForCausalLM"
+   ],
+   "model_type": "llama",
+   "tokenizer_config": {
+    "bos_token": "<|im_start|>",
+    "chat_template": "\n        {%- if tools %}\n            {{- '<|im_start|>system\n' }}\n            {%- if messages[0].role == 'system' %}\n                {{- messages[0].content + '\n\n' }}\n            {%- else %} \n                {{- '你是一位工具函数调用专家，你会得到一个问题和一组可能的工具函数。根据问题，你需要进行一个或多个函数/工具调用以实现目的，请尽量尝试探索通过工具解决问题。\n如果没有一个函数可以使用，请直接使用自然语言回复用户。\n如果给定的问题缺少函数所需的参数，请使用自然语言进行提问，向用户询问必要信息。\n如果调用结果已经足够回答用户问题，请对历史结果进行总结，使用自然语言回复用户。' }} \n            {%- endif %}\n            {{- \"# Tools\n\nYou may call one or more functions to assist with the user query.\n\nYou are provided with function signatures within <tools></tools> XML tags:\n<tools>\" }}\n            {%- for tool in tools %}\n                {{- \"\n\" }}\n                {{- tool | tojson }}\n            {%- endfor %}\n            {{- \"\n</tools>\n\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\n<tool_call>\n{\\\"name\\\": <function-name>, \\\"arguments\\\": <args-json-object>}\n</tool_call><|im_end|>\n\" }}\n        {%- else %}\n            {%- if messages[0].role == 'system' %}\n                {{- '<|im_start|>system\n' + messages[0].content + '<|im_end|>\n' }}\n            {%- else %} \n                {{- '<|im_start|>system\n你是南北阁，一款由BOSS直聘自主研发并训练的专业大语言模型。<|im_end|>\n' }} \n            {%- endif %}\n        {%- endif %}\n        {%- set ns = namespace(multi_step_tool=true, last_query_index=messages|length - 1) %}\n        {%- for message in messages[::-1] %}\n            {%- set index = (messages|length - 1) - loop.index0 %}\n            {%- if ns.multi_step_tool and message.role == \"user\" and message.content is string and not(message.content.startswith('<tool_response>') and message.content.endswith('</tool_response>')) %}\n                {%- set ns.multi_step_tool = false %}\n                {%- set ns.last_query_index = index %}\n            {%- endif %}\n        {%- endfor %}\n        {%- for message in messages %}\n            {%- if message.content is string %}\n                {%- set content = message.content %}\n            {%- else %}\n                {%- set content = '' %}\n            {%- endif %}\n            {%- if (message.role == \"user\") or (message.role == \"system\" and not loop.first) %}\n                {{- '<|im_start|>' + message.role + '\n' + content + '<|im_end|>' + '\n' }}\n            {%- elif message.role == \"assistant\" %}\n                {%- set reasoning_content = '' %}\n                {%- if message.reasoning_content is string %}\n                    {%- set reasoning_content = message.reasoning_content %}\n                {%- else %}\n                    {%- if '</think>' in content %}\n                        {%- set reasoning_content = content.split('</think>')[0].rstrip('\n').split('<think>')[-1].lstrip('\n') %}\n                        {%- set content = content.split('</think>')[-1].lstrip('\n') %}\n                    {%- endif %}\n                {%- endif %}\n                {%- if loop.index0 > ns.last_query_index or keep_all_think or (extra_body is defined and extra_body.keep_all_think) %}\n                    {%- if loop.last or (not loop.last and reasoning_content) %}\n                        {{- '<|im_start|>' + message.role + '\n<think>\n' + reasoning_content.strip('\n') + '\n</think>\n\n' + content.lstrip('\n') }}\n                    {%- else %}\n                        {{- '<|im_start|>' + message.role + '\n' + content }}\n                    {%- endif %}\n                {%- else %}\n                    {{- '<|im_start|>' + message.role + '\n' + content }}\n                {%- endif %}\n                {%- if message.tool_calls %}\n                    {%- for tool_call in message.tool_calls %}\n                        {%- if (loop.first and content) or (not loop.first) %}\n                            {{- '\n' }}\n                        {%- endif %}\n                        {%- if tool_call.function %}\n                            {%- set tool_call = tool_call.function %}\n                        {%- endif %}\n                        {{- '<tool_call>\n{\"name\": \"' }}\n                        {{- tool_call.name }}\n                        {{- '\", \"arguments\": ' }}\n                        {%- if tool_call.arguments is string %}\n                            {{- tool_call.arguments }}\n                        {%- else %}\n                            {{- tool_call.arguments | tojson }}\n                        {%- endif %}\n                        {{- '}\n</tool_call>' }}\n                    {%- endfor %}\n                {%- endif %}\n                {{- '<|im_end|>\n' }}\n            {%- elif message.role == \"tool\" %}\n                {%- if loop.first or (messages[loop.index0 - 1].role != \"tool\") %}\n                    {{- '<|im_start|>user' }}\n                {%- endif %}\n                {{- '\n<tool_response>\n' }}\n                {{- content }}\n                {{- '\n</tool_response>' }}\n                {%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}\n                    {{- '<|im_end|>\n' }}\n                {%- endif %}\n            {%- endif %}\n        {%- endfor %}\n        {%- if add_generation_prompt %}\n            {{- '<|im_start|>assistant\n' }}\n        {%- endif %}\n",
+    "eos_token": "<|im_end|>",
+    "pad_token": "<unk>",
+    "unk_token": "<unk>",
+    "use_default_system_prompt": false
+   }
+  },
+  "cardData": {
+   "license": "apache-2.0",
+   "language": [
+    "en",
+    "zh"
+   ],
+   "library_name": "transformers",
+   "pipeline_tag": "text-generation",
+   "tags": [
+    "llm",
+    "nanbeige"
+   ],
+   "base_model": [
+    "Nanbeige/Nanbeige4-3B-Base"
+   ]
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForCausalLM",
+   "pipeline_tag": "text-generation",
+   "processor": "AutoTokenizer"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "Nanbeige4.1-3B-Report.pdf"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "added_tokens.json"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "figures/model_performance_comparison.png"
+   },
+   {
+    "rfilename": "figures/nbg.png"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00001-of-00002.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00002.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer.model"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   },
+   {
+    "rfilename": "tokenizer_config_search.json"
+   }
+  ],
+  "spaces": [
+   "FINAL-Bench/all-bench-leaderboard",
+   "victor/nanbeige",
+   "GenAISecurityProject/OWASP-AIBOM-Generator",
+   "eduagarcia/multilingual-tokenizer-leaderboard",
+   "arudradey/all-bench-leaderboard",
+   "yaris664/Nanbeige4.1-3B-space",
+   "PioTio/AIMan",
+   "shekarvikas/Nanbeige-Nanbeige4.1-3B",
+   "SADHANA03/abc-chat-app",
+   "Guilherme34/nanbeige",
+   "naeem123goplay/Nexa-Model",
+   "LvcidPsyche/nanbeige-trainer",
+   "karadumandilara/llme",
+   "Ashok75/react",
+   "Varshaagagana/Nanbeige-Nanbeige4.1-3B",
+   "AkonG25/Nanbeige-Nanbeige4.1-3B",
+   "SamuSamo/adecco",
+   "alamehlina00/lina",
+   "Alp11/Adecco1",
+   "antonioboscarellii/newlab",
+   "saskarov/labPractice",
+   "sayed-adil/spam_detect",
+   "Nicornot/nico_dilara",
+   "spxxtu/Nanbeige-Nanbeige4.1-3B",
+   "cfgyfgyygftf/Nanbeige-Nanbeige4.1-3B",
+   "Nuanmanee/all-bench-leaderboard",
+   "ozagns/Nanbeige-Nanbeige4.1-3B",
+   "TomatitoToho/nanbeige-trainer",
+   "TomatitoToho/nanbeige-dc-trainer"
+  ],
+  "createdAt": "2026-02-10T03:45:56.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 3933637120
+   },
+   "total": 3933637120
+  },
+  "inference": "warm",
+  "usedStorage": 7890808668
+ },
+ "model_config": {
+  "architectures": [
+   "LlamaForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "bos_token_id": 166100,
+  "dtype": "bfloat16",
+  "embd_pdrop": 0.0,
+  "eos_token_id": 166101,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 2560,
+  "initializer_range": 0.02,
+  "intermediate_size": 10496,
+  "max_position_embeddings": 262144,
+  "mlp_bias": false,
+  "model_type": "llama",
+  "num_attention_heads": 20,
+  "num_hidden_layers": 32,
+  "num_key_value_heads": 4,
+  "pad_token_id": 0,
+  "pretraining_tp": 1,
+  "resid_pdrop": 0.0,
+  "rms_norm_eps": 1e-05,
+  "rope_scaling": null,
+  "rope_theta": 70000000,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.51.3",
+  "use_cache": true,
+  "vocab_size": 166144
+ }
+}

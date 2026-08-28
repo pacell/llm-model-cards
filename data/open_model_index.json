@@ -1,0 +1,4211 @@
+{
+ "generated": "2026-08-28",
+ "source_intelligence": "Artificial Analysis Intelligence Index",
+ "intelligence_index_version": "v4.1.1",
+ "source_cards": "Hugging Face Hub model cards (machine-readable metadata)",
+ "models_tracked": 624,
+ "models": [
+  {
+   "name": "Kimi K3",
+   "creator": "Kimi",
+   "country": "cn",
+   "hf_repo": "moonshotai/Kimi-K3",
+   "hf_url": "https://huggingface.co/moonshotai/Kimi-K3",
+   "release_date": "2026-07-16",
+   "hub_last_modified": "2026-08-20",
+   "intelligence_index": 59.7,
+   "intelligence_is_estimated": false,
+   "best_effort": "max",
+   "effort_spread": {
+    "max": 59.7,
+    "low": 48.3
+   },
+   "openness_index": 38.9,
+   "params_billions": 2779.9,
+   "active_params_billions": 104.0,
+   "context_window_tokens": 1048576,
+   "license": "Kimi K3 License",
+   "license_url": "https://huggingface.co/moonshotai/Kimi-K3/blob/main/LICENSE",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "KimiK3ForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 2675145,
+   "likes": 11054,
+   "knowledge_cutoff": "",
+   "agentic_index": 54.3,
+   "evals": {
+    "GDPval-AA v2": 58.4,
+    "τ³-Banking": 46.0,
+    "Terminal-Bench v2.1": 85.0,
+    "SciCode": 58.7,
+    "Humanity's Last Exam": 46.9,
+    "GPQA Diamond": 93.5,
+    "CritPt": 23.4,
+    "AA-Omniscience": 19.7,
+    "AA-LCR": 82.7
+   }
+  },
+  {
+   "name": "GLM-5.3",
+   "creator": "Z AI",
+   "country": "cn",
+   "hf_repo": "zai-org/GLM-5.3",
+   "hf_url": "https://huggingface.co/zai-org/GLM-5.3",
+   "release_date": "2026-08-18",
+   "hub_last_modified": "2026-08-28",
+   "intelligence_index": 59.5,
+   "intelligence_is_estimated": false,
+   "best_effort": "max",
+   "effort_spread": {
+    "max": 59.5
+   },
+   "openness_index": null,
+   "params_billions": 753.3,
+   "active_params_billions": 40.0,
+   "context_window_tokens": 1000000,
+   "license": "GLM 5.3 License",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "proprietary",
+   "aa_open_weights": false,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "GlmMoeDsaForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 0,
+   "likes": 901,
+   "knowledge_cutoff": "",
+   "agentic_index": 59.1,
+   "evals": {
+    "GDPval-AA v2": 62.9,
+    "τ³-Banking": 50.3,
+    "Terminal-Bench v2.1": 83.9,
+    "SciCode": 56.5,
+    "Humanity's Last Exam": 42.3,
+    "GPQA Diamond": 91.7,
+    "CritPt": 19.1,
+    "AA-Omniscience": 14.3,
+    "AA-LCR": 76.3
+   }
+  },
+  {
+   "name": "Qwen3.8 2.4T A95B",
+   "creator": "Alibaba",
+   "country": "cn",
+   "hf_repo": "Qwen/Qwen3.8-2.4T-A95B",
+   "hf_url": "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B",
+   "release_date": "2026-08-12",
+   "hub_last_modified": "2026-08-12",
+   "intelligence_index": 57.7,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 57.7
+   },
+   "openness_index": 27.8,
+   "params_billions": 2446.2,
+   "active_params_billions": 95.0,
+   "context_window_tokens": 983616,
+   "license": "Qwen3.8-Max License",
+   "license_url": "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B/blob/main/LICENSE",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Qwen3_5MoeForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 21924,
+   "likes": 1178,
+   "knowledge_cutoff": "",
+   "agentic_index": 57.1,
+   "evals": {
+    "GDPval-AA v2": 60.9,
+    "τ³-Banking": 49.1,
+    "Terminal-Bench v2.1": 82.0,
+    "SciCode": 51.6,
+    "Humanity's Last Exam": 42.4,
+    "GPQA Diamond": 93.5,
+    "CritPt": 20.0,
+    "AA-Omniscience": 4.3,
+    "AA-LCR": 75.3
+   }
+  },
+  {
+   "name": "GLM-5.3-Flash",
+   "creator": "Z AI",
+   "country": "cn",
+   "hf_repo": "zai-org/GLM-5.3-Flash",
+   "hf_url": "https://huggingface.co/zai-org/GLM-5.3-Flash",
+   "release_date": "2026-08-26",
+   "hub_last_modified": "2026-08-27",
+   "intelligence_index": 57.5,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 57.5
+   },
+   "openness_index": null,
+   "params_billions": 321.3,
+   "active_params_billions": 18.0,
+   "context_window_tokens": 1000000,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Glm5NextForConditionalGeneration",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 34,
+   "likes": 1452,
+   "knowledge_cutoff": "",
+   "agentic_index": 58.2,
+   "evals": {
+    "GDPval-AA v2": 63.2,
+    "τ³-Banking": 47.2,
+    "Terminal-Bench v2.1": 84.3,
+    "SciCode": 46.1,
+    "Humanity's Last Exam": 39.9,
+    "GPQA Diamond": 91.2,
+    "CritPt": 15.4,
+    "AA-Omniscience": 7.5,
+    "AA-LCR": 78.0
+   }
+  },
+  {
+   "name": "Qwen3.8-Flash-Next",
+   "creator": "Alibaba",
+   "country": "cn",
+   "hf_repo": "Qwen/Qwen3.8-Flash-Next",
+   "hf_url": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next",
+   "release_date": "2026-08-26",
+   "hub_last_modified": "2026-08-27",
+   "intelligence_index": 55.8,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 55.8
+   },
+   "openness_index": null,
+   "params_billions": 180.0,
+   "active_params_billions": 6.0,
+   "context_window_tokens": 256000,
+   "license": "Qwen Community License 1.0",
+   "license_url": "",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "video"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Qwen4ExpForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 4810,
+   "likes": 4087,
+   "knowledge_cutoff": "",
+   "agentic_index": 56.4,
+   "evals": {
+    "GDPval-AA v2": 61.9,
+    "τ³-Banking": 45.4,
+    "Terminal-Bench v2.1": 86.1,
+    "SciCode": 46.9,
+    "Humanity's Last Exam": 38.0,
+    "GPQA Diamond": 92.3,
+    "CritPt": 11.1,
+    "AA-Omniscience": -9.7,
+    "AA-LCR": 77.0
+   }
+  },
+  {
+   "name": "DeepSeek V4 Pro 0813",
+   "creator": "DeepSeek",
+   "country": "cn",
+   "hf_repo": "deepseek-ai/DeepSeek-V4-Pro-0813",
+   "hf_url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+   "release_date": "2026-08-13",
+   "hub_last_modified": "2026-08-13",
+   "intelligence_index": 53.2,
+   "intelligence_is_estimated": false,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 53.2
+   },
+   "openness_index": 44.4,
+   "params_billions": 1650.5,
+   "active_params_billions": 49.0,
+   "context_window_tokens": 1000000,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "DeepseekV4ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 90822,
+   "likes": 771,
+   "knowledge_cutoff": "",
+   "agentic_index": 49.6,
+   "evals": {
+    "GDPval-AA v2": 53.8,
+    "τ³-Banking": 39.6,
+    "Terminal-Bench v2.1": 78.7,
+    "SciCode": 49.2,
+    "Humanity's Last Exam": 41.0,
+    "GPQA Diamond": 92.8,
+    "CritPt": 18.0,
+    "AA-Omniscience": 0.8,
+    "AA-LCR": 75.3
+   }
+  },
+  {
+   "name": "Qwen3.8 27B",
+   "creator": "Alibaba",
+   "country": "cn",
+   "hf_repo": "Qwen/Qwen3.8-27B",
+   "hf_url": "https://huggingface.co/Qwen/Qwen3.8-27B",
+   "release_date": "2026-08-14",
+   "hub_last_modified": "2026-08-14",
+   "intelligence_index": 52.0,
+   "intelligence_is_estimated": false,
+   "best_effort": "xhigh",
+   "effort_spread": {
+    "xhigh": 52.0,
+    "medium": 44.5,
+    "low": 42.9,
+    "non-reasoning": 34.7
+   },
+   "openness_index": 38.9,
+   "params_billions": 27.8,
+   "active_params_billions": null,
+   "context_window_tokens": 256000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "video"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Qwen3_5ForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 3457687,
+   "likes": 13101,
+   "knowledge_cutoff": "",
+   "agentic_index": 50.9,
+   "evals": {
+    "GDPval-AA v2": 52.1,
+    "τ³-Banking": 48.0,
+    "Terminal-Bench v2.1": 79.8,
+    "SciCode": 44.7,
+    "Humanity's Last Exam": 33.9,
+    "GPQA Diamond": 90.5,
+    "CritPt": 5.4,
+    "AA-Omniscience": -10.0,
+    "AA-LCR": 77.3
+   }
+  },
+  {
+   "name": "Motif 3",
+   "creator": "Motif Technologies",
+   "country": "kr",
+   "hf_repo": "Motif-Technologies/Motif-3",
+   "hf_url": "https://huggingface.co/Motif-Technologies/Motif-3",
+   "release_date": "2026-08-12",
+   "hub_last_modified": "2026-08-26",
+   "intelligence_index": 47.4,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 47.4
+   },
+   "openness_index": 44.4,
+   "params_billions": 314.8,
+   "active_params_billions": 13.2,
+   "context_window_tokens": 262144,
+   "license": "MIT",
+   "license_url": "",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "MotifForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 4581,
+   "likes": 129,
+   "knowledge_cutoff": "",
+   "agentic_index": 37.6,
+   "evals": {
+    "GDPval-AA v2": 38.6,
+    "τ³-Banking": 35.3,
+    "Terminal-Bench v2.1": 74.9,
+    "SciCode": 40.6,
+    "Humanity's Last Exam": 37.0,
+    "GPQA Diamond": 83.4,
+    "CritPt": 6.6,
+    "AA-Omniscience": 10.2,
+    "AA-LCR": 72.3
+   }
+  },
+  {
+   "name": "MiniMax-M3",
+   "creator": "MiniMax",
+   "country": "cn",
+   "hf_repo": "MiniMaxAI/MiniMax-M3",
+   "hf_url": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+   "release_date": "2026-06-01",
+   "hub_last_modified": "2026-07-23",
+   "intelligence_index": 45.4,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 45.4
+   },
+   "openness_index": 33.3,
+   "params_billions": 427.0,
+   "active_params_billions": 23.0,
+   "context_window_tokens": 1000000,
+   "license": "MINIMAX COMMUNITY LICENSE",
+   "license_url": "https://huggingface.co/MiniMaxAI/MiniMax-M3/blob/main/LICENSE",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "video"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "MiniMaxM3SparseForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 198826,
+   "likes": 1502,
+   "knowledge_cutoff": "",
+   "agentic_index": 36.1,
+   "evals": {
+    "GDPval-AA v2": 44.0,
+    "τ³-Banking": 15.3,
+    "Terminal-Bench v2.1": 65.2,
+    "SciCode": 45.4,
+    "Humanity's Last Exam": 39.0,
+    "GPQA Diamond": 92.9,
+    "CritPt": 3.7,
+    "AA-Omniscience": 1.4,
+    "AA-LCR": 80.3
+   }
+  },
+  {
+   "name": "MiMo-V2.5-Pro",
+   "creator": "Xiaomi",
+   "country": "cn",
+   "hf_repo": "XiaomiMiMo/MiMo-V2.5-Pro",
+   "hf_url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.5-Pro",
+   "release_date": "2026-04-22",
+   "hub_last_modified": "2026-07-09",
+   "intelligence_index": 42.9,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 42.9,
+    "non-reasoning": 28.4
+   },
+   "openness_index": 38.9,
+   "params_billions": 1023.2,
+   "active_params_billions": 42.0,
+   "context_window_tokens": 1000000,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "MiMoV2ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 49139,
+   "likes": 743,
+   "knowledge_cutoff": "",
+   "agentic_index": 29.5,
+   "evals": {
+    "GDPval-AA v2": 38.1,
+    "τ³-Banking": 9.9,
+    "Terminal-Bench v2.1": 65.2,
+    "SciCode": 50.2,
+    "Humanity's Last Exam": 35.7,
+    "GPQA Diamond": 86.6,
+    "CritPt": 4.0,
+    "AA-Omniscience": 3.2,
+    "AA-LCR": 77.7
+   }
+  },
+  {
+   "name": "Inkling",
+   "creator": "Thinking Machines",
+   "country": "us",
+   "hf_repo": "thinkingmachines/Inkling",
+   "hf_url": "https://huggingface.co/thinkingmachines/Inkling",
+   "release_date": "2026-07-15",
+   "hub_last_modified": "2026-07-23",
+   "intelligence_index": 42.3,
+   "intelligence_is_estimated": false,
+   "best_effort": "xhigh",
+   "effort_spread": {
+    "xhigh": 42.3
+   },
+   "openness_index": 38.9,
+   "params_billions": 952.4,
+   "active_params_billions": 41.0,
+   "context_window_tokens": 1000000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "speech"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "InklingForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 164673,
+   "likes": 1752,
+   "knowledge_cutoff": "",
+   "agentic_index": 34.1,
+   "evals": {
+    "GDPval-AA v2": 36.7,
+    "τ³-Banking": 29.1,
+    "Terminal-Bench v2.1": 55.1,
+    "SciCode": 46.1,
+    "Humanity's Last Exam": 31.9,
+    "GPQA Diamond": 87.2,
+    "CritPt": 5.4,
+    "AA-Omniscience": 2,
+    "AA-LCR": 73.3
+   }
+  },
+  {
+   "name": "Hy3",
+   "creator": "Tencent",
+   "country": "cn",
+   "hf_repo": "tencent/Hy3",
+   "hf_url": "https://huggingface.co/tencent/Hy3",
+   "release_date": "2026-07-06",
+   "hub_last_modified": "2026-07-20",
+   "intelligence_index": 42.2,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 42.2
+   },
+   "openness_index": 44.4,
+   "params_billions": 298.8,
+   "active_params_billions": 21.0,
+   "context_window_tokens": 256000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "HYV3ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 10776,
+   "likes": 951,
+   "knowledge_cutoff": "",
+   "agentic_index": 31.4,
+   "evals": {
+    "GDPval-AA v2": 35.7,
+    "τ³-Banking": 22.9,
+    "Terminal-Bench v2.1": 64.4,
+    "SciCode": 47.6,
+    "Humanity's Last Exam": 33.5,
+    "GPQA Diamond": 89.7,
+    "CritPt": 4.9,
+    "AA-Omniscience": -18.5,
+    "AA-LCR": 74.7
+   }
+  },
+  {
+   "name": "Nex-N2-Pro",
+   "creator": "Nex AGI",
+   "country": "cn",
+   "hf_repo": "nex-agi/Nex-N2-Pro",
+   "hf_url": "https://huggingface.co/nex-agi/Nex-N2-Pro",
+   "release_date": "2026-06-02",
+   "hub_last_modified": "2026-06-11",
+   "intelligence_index": 41.7,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 41.7
+   },
+   "openness_index": 38.9,
+   "params_billions": 396.8,
+   "active_params_billions": 17.0,
+   "context_window_tokens": 262000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Qwen3_5MoeForConditionalGeneration",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 845,
+   "likes": 375,
+   "knowledge_cutoff": "",
+   "agentic_index": 31.2,
+   "evals": {
+    "GDPval-AA v2": 37.4,
+    "τ³-Banking": 17.5,
+    "Terminal-Bench v2.1": 67.8,
+    "SciCode": 41.8,
+    "Humanity's Last Exam": 33.7,
+    "GPQA Diamond": 89.2,
+    "CritPt": 8.6,
+    "AA-Omniscience": -27.1,
+    "AA-LCR": 76.3
+   }
+  },
+  {
+   "name": "Inkling Small",
+   "creator": "Thinking Machines",
+   "country": "us",
+   "hf_repo": "thinkingmachines/Inkling-Small",
+   "hf_url": "https://huggingface.co/thinkingmachines/Inkling-Small",
+   "release_date": "2026-07-30",
+   "hub_last_modified": "2026-07-31",
+   "intelligence_index": 41.2,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 41.2
+   },
+   "openness_index": 33.3,
+   "params_billions": 266.0,
+   "active_params_billions": 12.0,
+   "context_window_tokens": 1000000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "speech"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "InklingForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 168155,
+   "likes": 384,
+   "knowledge_cutoff": "",
+   "agentic_index": 31.9,
+   "evals": {
+    "GDPval-AA v2": 38.5,
+    "τ³-Banking": 18.8,
+    "Terminal-Bench v2.1": 55.1,
+    "SciCode": 48.7,
+    "Humanity's Last Exam": 33.3,
+    "GPQA Diamond": 89.5,
+    "CritPt": 8.3,
+    "AA-Omniscience": -8.9,
+    "AA-LCR": 69.3
+   }
+  },
+  {
+   "name": "Agnes 2.5 Pro Alpha",
+   "creator": "Sapiens AI",
+   "country": "sg",
+   "hf_repo": "Agnes-AI/Agnes-2.5-Pro-Alpha",
+   "hf_url": "https://huggingface.co/Agnes-AI/Agnes-2.5-Pro-Alpha",
+   "release_date": "2026-07-24",
+   "hub_last_modified": "2026-08-19",
+   "intelligence_index": 39.7,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 39.7
+   },
+   "openness_index": null,
+   "params_billions": 396.8,
+   "active_params_billions": 17.0,
+   "context_window_tokens": 1000000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "video"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Qwen3_5MoeForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 88,
+   "likes": 5,
+   "knowledge_cutoff": "",
+   "agentic_index": 25.4,
+   "evals": {
+    "GDPval-AA v2": 33.5,
+    "τ³-Banking": 12.4,
+    "Terminal-Bench v2.1": 67.0,
+    "SciCode": 42.2,
+    "Humanity's Last Exam": 33.6,
+    "GPQA Diamond": 87.6,
+    "CritPt": 10.9,
+    "AA-Omniscience": -25.1,
+    "AA-LCR": 73.0
+   }
+  },
+  {
+   "name": "Nemotron 3 Ultra 550B A55B",
+   "creator": "NVIDIA",
+   "country": "us",
+   "hf_repo": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16",
+   "hf_url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16",
+   "release_date": "2026-06-04",
+   "hub_last_modified": "2026-08-24",
+   "intelligence_index": 38.3,
+   "intelligence_is_estimated": false,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 38.3
+   },
+   "openness_index": 83.3,
+   "params_billions": 560.5,
+   "active_params_billions": 55.0,
+   "context_window_tokens": 262144,
+   "license": "OpenMDW",
+   "license_url": "https://openmdw.ai/license/1-1/",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "NemotronHForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 373218,
+   "likes": 334,
+   "knowledge_cutoff": "",
+   "agentic_index": 27.5,
+   "evals": {
+    "GDPval-AA v2": 33.1,
+    "τ³-Banking": 14.2,
+    "Terminal-Bench v2.1": 53.9,
+    "SciCode": 39.9,
+    "Humanity's Last Exam": 28.4,
+    "GPQA Diamond": 86.7,
+    "CritPt": 3.1,
+    "AA-Omniscience": -0.4,
+    "AA-LCR": 71.0
+   }
+  },
+  {
+   "name": "MiMo-V2.5",
+   "creator": "Xiaomi",
+   "country": "cn",
+   "hf_repo": "XiaomiMiMo/MiMo-V2.5",
+   "hf_url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.5",
+   "release_date": "2026-04-22",
+   "hub_last_modified": "2026-07-09",
+   "intelligence_index": 38.0,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 38.0
+   },
+   "openness_index": 38.9,
+   "params_billions": 310.8,
+   "active_params_billions": 15.0,
+   "context_window_tokens": 1000000,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "MiMoV2ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 374485,
+   "likes": 407,
+   "knowledge_cutoff": "",
+   "agentic_index": 24.4,
+   "evals": {
+    "GDPval-AA v2": 32.4,
+    "τ³-Banking": 8.7,
+    "Terminal-Bench v2.1": 63.7,
+    "SciCode": 43.1,
+    "Humanity's Last Exam": 27.2,
+    "GPQA Diamond": 84.9,
+    "CritPt": 3.7,
+    "AA-Omniscience": -9.8,
+    "AA-LCR": 68.3
+   }
+  },
+  {
+   "name": "Ling 3.0 Flash",
+   "creator": "InclusionAI",
+   "country": "cn",
+   "hf_repo": "inclusionAI/Ling-3.0-flash",
+   "hf_url": "https://huggingface.co/inclusionAI/Ling-3.0-flash",
+   "release_date": "2026-08-04",
+   "hub_last_modified": "2026-08-19",
+   "intelligence_index": 37.8,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 37.8
+   },
+   "openness_index": 44.4,
+   "params_billions": 127.5,
+   "active_params_billions": 5.1,
+   "context_window_tokens": 262144,
+   "license": "MIT",
+   "license_url": "",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "BailingMoeV3ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 18600,
+   "likes": 378,
+   "knowledge_cutoff": "",
+   "agentic_index": 29.3,
+   "evals": {
+    "GDPval-AA v2": 30.3,
+    "τ³-Banking": 27.2,
+    "Terminal-Bench v2.1": 55.4,
+    "SciCode": 41.1,
+    "Humanity's Last Exam": 23.7,
+    "GPQA Diamond": 85.5,
+    "CritPt": 1.7,
+    "AA-Omniscience": -17.9,
+    "AA-LCR": 67.0
+   }
+  },
+  {
+   "name": "Solar Open2 250B",
+   "creator": "Upstage",
+   "country": "kr",
+   "hf_repo": "upstage/Solar-Open2-250B",
+   "hf_url": "https://huggingface.co/upstage/Solar-Open2-250B",
+   "release_date": "2026-08-12",
+   "hub_last_modified": "2026-07-31",
+   "intelligence_index": 37.4,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 37.4
+   },
+   "openness_index": 33.3,
+   "params_billions": 250.3,
+   "active_params_billions": 15.0,
+   "context_window_tokens": 1048576,
+   "license": "Upstage Solar License",
+   "license_url": "https://huggingface.co/upstage/Solar-Open2-250B/blob/main/LICENSE",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "SolarOpen2ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 26984,
+   "likes": 750,
+   "knowledge_cutoff": "2026-02-01",
+   "agentic_index": 27.8,
+   "evals": {
+    "GDPval-AA v2": 31.1,
+    "τ³-Banking": 21.6,
+    "Terminal-Bench v2.1": 44.2,
+    "SciCode": 45.6,
+    "Humanity's Last Exam": 28.5,
+    "GPQA Diamond": 85.7,
+    "CritPt": 5.7,
+    "AA-Omniscience": -1.8,
+    "AA-LCR": 68.3
+   }
+  },
+  {
+   "name": "Muse Glimmer",
+   "creator": "Meta",
+   "country": "us",
+   "hf_repo": "meta-models/Muse-Glimmer-30B",
+   "hf_url": "https://huggingface.co/meta-models/Muse-Glimmer-30B",
+   "release_date": "2026-08-10",
+   "hub_last_modified": "2026-08-11",
+   "intelligence_index": 35.1,
+   "intelligence_is_estimated": false,
+   "best_effort": "high",
+   "effort_spread": {
+    "high": 35.1
+   },
+   "openness_index": 44.4,
+   "params_billions": 29.8,
+   "active_params_billions": null,
+   "context_window_tokens": 131072,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "MuseGlimmerForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 551258,
+   "likes": 1796,
+   "knowledge_cutoff": "2026-01-04",
+   "agentic_index": 22.9,
+   "evals": {
+    "GDPval-AA v2": 22.8,
+    "τ³-Banking": 23.5,
+    "Terminal-Bench v2.1": 51.7,
+    "SciCode": 43.6,
+    "Humanity's Last Exam": 22.0,
+    "GPQA Diamond": 83.5,
+    "CritPt": 2.6,
+    "AA-Omniscience": -32.9,
+    "AA-LCR": 80.0
+   }
+  },
+  {
+   "name": "A.X-K2",
+   "creator": "SK Telecom",
+   "country": "kr",
+   "hf_repo": "skt/A.X-K2",
+   "hf_url": "https://huggingface.co/skt/A.X-K2",
+   "release_date": "2026-08-12",
+   "hub_last_modified": "2026-08-24",
+   "intelligence_index": 35.0,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 35.0
+   },
+   "openness_index": 50,
+   "params_billions": 691.7,
+   "active_params_billions": 33.0,
+   "context_window_tokens": 262144,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "AXK2ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 16896,
+   "likes": 105,
+   "knowledge_cutoff": "",
+   "agentic_index": 25.7,
+   "evals": {
+    "GDPval-AA v2": 30.6,
+    "τ³-Banking": 16.1,
+    "Terminal-Bench v2.1": 39.0,
+    "SciCode": 38.5,
+    "Humanity's Last Exam": 29.6,
+    "GPQA Diamond": 85.7,
+    "CritPt": 8.9,
+    "AA-Omniscience": -8.2,
+    "AA-LCR": 66.0
+   }
+  },
+  {
+   "name": "G9v3-39A5B",
+   "creator": "AI9Stars",
+   "country": "cn",
+   "hf_repo": "ai9stars/G9v3-39A5B",
+   "hf_url": "https://huggingface.co/ai9stars/G9v3-39A5B",
+   "release_date": "2026-08-20",
+   "hub_last_modified": "2026-08-19",
+   "intelligence_index": 34.0,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 34.0
+   },
+   "openness_index": 38.9,
+   "params_billions": 39.0,
+   "active_params_billions": 5.0,
+   "context_window_tokens": 131072,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "G9v3ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 4426,
+   "likes": 87,
+   "knowledge_cutoff": "",
+   "agentic_index": 32.9,
+   "evals": {
+    "GDPval-AA v2": 38.2,
+    "τ³-Banking": 22.1,
+    "Terminal-Bench v2.1": 32.6,
+    "SciCode": 34.0,
+    "Humanity's Last Exam": 17.5,
+    "GPQA Diamond": 80.5,
+    "CritPt": 0.3,
+    "AA-Omniscience": 3.8,
+    "AA-LCR": 62.0
+   }
+  },
+  {
+   "name": "LongCat 2.0",
+   "creator": "LongCat",
+   "country": "cn",
+   "hf_repo": "meituan-longcat/LongCat-2.0",
+   "hf_url": "https://huggingface.co/meituan-longcat/LongCat-2.0",
+   "release_date": "2026-06-29",
+   "hub_last_modified": "2026-07-08",
+   "intelligence_index": 34.0,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 34.0
+   },
+   "openness_index": 38.9,
+   "params_billions": 1775.6,
+   "active_params_billions": 48.0,
+   "context_window_tokens": 1000000,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "LongcatCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 1435,
+   "likes": 262,
+   "knowledge_cutoff": "",
+   "agentic_index": 22.0,
+   "evals": {
+    "GDPval-AA v2": 26.6,
+    "τ³-Banking": 13.2,
+    "Terminal-Bench v2.1": 50.2,
+    "SciCode": 35.4,
+    "Humanity's Last Exam": 33.7,
+    "GPQA Diamond": 78.0,
+    "CritPt": 2.6,
+    "AA-Omniscience": -23.4,
+    "AA-LCR": 62.7
+   }
+  },
+  {
+   "name": "Qwen3.5 122B A10B",
+   "creator": "Alibaba",
+   "country": "cn",
+   "hf_repo": "Qwen/Qwen3.5-122B-A10B",
+   "hf_url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B",
+   "release_date": "2026-02-24",
+   "hub_last_modified": "2026-04-24",
+   "intelligence_index": 32.8,
+   "intelligence_is_estimated": false,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 32.8,
+    "non-reasoning": 28.2
+   },
+   "openness_index": 38.9,
+   "params_billions": 125.1,
+   "active_params_billions": 10.0,
+   "context_window_tokens": 262144,
+   "license": "Apache 2.0",
+   "license_url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/blob/main/LICENSE",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Qwen3_5MoeForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 1246753,
+   "likes": 611,
+   "knowledge_cutoff": "",
+   "agentic_index": 21.3,
+   "evals": {
+    "GDPval-AA v2": 24.3,
+    "τ³-Banking": 15.3,
+    "Terminal-Bench v2.1": 47.6,
+    "SciCode": 42.0,
+    "Humanity's Last Exam": 25.2,
+    "GPQA Diamond": 85.7,
+    "CritPt": 0.6,
+    "AA-Omniscience": -41.5,
+    "AA-LCR": 70.3
+   }
+  },
+  {
+   "name": "Ring-2.6-1T",
+   "creator": "InclusionAI",
+   "country": "cn",
+   "hf_repo": "inclusionAI/Ring-2.6-1T",
+   "hf_url": "https://huggingface.co/inclusionAI/Ring-2.6-1T",
+   "release_date": "2026-05-08",
+   "hub_last_modified": "2026-06-17",
+   "intelligence_index": 31.7,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 31.7
+   },
+   "openness_index": 38.9,
+   "params_billions": 1025.7,
+   "active_params_billions": 63.0,
+   "context_window_tokens": 262144,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "BailingMoeV2_5ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 493,
+   "likes": 105,
+   "knowledge_cutoff": "",
+   "agentic_index": 20.1,
+   "evals": {
+    "GDPval-AA v2": 21.3,
+    "τ³-Banking": 17.9,
+    "Terminal-Bench v2.1": 43.1,
+    "SciCode": 42.4,
+    "Humanity's Last Exam": 21.6,
+    "GPQA Diamond": 85.7,
+    "CritPt": 3.7,
+    "AA-Omniscience": -37.7,
+    "AA-LCR": 67.3
+   }
+  },
+  {
+   "name": "K-EXAONE 2.0 0803",
+   "creator": "LG AI Research",
+   "country": "kr",
+   "hf_repo": "LGAI-EXAONE/K-EXAONE-2.0-750B-A37B",
+   "hf_url": "https://huggingface.co/LGAI-EXAONE/K-EXAONE-2.0-750B-A37B",
+   "release_date": "2026-08-12",
+   "hub_last_modified": "2026-08-07",
+   "intelligence_index": 31.0,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 31.0
+   },
+   "openness_index": 44.4,
+   "params_billions": 749.4,
+   "active_params_billions": 37.0,
+   "context_window_tokens": 262144,
+   "license": "Apache 2.0",
+   "license_url": "",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "ExaoneMoeForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 4037,
+   "likes": 152,
+   "knowledge_cutoff": "",
+   "agentic_index": 19.7,
+   "evals": {
+    "GDPval-AA v2": 24.0,
+    "τ³-Banking": 11.5,
+    "Terminal-Bench v2.1": 40.4,
+    "SciCode": 41.0,
+    "Humanity's Last Exam": 18.6,
+    "GPQA Diamond": 82.9,
+    "CritPt": 0.9,
+    "AA-Omniscience": -6.6,
+    "AA-LCR": 57.7
+   }
+  },
+  {
+   "name": "Step 3.7 Flash",
+   "creator": "StepFun",
+   "country": "cn",
+   "hf_repo": "stepfun-ai/Step-3.7-Flash",
+   "hf_url": "https://huggingface.co/stepfun-ai/Step-3.7-Flash",
+   "release_date": "2026-05-29",
+   "hub_last_modified": "2026-06-03",
+   "intelligence_index": 30.9,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 30.9
+   },
+   "openness_index": 38.9,
+   "params_billions": 201.4,
+   "active_params_billions": 11.0,
+   "context_window_tokens": 262144,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Step3p7ForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 50329,
+   "likes": 447,
+   "knowledge_cutoff": "",
+   "agentic_index": 21.7,
+   "evals": {
+    "GDPval-AA v2": 26.0,
+    "τ³-Banking": 12.0,
+    "Terminal-Bench v2.1": 39.3,
+    "SciCode": 40.0,
+    "Humanity's Last Exam": 21.4,
+    "GPQA Diamond": 80.9,
+    "CritPt": 2.3,
+    "AA-Omniscience": -37.3,
+    "AA-LCR": 69.7
+   }
+  },
+  {
+   "name": "Mistral Medium 3.5",
+   "creator": "Mistral",
+   "country": "fr",
+   "hf_repo": "mistralai/Mistral-Medium-3.5-128B",
+   "hf_url": "https://huggingface.co/mistralai/Mistral-Medium-3.5-128B",
+   "release_date": "2026-04-29",
+   "hub_last_modified": "2026-07-15",
+   "intelligence_index": 30.4,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 30.4
+   },
+   "openness_index": 33.3,
+   "params_billions": 127.7,
+   "active_params_billions": null,
+   "context_window_tokens": 256000,
+   "license": "Modified MIT License",
+   "license_url": "https://huggingface.co/mistralai/Mistral-Medium-3.5-128B/blob/main/LICENSE",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Mistral3ForConditionalGeneration",
+   "pipeline_tag": "",
+   "downloads_30d": 80875,
+   "likes": 430,
+   "knowledge_cutoff": "",
+   "agentic_index": 19.2,
+   "evals": {
+    "GDPval-AA v2": 21.8,
+    "τ³-Banking": 15.1,
+    "Terminal-Bench v2.1": 50.6,
+    "SciCode": 39.6,
+    "Humanity's Last Exam": 13.8,
+    "GPQA Diamond": 74.8,
+    "CritPt": 0,
+    "AA-Omniscience": -36.8,
+    "AA-LCR": 65.3
+   }
+  },
+  {
+   "name": "Gemma 4 31B",
+   "creator": "Google",
+   "country": "us",
+   "hf_repo": "google/gemma-4-31B-it",
+   "hf_url": "https://huggingface.co/google/gemma-4-31B-it",
+   "release_date": "2026-04-02",
+   "hub_last_modified": "2026-07-20",
+   "intelligence_index": 29.7,
+   "intelligence_is_estimated": false,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 29.7,
+    "non-reasoning": 22.3
+   },
+   "openness_index": 38.9,
+   "params_billions": 31.3,
+   "active_params_billions": null,
+   "context_window_tokens": 256000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "video"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Gemma4ForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 8128376,
+   "likes": 3654,
+   "knowledge_cutoff": "",
+   "agentic_index": 14.4,
+   "evals": {
+    "GDPval-AA v2": 15.6,
+    "τ³-Banking": 14.8,
+    "Terminal-Bench v2.1": 43.4,
+    "SciCode": 43.4,
+    "Humanity's Last Exam": 23.6,
+    "GPQA Diamond": 85.7,
+    "CritPt": 1.4,
+    "AA-Omniscience": -47.9,
+    "AA-LCR": 68.3
+   }
+  },
+  {
+   "name": "Gemma 4 26B A4B",
+   "creator": "Google",
+   "country": "us",
+   "hf_repo": "google/gemma-4-26B-A4B-it",
+   "hf_url": "https://huggingface.co/google/gemma-4-26B-A4B-it",
+   "release_date": "2026-04-02",
+   "hub_last_modified": "2026-07-20",
+   "intelligence_index": 26.1,
+   "intelligence_is_estimated": false,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 26.1,
+    "non-reasoning": 20.4
+   },
+   "openness_index": 38.9,
+   "params_billions": 25.8,
+   "active_params_billions": 3.8,
+   "context_window_tokens": 256000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "video"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Gemma4ForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 7961972,
+   "likes": 1449,
+   "knowledge_cutoff": "",
+   "agentic_index": 11.0,
+   "evals": {
+    "GDPval-AA v2": 13.5,
+    "τ³-Banking": 12.0,
+    "Terminal-Bench v2.1": 39.0,
+    "SciCode": 40.0,
+    "Humanity's Last Exam": 19.3,
+    "GPQA Diamond": 79.2,
+    "CritPt": 0,
+    "AA-Omniscience": -50.8,
+    "AA-LCR": 61.7
+   }
+  },
+  {
+   "name": "Nemotron 3 Super 120B A12B",
+   "creator": "NVIDIA",
+   "country": "us",
+   "hf_repo": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
+   "hf_url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
+   "release_date": "2026-03-11",
+   "hub_last_modified": "2026-08-25",
+   "intelligence_index": 25.7,
+   "intelligence_is_estimated": false,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 25.7
+   },
+   "openness_index": 83.3,
+   "params_billions": 123.6,
+   "active_params_billions": 12.7,
+   "context_window_tokens": 1000000,
+   "license": "Nvidia Nemotron Open Model License",
+   "license_url": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "NemotronHForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 990356,
+   "likes": 422,
+   "knowledge_cutoff": "",
+   "agentic_index": 8.8,
+   "evals": {
+    "GDPval-AA v2": 10.0,
+    "τ³-Banking": 10.3,
+    "Terminal-Bench v2.1": 38.6,
+    "SciCode": 36.0,
+    "Humanity's Last Exam": 20.8,
+    "GPQA Diamond": 80.0,
+    "CritPt": 3.1,
+    "AA-Omniscience": -41.5,
+    "AA-LCR": 60.3
+   }
+  },
+  {
+   "name": "Ling 3.0 Tiny",
+   "creator": "InclusionAI",
+   "country": "cn",
+   "hf_repo": "inclusionAI/Ling-3.0-tiny",
+   "hf_url": "https://huggingface.co/inclusionAI/Ling-3.0-tiny",
+   "release_date": "2026-08-06",
+   "hub_last_modified": "2026-08-19",
+   "intelligence_index": 24.5,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 24.5
+   },
+   "openness_index": 38.9,
+   "params_billions": 7.9,
+   "active_params_billions": 1.3,
+   "context_window_tokens": 262144,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "BailingMoeV3ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 17322,
+   "likes": 373,
+   "knowledge_cutoff": "",
+   "agentic_index": 16.0,
+   "evals": {
+    "GDPval-AA v2": 13.7,
+    "τ³-Banking": 20.8,
+    "Terminal-Bench v2.1": 27.7,
+    "SciCode": 24.2,
+    "Humanity's Last Exam": 9.3,
+    "GPQA Diamond": 73.4,
+    "CritPt": 0,
+    "AA-Omniscience": -19.4,
+    "AA-LCR": 58.7
+   }
+  },
+  {
+   "name": "gpt-oss-120b",
+   "creator": "OpenAI",
+   "country": "us",
+   "hf_repo": "openai/gpt-oss-120b",
+   "hf_url": "https://huggingface.co/openai/gpt-oss-120b",
+   "release_date": "2025-08-05",
+   "hub_last_modified": "2025-08-26",
+   "intelligence_index": 24.1,
+   "intelligence_is_estimated": false,
+   "best_effort": "high",
+   "effort_spread": {
+    "high": 24.1,
+    "low": 14.9
+   },
+   "openness_index": 38.9,
+   "params_billions": 116.8,
+   "active_params_billions": 5.1,
+   "context_window_tokens": 131072,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "GptOssForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 5023485,
+   "likes": 5129,
+   "knowledge_cutoff": "2024-05-31",
+   "agentic_index": 13.4,
+   "evals": {
+    "GDPval-AA v2": 15.1,
+    "τ³-Banking": 12.8,
+    "Terminal-Bench v2.1": 26.2,
+    "SciCode": 38.9,
+    "Humanity's Last Exam": 19.6,
+    "GPQA Diamond": 78.2,
+    "CritPt": 1.1,
+    "AA-Omniscience": -49.2,
+    "AA-LCR": 51.0
+   }
+  },
+  {
+   "name": "Granite 4.2 30B",
+   "creator": "IBM",
+   "country": "us",
+   "hf_repo": "ibm-granite/granite-4.2-30b",
+   "hf_url": "https://huggingface.co/ibm-granite/granite-4.2-30b",
+   "release_date": "2026-08-25",
+   "hub_last_modified": "2026-08-25",
+   "intelligence_index": 23.7,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 23.7
+   },
+   "openness_index": 72.2,
+   "params_billions": 29.3,
+   "active_params_billions": null,
+   "context_window_tokens": 131072,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "GraniteForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 1791,
+   "likes": 83,
+   "knowledge_cutoff": "",
+   "agentic_index": 13.9,
+   "evals": {
+    "GDPval-AA v2": 13.8,
+    "τ³-Banking": 14.4,
+    "Terminal-Bench v2.1": 26.6,
+    "SciCode": 36.6,
+    "Humanity's Last Exam": 11.2,
+    "GPQA Diamond": 64.4,
+    "CritPt": 0.3,
+    "AA-Omniscience": -12.9,
+    "AA-LCR": 46.7
+   }
+  },
+  {
+   "name": "Nemotron 3.5 Lightning",
+   "creator": "NVIDIA",
+   "country": "us",
+   "hf_repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+   "hf_url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+   "release_date": "2026-08-11",
+   "hub_last_modified": "2026-08-24",
+   "intelligence_index": 23.6,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 23.6
+   },
+   "openness_index": 77.8,
+   "params_billions": 31.6,
+   "active_params_billions": 3.6,
+   "context_window_tokens": 1000000,
+   "license": "OpenMDW-1.1",
+   "license_url": "https://openmdw.ai/license/1-1/",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "NemotronHForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 378645,
+   "likes": 191,
+   "knowledge_cutoff": "",
+   "agentic_index": 13.8,
+   "evals": {
+    "GDPval-AA v2": 16.2,
+    "τ³-Banking": 8.9,
+    "Terminal-Bench v2.1": 24.3,
+    "SciCode": 31.6,
+    "Humanity's Last Exam": 10.6,
+    "GPQA Diamond": 74.3,
+    "CritPt": 0,
+    "AA-Omniscience": -17.7,
+    "AA-LCR": 55.3
+   }
+  },
+  {
+   "name": "Command A+",
+   "creator": "Cohere",
+   "country": "ca",
+   "hf_repo": "CohereLabs/command-a-plus-05-2026-bf16",
+   "hf_url": "https://huggingface.co/CohereLabs/command-a-plus-05-2026-bf16",
+   "release_date": "2026-05-20",
+   "hub_last_modified": "2026-06-15",
+   "intelligence_index": 22.8,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 22.8
+   },
+   "openness_index": 38.9,
+   "params_billions": 218.8,
+   "active_params_billions": 25.0,
+   "context_window_tokens": 192000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Cohere2VisionForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 47778,
+   "likes": 142,
+   "knowledge_cutoff": "",
+   "agentic_index": 9.2,
+   "evals": {
+    "GDPval-AA v2": 10.7,
+    "τ³-Banking": 6.0,
+    "Terminal-Bench v2.1": 22.8,
+    "SciCode": 37.8,
+    "Humanity's Last Exam": 12.0,
+    "GPQA Diamond": 76.1,
+    "CritPt": 0.3,
+    "AA-Omniscience": -4.0,
+    "AA-LCR": 48.7
+   }
+  },
+  {
+   "name": "Gemma 4 12B",
+   "creator": "Google",
+   "country": "us",
+   "hf_repo": "google/gemma-4-12B-it",
+   "hf_url": "https://huggingface.co/google/gemma-4-12B-it",
+   "release_date": "2026-06-03",
+   "hub_last_modified": "2026-07-20",
+   "intelligence_index": 22.2,
+   "intelligence_is_estimated": true,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 22.2,
+    "non-reasoning": 13.2
+   },
+   "openness_index": 38.9,
+   "params_billions": 12.0,
+   "active_params_billions": null,
+   "context_window_tokens": 256000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "speech",
+    "video"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Gemma4UnifiedForConditionalGeneration",
+   "pipeline_tag": "any-to-any",
+   "downloads_30d": 3194564,
+   "likes": 1499,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": 7.3,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": 27.3,
+    "SciCode": 38.2,
+    "Humanity's Last Exam": 15.7,
+    "GPQA Diamond": 75.3,
+    "CritPt": 0,
+    "AA-Omniscience": -52.7,
+    "AA-LCR": 61.7
+   }
+  },
+  {
+   "name": "Apriel-v1.6-15B-Thinker",
+   "creator": "ServiceNow",
+   "country": "us",
+   "hf_repo": "ServiceNow-AI/Apriel-1.6-15b-Thinker",
+   "hf_url": "https://huggingface.co/ServiceNow-AI/Apriel-1.6-15b-Thinker",
+   "release_date": "2025-11-25",
+   "hub_last_modified": "2025-12-22",
+   "intelligence_index": 20.8,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 20.8
+   },
+   "openness_index": 50,
+   "params_billions": 14.9,
+   "active_params_billions": null,
+   "context_window_tokens": 128000,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit/",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "LlavaForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 5707,
+   "likes": 304,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 37.3,
+    "Humanity's Last Exam": 10.8,
+    "GPQA Diamond": 73.3,
+    "CritPt": 0.3,
+    "AA-Omniscience": -59.4,
+    "AA-LCR": null
+   }
+  },
+  {
+   "name": "EXAONE 4.5 33B",
+   "creator": "LG AI Research",
+   "country": "kr",
+   "hf_repo": "LGAI-EXAONE/EXAONE-4.5-33B",
+   "hf_url": "https://huggingface.co/LGAI-EXAONE/EXAONE-4.5-33B",
+   "release_date": "2026-04-09",
+   "hub_last_modified": "2026-07-06",
+   "intelligence_index": 20.5,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 20.5
+   },
+   "openness_index": 27.8,
+   "params_billions": 34.4,
+   "active_params_billions": null,
+   "context_window_tokens": 262144,
+   "license": "EXAONE AI Model License Agreement 1.2 - NC",
+   "license_url": "https://huggingface.co/LGAI-EXAONE/EXAONE-4.0-1.2B/blob/main/LICENSE",
+   "license_category": "non-commercial",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Exaone4_5_ForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 99571,
+   "likes": 183,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": 9.1,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": 21.3,
+    "SciCode": 28.0,
+    "Humanity's Last Exam": 12.9,
+    "GPQA Diamond": 79.4,
+    "CritPt": 0.3,
+    "AA-Omniscience": -50.7,
+    "AA-LCR": 51.7
+   }
+  },
+  {
+   "name": "North Mini Code",
+   "creator": "Cohere",
+   "country": "ca",
+   "hf_repo": "CohereLabs/North-Mini-Code-1.0",
+   "hf_url": "https://huggingface.co/CohereLabs/North-Mini-Code-1.0",
+   "release_date": "2026-06-09",
+   "hub_last_modified": "2026-06-15",
+   "intelligence_index": 20.2,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 20.2
+   },
+   "openness_index": 41.7,
+   "params_billions": 30.5,
+   "active_params_billions": 3.0,
+   "context_window_tokens": 256000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Cohere2MoeForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 21448,
+   "likes": 563,
+   "knowledge_cutoff": "",
+   "agentic_index": 3.1,
+   "evals": {
+    "GDPval-AA v2": 2.1,
+    "τ³-Banking": 6.4,
+    "Terminal-Bench v2.1": 35.6,
+    "SciCode": 38.2,
+    "Humanity's Last Exam": 11.1,
+    "GPQA Diamond": 75.7,
+    "CritPt": 0.3,
+    "AA-Omniscience": -48.6,
+    "AA-LCR": 36.0
+   }
+  },
+  {
+   "name": "Granite 4.2 8B",
+   "creator": "IBM",
+   "country": "us",
+   "hf_repo": "ibm-granite/granite-4.2-8b",
+   "hf_url": "https://huggingface.co/ibm-granite/granite-4.2-8b",
+   "release_date": "2026-08-25",
+   "hub_last_modified": "2026-08-25",
+   "intelligence_index": 19.6,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 19.6
+   },
+   "openness_index": 72.2,
+   "params_billions": 8.8,
+   "active_params_billions": null,
+   "context_window_tokens": 131072,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "GraniteForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 2604,
+   "likes": 50,
+   "knowledge_cutoff": "",
+   "agentic_index": 9.2,
+   "evals": {
+    "GDPval-AA v2": 10.2,
+    "τ³-Banking": 7.6,
+    "Terminal-Bench v2.1": 18.4,
+    "SciCode": 30.4,
+    "Humanity's Last Exam": 9.7,
+    "GPQA Diamond": 63.1,
+    "CritPt": 0.3,
+    "AA-Omniscience": -17.2,
+    "AA-LCR": 43.3
+   }
+  },
+  {
+   "name": "Trinity Large Thinking",
+   "creator": "Arcee AI",
+   "country": "us",
+   "hf_repo": "arcee-ai/Trinity-Large-Thinking",
+   "hf_url": "https://huggingface.co/arcee-ai/Trinity-Large-Thinking",
+   "release_date": "2026-04-01",
+   "hub_last_modified": "2026-05-28",
+   "intelligence_index": 18.7,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 18.7
+   },
+   "openness_index": 44.4,
+   "params_billions": 398.6,
+   "active_params_billions": 13.0,
+   "context_window_tokens": 512000,
+   "license": "OpenMDW 1.1 License",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "AfmoeForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 5398,
+   "likes": 186,
+   "knowledge_cutoff": "",
+   "agentic_index": 3.7,
+   "evals": {
+    "GDPval-AA v2": 3.3,
+    "τ³-Banking": 5.8,
+    "Terminal-Bench v2.1": 20.6,
+    "SciCode": 36.1,
+    "Humanity's Last Exam": 15.8,
+    "GPQA Diamond": 75.2,
+    "CritPt": 0.9,
+    "AA-Omniscience": -44.1,
+    "AA-LCR": 38.3
+   }
+  },
+  {
+   "name": "HyperNova 60B 2605",
+   "creator": "Multiverse Computing",
+   "country": "es",
+   "hf_repo": "MultiverseComputingCAI/Hypernova-60B-2605",
+   "hf_url": "https://huggingface.co/MultiverseComputingCAI/Hypernova-60B-2605",
+   "release_date": "2026-05-26",
+   "hub_last_modified": "2026-08-07",
+   "intelligence_index": 18.3,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 18.3
+   },
+   "openness_index": 38.9,
+   "params_billions": 58.7,
+   "active_params_billions": 4.8,
+   "context_window_tokens": 131072,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "GptOssForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 3948,
+   "likes": 17,
+   "knowledge_cutoff": "",
+   "agentic_index": 6.8,
+   "evals": {
+    "GDPval-AA v2": 7.9,
+    "τ³-Banking": 5.6,
+    "Terminal-Bench v2.1": 18.4,
+    "SciCode": 33.0,
+    "Humanity's Last Exam": 16.6,
+    "GPQA Diamond": 73.3,
+    "CritPt": 0.9,
+    "AA-Omniscience": -54.6,
+    "AA-LCR": 35.3
+   }
+  },
+  {
+   "name": "Devstral Small 2",
+   "creator": "Mistral",
+   "country": "fr",
+   "hf_repo": "mistralai/Devstral-Small-2-24B-Instruct-2512",
+   "hf_url": "https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512",
+   "release_date": "2025-12-09",
+   "hub_last_modified": "2026-07-15",
+   "intelligence_index": 17.7,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 17.7
+   },
+   "openness_index": 27.8,
+   "params_billions": 24.0,
+   "active_params_billions": null,
+   "context_window_tokens": 256000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Mistral3ForConditionalGeneration",
+   "pipeline_tag": "",
+   "downloads_30d": 193477,
+   "likes": 652,
+   "knowledge_cutoff": "",
+   "agentic_index": 10.8,
+   "evals": {
+    "GDPval-AA v2": 11.7,
+    "τ³-Banking": 10.7,
+    "Terminal-Bench v2.1": 29.6,
+    "SciCode": 28.8,
+    "Humanity's Last Exam": 3.5,
+    "GPQA Diamond": 53.2,
+    "CritPt": 0,
+    "AA-Omniscience": -57.7,
+    "AA-LCR": 27.0
+   }
+  },
+  {
+   "name": "K2 Think V2",
+   "creator": "MBZUAI Institute of Foundation Models",
+   "country": "ae",
+   "hf_repo": "LLM360/K2-Think-V2",
+   "hf_url": "https://huggingface.co/LLM360/K2-Think-V2",
+   "release_date": "2025-12-15",
+   "hub_last_modified": "2026-08-05",
+   "intelligence_index": 17.4,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 17.4
+   },
+   "openness_index": 88.9,
+   "params_billions": 72.6,
+   "active_params_billions": null,
+   "context_window_tokens": 262144,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "LlamaForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 1002,
+   "likes": 38,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": 0,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": 15.0,
+    "SciCode": 33.0,
+    "Humanity's Last Exam": 10.1,
+    "GPQA Diamond": 71.3,
+    "CritPt": 0,
+    "AA-Omniscience": -40.3,
+    "AA-LCR": 55.3
+   }
+  },
+  {
+   "name": "LongCat Flash Lite",
+   "creator": "LongCat",
+   "country": "cn",
+   "hf_repo": "meituan-longcat/LongCat-Flash-Lite",
+   "hf_url": "https://huggingface.co/meituan-longcat/LongCat-Flash-Lite",
+   "release_date": "2026-01-28",
+   "hub_last_modified": "2026-02-06",
+   "intelligence_index": 17.4,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 17.4
+   },
+   "openness_index": 44.4,
+   "params_billions": 69.1,
+   "active_params_billions": 3.0,
+   "context_window_tokens": 256000,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "LongcatFlashNgramForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 15540,
+   "likes": 207,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 28.4,
+    "Humanity's Last Exam": 5.8,
+    "GPQA Diamond": 63.6,
+    "CritPt": 0,
+    "AA-Omniscience": -70.1,
+    "AA-LCR": 28.7
+   }
+  },
+  {
+   "name": "HyperCLOVA X SEED Think (32B)",
+   "creator": "Naver",
+   "country": "kr",
+   "hf_repo": "naver-hyperclovax/HyperCLOVAX-SEED-Think-32B",
+   "hf_url": "https://huggingface.co/naver-hyperclovax/HyperCLOVAX-SEED-Think-32B",
+   "release_date": "2025-12-26",
+   "hub_last_modified": "2026-07-14",
+   "intelligence_index": 17.2,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 17.2
+   },
+   "openness_index": 30.6,
+   "params_billions": 33.3,
+   "active_params_billions": null,
+   "context_window_tokens": 128000,
+   "license": "HyperCLOVA X SEED 32B Think Model License Agreement",
+   "license_url": "https://huggingface.co/naver-hyperclovax/HyperCLOVAX-SEED-Think-32B/blob/main/LICENSE",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "video"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "HCXVisionV2ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 44448,
+   "likes": 403,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 28.4,
+    "Humanity's Last Exam": 5.5,
+    "GPQA Diamond": 61.5,
+    "CritPt": 0,
+    "AA-Omniscience": -53.3,
+    "AA-LCR": 13.3
+   }
+  },
+  {
+   "name": "G9v3-3B",
+   "creator": "AI9Stars",
+   "country": "cn",
+   "hf_repo": "ai9stars/G9v3-3B",
+   "hf_url": "https://huggingface.co/ai9stars/G9v3-3B",
+   "release_date": "2026-07-23",
+   "hub_last_modified": "2026-07-22",
+   "intelligence_index": 16.2,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 16.2
+   },
+   "openness_index": 33.3,
+   "params_billions": 3.0,
+   "active_params_billions": null,
+   "context_window_tokens": 131072,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "LlamaForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 4677,
+   "likes": 52,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": 18.2,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": 6.0,
+    "SciCode": 17.7,
+    "Humanity's Last Exam": 4.5,
+    "GPQA Diamond": 43.8,
+    "CritPt": 0,
+    "AA-Omniscience": -4.4,
+    "AA-LCR": 40.7
+   }
+  },
+  {
+   "name": "Mistral Large 3",
+   "creator": "Mistral",
+   "country": "fr",
+   "hf_repo": "mistralai/Mistral-Large-3-675B-Instruct-2512",
+   "hf_url": "https://huggingface.co/mistralai/Mistral-Large-3-675B-Instruct-2512",
+   "release_date": "2025-12-02",
+   "hub_last_modified": "2026-07-15",
+   "intelligence_index": 15.9,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 15.9
+   },
+   "openness_index": 38.9,
+   "params_billions": 675.0,
+   "active_params_billions": 41.0,
+   "context_window_tokens": 256000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "",
+   "pipeline_tag": "",
+   "downloads_30d": 1525,
+   "likes": 245,
+   "knowledge_cutoff": "",
+   "agentic_index": 5.5,
+   "evals": {
+    "GDPval-AA v2": 7.1,
+    "τ³-Banking": 5.8,
+    "Terminal-Bench v2.1": 12.0,
+    "SciCode": 36.2,
+    "Humanity's Last Exam": 4.2,
+    "GPQA Diamond": 68.0,
+    "CritPt": 0,
+    "AA-Omniscience": -39.6,
+    "AA-LCR": 34.7
+   }
+  },
+  {
+   "name": "INTELLECT-3",
+   "creator": "Prime Intellect",
+   "country": "us",
+   "hf_repo": "PrimeIntellect/INTELLECT-3",
+   "hf_url": "https://huggingface.co/PrimeIntellect/INTELLECT-3",
+   "release_date": "2025-11-27",
+   "hub_last_modified": "2025-11-27",
+   "intelligence_index": 15.7,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 15.7
+   },
+   "openness_index": 72.2,
+   "params_billions": 106.9,
+   "active_params_billions": 12.0,
+   "context_window_tokens": 131100,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Glm4MoeForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 7044,
+   "likes": 217,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 39.1,
+    "Humanity's Last Exam": 13.1,
+    "GPQA Diamond": 76.1,
+    "CritPt": 0.3,
+    "AA-Omniscience": -50.9,
+    "AA-LCR": 36.3
+   }
+  },
+  {
+   "name": "Solar Open 100B",
+   "creator": "Upstage",
+   "country": "kr",
+   "hf_repo": "upstage/Solar-Open-100B",
+   "hf_url": "https://huggingface.co/upstage/Solar-Open-100B",
+   "release_date": "2025-12-17",
+   "hub_last_modified": "2026-01-30",
+   "intelligence_index": 15.2,
+   "intelligence_is_estimated": true,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 15.2
+   },
+   "openness_index": 27.8,
+   "params_billions": 102.7,
+   "active_params_billions": 12.0,
+   "context_window_tokens": 128000,
+   "license": "Upstage Solar License",
+   "license_url": "https://huggingface.co/upstage/Solar-Open-100B/blob/main/LICENSE",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "SolarOpenForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 14453,
+   "likes": 495,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 26.9,
+    "Humanity's Last Exam": 10.4,
+    "GPQA Diamond": 65.7,
+    "CritPt": 0,
+    "AA-Omniscience": -54.5,
+    "AA-LCR": 37.0
+   }
+  },
+  {
+   "name": "gpt-oss-20b",
+   "creator": "OpenAI",
+   "country": "us",
+   "hf_repo": "openai/gpt-oss-20b",
+   "hf_url": "https://huggingface.co/openai/gpt-oss-20b",
+   "release_date": "2025-08-05",
+   "hub_last_modified": "2025-08-26",
+   "intelligence_index": 15.2,
+   "intelligence_is_estimated": false,
+   "best_effort": "high",
+   "effort_spread": {
+    "high": 15.2,
+    "low": 14.4
+   },
+   "openness_index": 38.9,
+   "params_billions": 20.9,
+   "active_params_billions": 3.6,
+   "context_window_tokens": 131072,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "GptOssForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 6346634,
+   "likes": 4961,
+   "knowledge_cutoff": "2024-05-31",
+   "agentic_index": 3.1,
+   "evals": {
+    "GDPval-AA v2": 3.4,
+    "τ³-Banking": 7.0,
+    "Terminal-Bench v2.1": 13.9,
+    "SciCode": 34.4,
+    "Humanity's Last Exam": 11.0,
+    "GPQA Diamond": 68.8,
+    "CritPt": 1.4,
+    "AA-Omniscience": -63.0,
+    "AA-LCR": 33.3
+   }
+  },
+  {
+   "name": "Llama 4 Maverick",
+   "creator": "Meta",
+   "country": "us",
+   "hf_repo": "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+   "hf_url": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+   "release_date": "2025-04-05",
+   "hub_last_modified": "2025-05-22",
+   "intelligence_index": 14.5,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 14.5
+   },
+   "openness_index": 27.8,
+   "params_billions": 401.6,
+   "active_params_billions": 17.0,
+   "context_window_tokens": 1000000,
+   "license": "LLAMA 4 COMMUNITY LICENSE AGREEMENT",
+   "license_url": "https://www.llama.com/llama4/license/",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Llama4ForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 11458,
+   "likes": 505,
+   "knowledge_cutoff": "2024-08-01",
+   "agentic_index": 1.2,
+   "evals": {
+    "GDPval-AA v2": 0,
+    "τ³-Banking": 3.7,
+    "Terminal-Bench v2.1": 7.9,
+    "SciCode": 33.1,
+    "Humanity's Last Exam": 4.9,
+    "GPQA Diamond": 67.1,
+    "CritPt": 0,
+    "AA-Omniscience": -41.9,
+    "AA-LCR": 50.0
+   }
+  },
+  {
+   "name": "Granite 4.2 3B",
+   "creator": "IBM",
+   "country": "us",
+   "hf_repo": "ibm-granite/granite-4.2-3b",
+   "hf_url": "https://huggingface.co/ibm-granite/granite-4.2-3b",
+   "release_date": "2026-08-25",
+   "hub_last_modified": "2026-08-25",
+   "intelligence_index": 14.3,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 14.3
+   },
+   "openness_index": 72.2,
+   "params_billions": 3.7,
+   "active_params_billions": null,
+   "context_window_tokens": 131072,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "GraniteForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 3069,
+   "likes": 50,
+   "knowledge_cutoff": "",
+   "agentic_index": 1.9,
+   "evals": {
+    "GDPval-AA v2": 0,
+    "τ³-Banking": 5.6,
+    "Terminal-Bench v2.1": 13.9,
+    "SciCode": 24.9,
+    "Humanity's Last Exam": 6.6,
+    "GPQA Diamond": 55.9,
+    "CritPt": 0,
+    "AA-Omniscience": -14.7,
+    "AA-LCR": 24.3
+   }
+  },
+  {
+   "name": "DiffusionGemma 26B A4B",
+   "creator": "Google",
+   "country": "us",
+   "hf_repo": "google/diffusiongemma-26B-A4B-it",
+   "hf_url": "https://huggingface.co/google/diffusiongemma-26B-A4B-it",
+   "release_date": "2026-06-10",
+   "hub_last_modified": "2026-07-15",
+   "intelligence_index": 13.5,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 13.5
+   },
+   "openness_index": 44.4,
+   "params_billions": 25.8,
+   "active_params_billions": 3.8,
+   "context_window_tokens": 256000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "video"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "DiffusionGemmaForBlockDiffusion",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 1490335,
+   "likes": 1194,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": 2.7,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": 12.4,
+    "SciCode": 34.3,
+    "Humanity's Last Exam": 10.8,
+    "GPQA Diamond": 66.9,
+    "CritPt": 0.3,
+    "AA-Omniscience": -59.2,
+    "AA-LCR": 18.3
+   }
+  },
+  {
+   "name": "Tri-21B-Think",
+   "creator": "Trillion Labs",
+   "country": "kr",
+   "hf_repo": "trillionlabs/Tri-21B-Think",
+   "hf_url": "https://huggingface.co/trillionlabs/Tri-21B-Think",
+   "release_date": "2026-02-10",
+   "hub_last_modified": "2026-02-19",
+   "intelligence_index": 12.3,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 12.3
+   },
+   "openness_index": 38.9,
+   "params_billions": 20.7,
+   "active_params_billions": null,
+   "context_window_tokens": 32000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "TrillionForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 342,
+   "likes": 29,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 17.4,
+    "Humanity's Last Exam": 5.9,
+    "GPQA Diamond": 60.1,
+    "CritPt": 0.3,
+    "AA-Omniscience": -62.5,
+    "AA-LCR": 15.0
+   }
+  },
+  {
+   "name": "MiniCPM5-1B",
+   "creator": "OpenBMB",
+   "country": "cn",
+   "hf_repo": "openbmb/MiniCPM5-1B",
+   "hf_url": "https://huggingface.co/openbmb/MiniCPM5-1B",
+   "release_date": "2026-05-25",
+   "hub_last_modified": "2026-08-17",
+   "intelligence_index": 11.9,
+   "intelligence_is_estimated": true,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 11.9,
+    "non-reasoning": 11.7
+   },
+   "openness_index": 83.3,
+   "params_billions": 1.1,
+   "active_params_billions": null,
+   "context_window_tokens": 128000,
+   "license": "Apache 2.0",
+   "license_url": "https://huggingface.co/datasets/choosealicense/licenses/blob/main/markdown/apache-2.0.md",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "LlamaForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 861991,
+   "likes": 1086,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 4.4,
+    "Humanity's Last Exam": 6.5,
+    "GPQA Diamond": 27.8,
+    "CritPt": 0,
+    "AA-Omniscience": -14.6,
+    "AA-LCR": 4.7
+   }
+  },
+  {
+   "name": "Sarvam 105B",
+   "creator": "Sarvam",
+   "country": "in",
+   "hf_repo": "sarvamai/sarvam-105b",
+   "hf_url": "https://huggingface.co/sarvamai/sarvam-105b",
+   "release_date": "2026-03-06",
+   "hub_last_modified": "2026-03-10",
+   "intelligence_index": 11.9,
+   "intelligence_is_estimated": true,
+   "best_effort": "high",
+   "effort_spread": {
+    "high": 11.9
+   },
+   "openness_index": 38.9,
+   "params_billions": 106.0,
+   "active_params_billions": 10.3,
+   "context_window_tokens": 128000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "SarvamMLAForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 7292,
+   "likes": 286,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 26.4,
+    "Humanity's Last Exam": 11.0,
+    "GPQA Diamond": 73.8,
+    "CritPt": 0,
+    "AA-Omniscience": -59.4,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "Nanbeige4.1-3B",
+   "creator": "Nanbeige",
+   "country": "cn",
+   "hf_repo": "Nanbeige/Nanbeige4.1-3B",
+   "hf_url": "https://huggingface.co/Nanbeige/Nanbeige4.1-3B",
+   "release_date": "2026-02-11",
+   "hub_last_modified": "2026-03-25",
+   "intelligence_index": 11.0,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 11.0
+   },
+   "openness_index": 41.7,
+   "params_billions": 3.9,
+   "active_params_billions": null,
+   "context_window_tokens": 256000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "LlamaForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 16699,
+   "likes": 1164,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": 0,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": 1.1,
+    "SciCode": 26.6,
+    "Humanity's Last Exam": 10.9,
+    "GPQA Diamond": 84.9,
+    "CritPt": 0,
+    "AA-Omniscience": -42.5,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "LFM2.5-2.6B",
+   "creator": "Liquid AI",
+   "country": "us",
+   "hf_repo": "LiquidAI/LFM2.5-2.6B",
+   "hf_url": "https://huggingface.co/LiquidAI/LFM2.5-2.6B",
+   "release_date": "2026-08-04",
+   "hub_last_modified": "2026-08-24",
+   "intelligence_index": 11.0,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 11.0
+   },
+   "openness_index": 38.9,
+   "params_billions": 2.7,
+   "active_params_billions": null,
+   "context_window_tokens": 128000,
+   "license": "lfm 1.0",
+   "license_url": "https://huggingface.co/LiquidAI/LFM2-2.6B-Exp/blob/main/LICENSE",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Lfm2ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 183166,
+   "likes": 707,
+   "knowledge_cutoff": "",
+   "agentic_index": 2.4,
+   "evals": {
+    "GDPval-AA v2": 0,
+    "τ³-Banking": 7.2,
+    "Terminal-Bench v2.1": 4.5,
+    "SciCode": 14.2,
+    "Humanity's Last Exam": 6.2,
+    "GPQA Diamond": 55.8,
+    "CritPt": 0,
+    "AA-Omniscience": -10.9,
+    "AA-LCR": 5.3
+   }
+  },
+  {
+   "name": "Llama 4 Scout",
+   "creator": "Meta",
+   "country": "us",
+   "hf_repo": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+   "hf_url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+   "release_date": "2025-04-05",
+   "hub_last_modified": "2025-05-22",
+   "intelligence_index": 10.3,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 10.3
+   },
+   "openness_index": 27.8,
+   "params_billions": 108.6,
+   "active_params_billions": 17.0,
+   "context_window_tokens": 10000000,
+   "license": "LLAMA 4 COMMUNITY LICENSE AGREEMENT",
+   "license_url": "https://www.llama.com/llama4/license/",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Llama4ForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 268188,
+   "likes": 1335,
+   "knowledge_cutoff": "2024-08-01",
+   "agentic_index": 1.1,
+   "evals": {
+    "GDPval-AA v2": 0,
+    "τ³-Banking": 3.3,
+    "Terminal-Bench v2.1": 3.7,
+    "SciCode": 17.0,
+    "Humanity's Last Exam": 3.8,
+    "GPQA Diamond": 58.7,
+    "CritPt": 0,
+    "AA-Omniscience": -52.1,
+    "AA-LCR": 30.3
+   }
+  },
+  {
+   "name": "Hermes 4 - Llama-3.1 70B",
+   "creator": "Nous Research",
+   "country": "us",
+   "hf_repo": "NousResearch/Hermes-4-70B",
+   "hf_url": "https://huggingface.co/NousResearch/Hermes-4-70B",
+   "release_date": "2025-08-27",
+   "hub_last_modified": "2025-09-02",
+   "intelligence_index": 9.9,
+   "intelligence_is_estimated": true,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 9.9,
+    "non-reasoning": 6.7
+   },
+   "openness_index": 47.2,
+   "params_billions": 70.6,
+   "active_params_billions": null,
+   "context_window_tokens": 128000,
+   "license": "Llama 3 Community",
+   "license_url": "https://llama.meta.com/llama3/license/",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "LlamaForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 2499,
+   "likes": 208,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 34.1,
+    "Humanity's Last Exam": 8.8,
+    "GPQA Diamond": 69.9,
+    "CritPt": 0,
+    "AA-Omniscience": -49.4,
+    "AA-LCR": 8.0
+   }
+  },
+  {
+   "name": "Falcon-H1R-7B",
+   "creator": "TII UAE",
+   "country": "ae",
+   "hf_repo": "tiiuae/Falcon-H1R-7B",
+   "hf_url": "https://huggingface.co/tiiuae/Falcon-H1R-7B",
+   "release_date": "2026-01-04",
+   "hub_last_modified": "2026-01-21",
+   "intelligence_index": 9.7,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 9.7
+   },
+   "openness_index": 44.4,
+   "params_billions": 7.6,
+   "active_params_billions": null,
+   "context_window_tokens": 256000,
+   "license": "Falcon Mamba 7B TII License Version 1.0",
+   "license_url": "https://falconllm.tii.ae/falcon-terms-and-conditions.html",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "FalconH1ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 2052,
+   "likes": 222,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 24.9,
+    "Humanity's Last Exam": 11.0,
+    "GPQA Diamond": 66.1,
+    "CritPt": 0.3,
+    "AA-Omniscience": -61.3,
+    "AA-LCR": 11.3
+   }
+  },
+  {
+   "name": "Step3 VL 10B",
+   "creator": "StepFun",
+   "country": "cn",
+   "hf_repo": "stepfun-ai/Step3-VL-10B",
+   "hf_url": "https://huggingface.co/stepfun-ai/Step3-VL-10B",
+   "release_date": "2026-01-20",
+   "hub_last_modified": "2026-02-04",
+   "intelligence_index": 9.3,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 9.3
+   },
+   "openness_index": 41.7,
+   "params_billions": 10.2,
+   "active_params_billions": null,
+   "context_window_tokens": 65536,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "StepVLForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 49010,
+   "likes": 413,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 31.1,
+    "Humanity's Last Exam": 10.8,
+    "GPQA Diamond": 69.0,
+    "CritPt": 0,
+    "AA-Omniscience": -59,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "ERNIE 4.5 300B A47B",
+   "creator": "Baidu",
+   "country": "cn",
+   "hf_repo": "baidu/ERNIE-4.5-300B-A47B-Paddle",
+   "hf_url": "https://huggingface.co/baidu/ERNIE-4.5-300B-A47B-Paddle",
+   "release_date": "2025-06-30",
+   "hub_last_modified": "2025-09-09",
+   "intelligence_index": 8.9,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 8.9
+   },
+   "openness_index": 55.6,
+   "params_billions": 300.5,
+   "active_params_billions": 47.0,
+   "context_window_tokens": 131072,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Ernie4_5_MoeForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 311,
+   "likes": 16,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 31.5,
+    "Humanity's Last Exam": 3.3,
+    "GPQA Diamond": 81.1,
+    "CritPt": 0,
+    "AA-Omniscience": -35.1,
+    "AA-LCR": 4.0
+   }
+  },
+  {
+   "name": "Hermes 4 - Llama-3.1 405B",
+   "creator": "Nous Research",
+   "country": "us",
+   "hf_repo": "NousResearch/Hermes-4-405B",
+   "hf_url": "https://huggingface.co/NousResearch/Hermes-4-405B",
+   "release_date": "2025-08-27",
+   "hub_last_modified": "2025-09-02",
+   "intelligence_index": 8.8,
+   "intelligence_is_estimated": true,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 8.8,
+    "non-reasoning": 8.6
+   },
+   "openness_index": 47.2,
+   "params_billions": 405.9,
+   "active_params_billions": null,
+   "context_window_tokens": 128000,
+   "license": "Llama 3 Community",
+   "license_url": "https://llama.meta.com/llama3/license/",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "LlamaForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 681,
+   "likes": 94,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 25.2,
+    "Humanity's Last Exam": 10.9,
+    "GPQA Diamond": 72.7,
+    "CritPt": 0.3,
+    "AA-Omniscience": -36.0,
+    "AA-LCR": 22.7
+   }
+  },
+  {
+   "name": "NVIDIA Nemotron 3 Nano 4B",
+   "creator": "NVIDIA",
+   "country": "us",
+   "hf_repo": "nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16",
+   "hf_url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16",
+   "release_date": "2026-03-16",
+   "hub_last_modified": "2026-03-20",
+   "intelligence_index": 8.6,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 8.6
+   },
+   "openness_index": 83.3,
+   "params_billions": 4.0,
+   "active_params_billions": null,
+   "context_window_tokens": 262000,
+   "license": "Nvidia Nemotron Open Model License",
+   "license_url": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "NemotronHForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 438121,
+   "likes": 115,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": 0,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": 3.7,
+    "SciCode": 16.4,
+    "Humanity's Last Exam": 4.9,
+    "GPQA Diamond": 51.3,
+    "CritPt": 0,
+    "AA-Omniscience": -70.5,
+    "AA-LCR": 17.3
+   }
+  },
+  {
+   "name": "Kimi Linear 48B A3B Instruct",
+   "creator": "Kimi",
+   "country": "cn",
+   "hf_repo": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+   "hf_url": "https://huggingface.co/moonshotai/Kimi-Linear-48B-A3B-Instruct",
+   "release_date": "2025-10-30",
+   "hub_last_modified": "2025-12-16",
+   "intelligence_index": 8.4,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 8.4
+   },
+   "openness_index": 61.1,
+   "params_billions": 49.1,
+   "active_params_billions": 3.0,
+   "context_window_tokens": 1000000,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "KimiLinearForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 176375,
+   "likes": 585,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 19.9,
+    "Humanity's Last Exam": 2.5,
+    "GPQA Diamond": 41.2,
+    "CritPt": null,
+    "AA-Omniscience": null,
+    "AA-LCR": 26.7
+   }
+  },
+  {
+   "name": "LFM2.5-8B-A1B",
+   "creator": "Liquid AI",
+   "country": "us",
+   "hf_repo": "LiquidAI/LFM2.5-8B-A1B",
+   "hf_url": "https://huggingface.co/LiquidAI/LFM2.5-8B-A1B",
+   "release_date": "2026-05-28",
+   "hub_last_modified": "2026-08-24",
+   "intelligence_index": 8.1,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 8.1
+   },
+   "openness_index": 33.3,
+   "params_billions": 8.5,
+   "active_params_billions": 1.5,
+   "context_window_tokens": 32768,
+   "license": "lfm 1.0",
+   "license_url": "https://huggingface.co/LiquidAI/LFM2-8B-A1B/blob/main/LICENSE",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Lfm2MoeForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 96745,
+   "likes": 745,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 7.8,
+    "Humanity's Last Exam": 6.9,
+    "GPQA Diamond": 51.3,
+    "CritPt": 0,
+    "AA-Omniscience": -33.2,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "Olmo 3.1 32B Think",
+   "creator": "Allen Institute for AI",
+   "country": "us",
+   "hf_repo": "allenai/Olmo-3.1-32B-Think",
+   "hf_url": "https://huggingface.co/allenai/Olmo-3.1-32B-Think",
+   "release_date": "2025-12-12",
+   "hub_last_modified": "2026-01-05",
+   "intelligence_index": 7.9,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 7.9
+   },
+   "openness_index": 88.9,
+   "params_billions": 32.2,
+   "active_params_billions": null,
+   "context_window_tokens": 65500,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Olmo3ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 5871,
+   "likes": 112,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 29.3,
+    "Humanity's Last Exam": 6.3,
+    "GPQA Diamond": 59.1,
+    "CritPt": 0,
+    "AA-Omniscience": -43.4,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "Command A",
+   "creator": "Cohere",
+   "country": "ca",
+   "hf_repo": "CohereForAI/c4ai-command-a-03-2025",
+   "hf_url": "https://huggingface.co/CohereForAI/c4ai-command-a-03-2025",
+   "release_date": "2025-03-13",
+   "hub_last_modified": "2025-10-30",
+   "intelligence_index": 7.5,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 7.5
+   },
+   "openness_index": 33.3,
+   "params_billions": 111.1,
+   "active_params_billions": null,
+   "context_window_tokens": 256000,
+   "license": "CC-BY-NC 4.0 License with Acceptable Use Addendum",
+   "license_url": "https://cohere.com/c4ai-cc-by-nc-license",
+   "license_category": "non-commercial",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Cohere2ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 2075,
+   "likes": 394,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 28.1,
+    "Humanity's Last Exam": 4.0,
+    "GPQA Diamond": 52.7,
+    "CritPt": 0,
+    "AA-Omniscience": -48.3,
+    "AA-LCR": 20.0
+   }
+  },
+  {
+   "name": "Qwen3.5 2B",
+   "creator": "Alibaba",
+   "country": "cn",
+   "hf_repo": "Qwen/Qwen3.5-2B",
+   "hf_url": "https://huggingface.co/Qwen/Qwen3.5-2B",
+   "release_date": "2026-03-02",
+   "hub_last_modified": "2026-03-02",
+   "intelligence_index": 7.4,
+   "intelligence_is_estimated": true,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 7.4,
+    "non-reasoning": 5.3
+   },
+   "openness_index": 38.9,
+   "params_billions": 2.3,
+   "active_params_billions": null,
+   "context_window_tokens": 262144,
+   "license": "Apache 2.0",
+   "license_url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/blob/main/LICENSE",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Qwen3_5ForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 2851416,
+   "likes": 374,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": 0,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": 3.0,
+    "SciCode": 2.8,
+    "Humanity's Last Exam": 2.6,
+    "GPQA Diamond": 45.6,
+    "CritPt": 0,
+    "AA-Omniscience": -60.2,
+    "AA-LCR": 28.7
+   }
+  },
+  {
+   "name": "Ministral 3 3B",
+   "creator": "Mistral",
+   "country": "fr",
+   "hf_repo": "mistralai/Ministral-3-3B-Instruct-2512",
+   "hf_url": "https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512",
+   "release_date": "2025-12-02",
+   "hub_last_modified": "2026-07-15",
+   "intelligence_index": 7.1,
+   "intelligence_is_estimated": false,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 7.1
+   },
+   "openness_index": 38.9,
+   "params_billions": 3.8,
+   "active_params_billions": null,
+   "context_window_tokens": 256000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text",
+    "image"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Mistral3ForConditionalGeneration",
+   "pipeline_tag": "",
+   "downloads_30d": 354551,
+   "likes": 276,
+   "knowledge_cutoff": "",
+   "agentic_index": 1.6,
+   "evals": {
+    "GDPval-AA v2": 0,
+    "τ³-Banking": 4.7,
+    "Terminal-Bench v2.1": 0,
+    "SciCode": 14.4,
+    "Humanity's Last Exam": 5.4,
+    "GPQA Diamond": 35.8,
+    "CritPt": 0,
+    "AA-Omniscience": -64,
+    "AA-LCR": 16.0
+   }
+  },
+  {
+   "name": "Sarvam 30B",
+   "creator": "Sarvam",
+   "country": "in",
+   "hf_repo": "sarvamai/sarvam-30b",
+   "hf_url": "https://huggingface.co/sarvamai/sarvam-30b",
+   "release_date": "2026-03-06",
+   "hub_last_modified": "2026-03-23",
+   "intelligence_index": 6.4,
+   "intelligence_is_estimated": true,
+   "best_effort": "high",
+   "effort_spread": {
+    "high": 6.4
+   },
+   "openness_index": 38.9,
+   "params_billions": 32.2,
+   "active_params_billions": 2.4,
+   "context_window_tokens": 65536,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "SarvamMoEForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 15622,
+   "likes": 222,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 19.2,
+    "Humanity's Last Exam": 7.5,
+    "GPQA Diamond": 63.3,
+    "CritPt": 0.3,
+    "AA-Omniscience": -71.5,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "Olmo 3.1 32B Instruct",
+   "creator": "Allen Institute for AI",
+   "country": "us",
+   "hf_repo": "allenai/Olmo-3.1-32B-Instruct",
+   "hf_url": "https://huggingface.co/allenai/Olmo-3.1-32B-Instruct",
+   "release_date": "2026-01-13",
+   "hub_last_modified": "2026-01-05",
+   "intelligence_index": 6.2,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 6.2
+   },
+   "openness_index": 88.9,
+   "params_billions": 32.2,
+   "active_params_billions": null,
+   "context_window_tokens": 65536,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Olmo3ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 17340,
+   "likes": 84,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 16.7,
+    "Humanity's Last Exam": 5.0,
+    "GPQA Diamond": 53.9,
+    "CritPt": 0,
+    "AA-Omniscience": -52.4,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "Qwen3.5 0.8B",
+   "creator": "Alibaba",
+   "country": "cn",
+   "hf_repo": "Qwen/Qwen3.5-0.8B",
+   "hf_url": "https://huggingface.co/Qwen/Qwen3.5-0.8B",
+   "release_date": "2026-03-02",
+   "hub_last_modified": "2026-03-02",
+   "intelligence_index": 5.2,
+   "intelligence_is_estimated": true,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 5.2,
+    "non-reasoning": 2.9
+   },
+   "openness_index": 38.9,
+   "params_billions": 0.9,
+   "active_params_billions": null,
+   "context_window_tokens": 262144,
+   "license": "Apache 2.0",
+   "license_url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/blob/main/LICENSE",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text",
+    "image",
+    "video"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Qwen3_5ForConditionalGeneration",
+   "pipeline_tag": "image-text-to-text",
+   "downloads_30d": 2402638,
+   "likes": 678,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": 0,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": 0,
+    "SciCode": 0,
+    "Humanity's Last Exam": 1.1,
+    "GPQA Diamond": 11.1,
+    "CritPt": 0,
+    "AA-Omniscience": -54.5,
+    "AA-LCR": 11.0
+   }
+  },
+  {
+   "name": "DeepHermes 3 - Mistral 24B Preview",
+   "creator": "Nous Research",
+   "country": "us",
+   "hf_repo": "NousResearch/DeepHermes-3-Mistral-24B-Preview",
+   "hf_url": "https://huggingface.co/NousResearch/DeepHermes-3-Mistral-24B-Preview",
+   "release_date": "2025-03-13",
+   "hub_last_modified": "2025-03-13",
+   "intelligence_index": 5.0,
+   "intelligence_is_estimated": true,
+   "best_effort": "non-reasoning",
+   "effort_spread": {
+    "non-reasoning": 5.0
+   },
+   "openness_index": 38.9,
+   "params_billions": 23.6,
+   "active_params_billions": null,
+   "context_window_tokens": 32000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "MistralForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 527,
+   "likes": 124,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 22.8,
+    "Humanity's Last Exam": 3.8,
+    "GPQA Diamond": 38.2,
+    "CritPt": null,
+    "AA-Omniscience": null,
+    "AA-LCR": null
+   }
+  },
+  {
+   "name": "Jamba 1.7 Large",
+   "creator": "AI21 Labs",
+   "country": "il",
+   "hf_repo": "ai21labs/AI21-Jamba-Large-1.7",
+   "hf_url": "https://huggingface.co/ai21labs/AI21-Jamba-Large-1.7",
+   "release_date": "2025-07-07",
+   "hub_last_modified": "2026-02-02",
+   "intelligence_index": 5.0,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 5.0
+   },
+   "openness_index": 22.2,
+   "params_billions": 398.6,
+   "active_params_billions": 94.0,
+   "context_window_tokens": 256000,
+   "license": "Jamba Open Model License Agreement",
+   "license_url": "https://www.ai21.com/licenses/jamba-open-model-license",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "JambaForCausalLM",
+   "pipeline_tag": "",
+   "downloads_30d": 36,
+   "likes": 34,
+   "knowledge_cutoff": "2024-08-22",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 18.8,
+    "Humanity's Last Exam": 3.7,
+    "GPQA Diamond": 39.0,
+    "CritPt": 0,
+    "AA-Omniscience": -54.9,
+    "AA-LCR": 18.3
+   }
+  },
+  {
+   "name": "Phi-4 Multimodal Instruct",
+   "creator": "Microsoft",
+   "country": "us",
+   "hf_repo": "microsoft/Phi-4-multimodal-instruct",
+   "hf_url": "https://huggingface.co/microsoft/Phi-4-multimodal-instruct",
+   "release_date": "2025-02-26",
+   "hub_last_modified": "2025-12-10",
+   "intelligence_index": 4.2,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 4.2
+   },
+   "openness_index": 50,
+   "params_billions": 5.6,
+   "active_params_billions": null,
+   "context_window_tokens": 128000,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text",
+    "image",
+    "speech"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Phi4MMForCausalLM",
+   "pipeline_tag": "automatic-speech-recognition",
+   "downloads_30d": 292512,
+   "likes": 1612,
+   "knowledge_cutoff": "2024-06-01",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 11.0,
+    "Humanity's Last Exam": 5.0,
+    "GPQA Diamond": 31.5,
+    "CritPt": null,
+    "AA-Omniscience": null,
+    "AA-LCR": null
+   }
+  },
+  {
+   "name": "Jamba Reasoning 3B",
+   "creator": "AI21 Labs",
+   "country": "il",
+   "hf_repo": "ai21labs/AI21-Jamba-Reasoning-3B",
+   "hf_url": "https://huggingface.co/ai21labs/AI21-Jamba-Reasoning-3B",
+   "release_date": "2025-10-08",
+   "hub_last_modified": "2025-10-08",
+   "intelligence_index": 3.8,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 3.8
+   },
+   "openness_index": 38.9,
+   "params_billions": 3.2,
+   "active_params_billions": null,
+   "context_window_tokens": 262000,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "JambaForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 12553,
+   "likes": 140,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 5.9,
+    "Humanity's Last Exam": 3.8,
+    "GPQA Diamond": 33.3,
+    "CritPt": 0,
+    "AA-Omniscience": -57.7,
+    "AA-LCR": 8.3
+   }
+  },
+  {
+   "name": "Reka Flash 3",
+   "creator": "Reka AI",
+   "country": "us",
+   "hf_repo": "RekaAI/reka-flash-3",
+   "hf_url": "https://huggingface.co/RekaAI/reka-flash-3",
+   "release_date": "2025-03-10",
+   "hub_last_modified": "2025-03-13",
+   "intelligence_index": 3.7,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 3.7
+   },
+   "openness_index": 38.9,
+   "params_billions": 20.9,
+   "active_params_billions": null,
+   "context_window_tokens": 128000,
+   "license": "Apache 2.0",
+   "license_url": "https://huggingface.co/RekaAI/reka-flash-3",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "LlamaForCausalLM",
+   "pipeline_tag": "",
+   "downloads_30d": 429,
+   "likes": 387,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 26.7,
+    "Humanity's Last Exam": 4.4,
+    "GPQA Diamond": 52.9,
+    "CritPt": 0,
+    "AA-Omniscience": -65.1,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "Exaone 4.0 1.2B",
+   "creator": "LG AI Research",
+   "country": "kr",
+   "hf_repo": "LGAI-EXAONE/EXAONE-4.0-1.2B",
+   "hf_url": "https://huggingface.co/LGAI-EXAONE/EXAONE-4.0-1.2B",
+   "release_date": "2025-07-15",
+   "hub_last_modified": "2025-08-04",
+   "intelligence_index": 2.5,
+   "intelligence_is_estimated": true,
+   "best_effort": "reasoning",
+   "effort_spread": {
+    "reasoning": 2.5,
+    "non-reasoning": 2.4
+   },
+   "openness_index": 27.8,
+   "params_billions": 1.3,
+   "active_params_billions": null,
+   "context_window_tokens": 64000,
+   "license": "EXAONE AI Model License Agreement 1.2 - NC",
+   "license_url": "https://huggingface.co/LGAI-EXAONE/EXAONE-4.0-1.2B/blob/main/LICENSE",
+   "license_category": "non-commercial",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Exaone4ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 15761,
+   "likes": 190,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 9.3,
+    "Humanity's Last Exam": 6.0,
+    "GPQA Diamond": 51.5,
+    "CritPt": 0,
+    "AA-Omniscience": -79.8,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "Jamba 1.7 Mini",
+   "creator": "AI21 Labs",
+   "country": "il",
+   "hf_repo": "ai21labs/AI21-Jamba-Mini-1.7",
+   "hf_url": "https://huggingface.co/ai21labs/AI21-Jamba-Mini-1.7",
+   "release_date": "2025-07-07",
+   "hub_last_modified": "2026-02-02",
+   "intelligence_index": 2.3,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 2.3
+   },
+   "openness_index": 22.2,
+   "params_billions": 51.6,
+   "active_params_billions": 12.0,
+   "context_window_tokens": 258000,
+   "license": "Jamba Open Model License Agreement",
+   "license_url": "https://www.ai21.com/licenses/jamba-open-model-license",
+   "license_category": "commercial-license",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "JambaForCausalLM",
+   "pipeline_tag": "",
+   "downloads_30d": 928,
+   "likes": 44,
+   "knowledge_cutoff": "2024-08-22",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 9.3,
+    "Humanity's Last Exam": 4.4,
+    "GPQA Diamond": 32.2,
+    "CritPt": 0,
+    "AA-Omniscience": -73.1,
+    "AA-LCR": 15.3
+   }
+  },
+  {
+   "name": "Gemma 3 270M",
+   "creator": "Google",
+   "country": "us",
+   "hf_repo": "google/gemma-3-270m",
+   "hf_url": "https://huggingface.co/google/gemma-3-270m",
+   "release_date": "2025-08-14",
+   "hub_last_modified": "2025-08-14",
+   "intelligence_index": 2.0,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 2.0
+   },
+   "openness_index": 44.4,
+   "params_billions": 0.3,
+   "active_params_billions": null,
+   "context_window_tokens": 32000,
+   "license": "Gemma license",
+   "license_url": "https://ai.google.dev/gemma/terms",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Gemma3ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 1498430,
+   "likes": 1076,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 0,
+    "Humanity's Last Exam": 3.6,
+    "GPQA Diamond": 22.4,
+    "CritPt": 0,
+    "AA-Omniscience": -29.3,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "Apertus 70B Instruct",
+   "creator": "Swiss AI Initiative",
+   "country": "ch",
+   "hf_repo": "swiss-ai/Apertus-70B-Instruct-2509",
+   "hf_url": "https://huggingface.co/swiss-ai/Apertus-70B-Instruct-2509",
+   "release_date": "2025-09-02",
+   "hub_last_modified": "2026-07-17",
+   "intelligence_index": 2.0,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 2.0
+   },
+   "openness_index": 88.9,
+   "params_billions": 70.6,
+   "active_params_billions": null,
+   "context_window_tokens": 65536,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "ApertusForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 31073,
+   "likes": 194,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 5.7,
+    "Humanity's Last Exam": 5.5,
+    "GPQA Diamond": 27.2,
+    "CritPt": 0,
+    "AA-Omniscience": -61.5,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "Tiny Aya Global",
+   "creator": "Cohere",
+   "country": "ca",
+   "hf_repo": "CohereLabs/tiny-aya-global",
+   "hf_url": "https://huggingface.co/CohereLabs/tiny-aya-global",
+   "release_date": "2026-02-17",
+   "hub_last_modified": "2026-07-07",
+   "intelligence_index": 1,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 1
+   },
+   "openness_index": 36.1,
+   "params_billions": 3.3,
+   "active_params_billions": null,
+   "context_window_tokens": 8192,
+   "license": "Cc By Nc 4.0",
+   "license_url": "https://spdx.org/licenses/CC-BY-NC-4.0",
+   "license_category": "non-commercial",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "Cohere2ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 5772,
+   "likes": 171,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 3.6,
+    "Humanity's Last Exam": 5.2,
+    "GPQA Diamond": 30.5,
+    "CritPt": 0,
+    "AA-Omniscience": -84.3,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "Apertus 8B Instruct",
+   "creator": "Swiss AI Initiative",
+   "country": "ch",
+   "hf_repo": "swiss-ai/Apertus-8B-Instruct-2509",
+   "hf_url": "https://huggingface.co/swiss-ai/Apertus-8B-Instruct-2509",
+   "release_date": "2025-09-02",
+   "hub_last_modified": "2026-07-17",
+   "intelligence_index": 1,
+   "intelligence_is_estimated": true,
+   "best_effort": "default",
+   "effort_spread": {
+    "default": 1
+   },
+   "openness_index": 88.9,
+   "params_billions": 8.1,
+   "active_params_billions": null,
+   "context_window_tokens": 65536,
+   "license": "Apache 2.0",
+   "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": false,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "ApertusForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 587239,
+   "likes": 489,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 4.1,
+    "Humanity's Last Exam": 5.0,
+    "GPQA Diamond": 25.6,
+    "CritPt": 0,
+    "AA-Omniscience": -77.2,
+    "AA-LCR": 0
+   }
+  },
+  {
+   "name": "Cogito v2.1",
+   "creator": "Deep Cogito",
+   "country": "us",
+   "hf_repo": "deepcogito/cogito-671b-v2.1",
+   "hf_url": "https://huggingface.co/deepcogito/cogito-671b-v2.1",
+   "release_date": "2025-11-18",
+   "hub_last_modified": "2025-11-21",
+   "intelligence_index": null,
+   "intelligence_is_estimated": false,
+   "best_effort": "reasoning",
+   "effort_spread": {},
+   "openness_index": 38.9,
+   "params_billions": 671.0,
+   "active_params_billions": 37.0,
+   "context_window_tokens": 128000,
+   "license": "MIT",
+   "license_url": "https://opensource.org/license/mit",
+   "license_category": "permissive",
+   "aa_open_weights": true,
+   "reasoning": true,
+   "modalities_in": [
+    "text"
+   ],
+   "modalities_out": [
+    "text"
+   ],
+   "architecture": "DeepseekV3ForCausalLM",
+   "pipeline_tag": "text-generation",
+   "downloads_30d": 793,
+   "likes": 32,
+   "knowledge_cutoff": "",
+   "agentic_index": null,
+   "evals": {
+    "GDPval-AA v2": null,
+    "τ³-Banking": null,
+    "Terminal-Bench v2.1": null,
+    "SciCode": 41.0,
+    "Humanity's Last Exam": 12.0,
+    "GPQA Diamond": 76.8,
+    "CritPt": 0,
+    "AA-Omniscience": -25.8,
+    "AA-LCR": 22.0
+   }
+  }
+ ],
+ "skipped": [
+  {
+   "name": "R1 1776",
+   "hf_repo": "perplexity-ai/r1-1776"
+  }
+ ]
+}

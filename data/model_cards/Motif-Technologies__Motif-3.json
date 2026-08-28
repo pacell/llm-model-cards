@@ -1,0 +1,703 @@
+{
+ "repo": "Motif-Technologies/Motif-3",
+ "url": "https://huggingface.co/Motif-Technologies/Motif-3",
+ "revision": "6fd929fbf205858c429e051989b9f128db1d5625",
+ "card_metadata": {
+  "library_name": "transformers",
+  "pipeline_tag": "text-generation",
+  "language": [],
+  "tags": [],
+  "license": "mit",
+  "base_model": []
+ },
+ "hub_metadata": {
+  "_id": "6a756d02e6a24fb4a2388ab8",
+  "id": "Motif-Technologies/Motif-3",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "Motif",
+   "feature-extraction",
+   "motif",
+   "motif-3",
+   "mixture-of-experts",
+   "moe",
+   "multilingual",
+   "text-generation",
+   "conversational",
+   "custom_code",
+   "en",
+   "ko",
+   "arxiv:2608.09119",
+   "base_model:Motif-Technologies/Motif-3-Base",
+   "base_model:finetune:Motif-Technologies/Motif-3-Base",
+   "license:mit",
+   "eval-results",
+   "region:us"
+  ],
+  "downloads": 4581,
+  "likes": 129,
+  "modelId": "Motif-Technologies/Motif-3",
+  "author": "Motif-Technologies",
+  "sha": "6fd929fbf205858c429e051989b9f128db1d5625",
+  "lastModified": "2026-08-26T10:09:30.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "MotifForCausalLM"
+   ],
+   "auto_map": {
+    "AutoConfig": "configuration_motif.MotifConfig",
+    "AutoModel": "modeling_motif.MotifForCausalLM",
+    "AutoModelForCausalLM": "modeling_motif.MotifForCausalLM"
+   },
+   "model_type": "Motif",
+   "num_experts": 384,
+   "tokenizer_config": {
+    "bos_token": "<|beginoftext|>",
+    "eos_token": "<|endoftext|>",
+    "pad_token": "<|endoftext|>"
+   },
+   "chat_template_jinja": "{%- macro visible_text(content) -%}\n    {%- if content is string -%}\n        {{- content -}}\n    {%- elif content is iterable and content is not mapping -%}\n        {%- for item in content -%}\n            {%- if item is mapping and item.type == 'text' -%}\n                {{- item.text -}}\n            {%- elif item is string -%}\n                {{- item -}}\n            {%- endif -%}\n        {%- endfor -%}\n    {%- else -%}\n        {{- content -}}\n    {%- endif -%}\n{%- endmacro -%}\n\n{{- '<|beginoftext|>' -}}\n\n{%- set ns = namespace(has_system=false, last_user_index=-1, last_assistant_index=-1) -%}\n{%- if messages | length > 0 and messages[0].role == 'system' -%}\n    {%- set ns.has_system = true -%}\n{%- endif -%}\n{%- for m in messages -%}\n    {%- if m.role == 'user' -%}\n        {%- set ns.last_user_index = loop.index0 -%}\n    {%- elif m.role == 'assistant' -%}\n        {%- set ns.last_assistant_index = loop.index0 -%}\n    {%- endif -%}\n{%- endfor -%}\n\n{#- ── System / Tools block ── -#}\n{%- if tools is iterable and tools | length > 0 -%}\n    {{- '<|startofturn|><|system|>' -}}\n    {{- '# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\n' -}}\n    {{- 'You are provided with function signatures within <tools></tools> XML tags:\\n\\n<tools>' -}}\n    {%- for tool in tools -%}\n        {%- if tool.function is defined -%}\n            {%- set tool = tool.function -%}\n        {%- endif -%}\n        {{- '\\n' ~ (tool | tojson) -}}\n    {%- endfor -%}\n    {{- '\\n</tools>' -}}\n    {{- '\\n\\nFor each function call, output in JSON within <tool_call> tags:\\n' -}}\n    {%- for tool in tools -%}\n        {%- if tool.function is defined -%}\n            {%- set tool = tool.function -%}\n        {%- endif -%}\n        {%- set _props = tool.parameters.properties if (tool.parameters is defined and tool.parameters.properties is defined) else {} -%}\n        {{- '\\n<tool_call>{\"name\": \"' ~ tool.name ~ '\", \"arguments\": {' -}}\n        {%- set _keys = _props | list -%}\n        {%- for k in _keys -%}\n            {{- '\"' ~ k ~ '\": <' ~ k ~ '>' -}}\n            {%- if not loop.last -%}{{- ', ' -}}{%- endif -%}\n        {%- endfor -%}\n        {{- '}}</tool_call>' -}}\n    {%- endfor -%}\n    {%- if ns.has_system -%}\n        {{- '\\n\\n' ~ visible_text(messages[0].content) -}}\n    {%- endif -%}\n    {{- '<|endofturn|>' -}}\n{%- elif ns.has_system -%}\n    {{- '<|startofturn|><|system|>' ~ visible_text(messages[0].content) ~ '<|endofturn|>' -}}\n{%- endif -%}\n\n{#- ── Conversation turns ── -#}\n{%- for m in messages -%}\n\n    {#- [Fix 1] continue 대신 if/elif 체인으로 첫 system 스킵 -#}\n    {%- if loop.index0 == 0 and m.role == 'system' -%}\n        {#- already rendered above, skip -#}\n\n    {#- [Fix 2] 중간에 나오는 system 메시지도 처리 -#}\n    {%- elif m.role == 'system' -%}\n        {{- '<|startofturn|><|system|>' ~ visible_text(m.content) ~ '<|endofturn|>' -}}\n\n    {%- elif m.role == 'user' -%}\n        {{- '<|startofturn|><|user|>' -}}\n        {%- if m.references is defined and m.references -%}\n            {{- '<|reference|>' ~ m.references ~ '\\n' -}}\n        {%- endif -%}\n        {{- visible_text(m.content) -}}\n        {{- '<|endofturn|>' -}}\n\n    {%- elif m.role == 'assistant' -%}\n        {{- '<|startofturn|><|assistant|>' -}}\n\n        {#- [순서 정책] think → plan → content → tool_calls -#}\n\n        {#- Reasoning block -#}\n        {%- set _content = visible_text(m.content) -%}\n        {%- set _reasoning = '' -%}\n        {%- if m.reasoning_content is string -%}\n            {%- set _reasoning = m.reasoning_content -%}\n        {%- elif '</think>' in _content -%}\n            {%- set _reasoning = _content.split('</think>')[0].split('<think>')[-1].strip() -%}\n            {%- set _content = _content.split('</think>', 1)[-1].lstrip('\\n') -%}\n        {%- endif -%}\n        {%- set _has_tools = (tools is defined and tools is iterable and tools | length > 0) -%}\n        {%- set _emit_think = _reasoning and (_has_tools or loop.index0 == ns.last_assistant_index) -%}\n        {%- if _emit_think -%}\n            {{- '<think>' ~ _reasoning.strip() ~ '</think>' -}}\n        {%- endif -%}\n\n        {#- Text content -#}\n        {%- if _content.strip() -%}\n            {{- _content.strip() -}}\n        {%- endif -%}\n\n        {#- Tool calls — IDs are rendered for intermediate assistant turns\n             (context for call↔response correlation) but omitted for the last\n             assistant turn (prediction target — model should not learn to\n             generate IDs). After multi-turn data expansion, intermediate turns\n             become GRAY context and the last turn is GREEN. -#}\n        {%- if m.tool_calls is defined and m.tool_calls -%}\n            {%- set _is_last_assistant = (loop.index0 == ns.last_assistant_index) and not add_generation_prompt -%}\n            {%- for tc in m.tool_calls -%}\n                {%- set _tc_id = tc.id if (tc.id is defined and not _is_last_assistant) else none -%}\n                {%- if tc.function is defined -%}\n                    {%- set tc = tc.function -%}\n                {%- endif -%}\n                {%- set _id_suffix = ', \"id\": ' ~ (_tc_id | tojson) if _tc_id is not none else '' -%}\n                {%- if tc.arguments is not defined or not tc.arguments or tc.arguments == \"\" -%}\n                    {{- '\\n<tool_call>' ~ '{\"name\": \"' ~ tc.name ~ '\", \"arguments\": ' ~ null ~ _id_suffix ~ '}' ~ '</tool_call>' -}}\n                {%- elif tc.arguments is string -%}\n                    {{- '\\n<tool_call>' ~ '{\"name\": \"' ~ tc.name ~ '\", \"arguments\": ' ~ tc.arguments ~ _id_suffix ~ '}' ~ '</tool_call>' -}}\n                {%- else -%}\n                    {{- '\\n<tool_call>' ~ '{\"name\": \"' ~ tc.name ~ '\", \"arguments\": ' ~ (tc.arguments | tojson) ~ _id_suffix ~ '}' ~ '</tool_call>' -}}\n                {%- endif -%}\n            {%- endfor -%}\n        {%- endif -%}\n\n        {{- '<|endofturn|>' -}}\n\n    {%- elif m.role == 'tool' -%}\n        {#- [Fix 3] loop.previtem/nextitem으로 인덱스 오버플로 제거 -#}\n        {%- if loop.first or loop.previtem.role != 'tool' -%}\n            {{- '<|startofturn|><|tool|>' -}}\n        {%- endif -%}\n        {{- '<tool_response>' ~ ({\"tool_call_id\": m.tool_call_id, \"content\": m.content} | tojson) ~ '</tool_response>' -}}\n        {%- if loop.last or loop.nextitem.role != 'tool' -%}\n            {{- '<|endofturn|>' -}}\n        {%- endif -%}\n\n    {%- endif -%}\n{%- endfor -%}\n\n{#- ── Generation prompt ── -#}\n{%- if add_generation_prompt -%}\n    {{- '<|startofturn|><|assistant|>' -}}\n    {%- if enable_thinking is defined and not enable_thinking -%}\n        {{- '<think></think>' -}}\n    {%- else -%}\n        {{- '<think>' -}}\n    {%- endif -%}\n{%- else -%}\n    {{- '<|endoftext|>' -}}\n{%- endif -%}"
+  },
+  "cardData": {
+   "library_name": "transformers",
+   "pipeline_tag": "text-generation",
+   "language": [
+    "en",
+    "ko"
+   ],
+   "tags": [
+    "motif",
+    "motif-3",
+    "mixture-of-experts",
+    "moe",
+    "multilingual"
+   ],
+   "license": "mit",
+   "base_model": [
+    "Motif-Technologies/Motif-3-Base"
+   ]
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModel",
+   "custom_class": "modeling_motif.MotifForCausalLM",
+   "pipeline_tag": "feature-extraction"
+  },
+  "siblings": [
+   {
+    "rfilename": ".eval_results/Motif-3.yaml"
+   },
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "configuration_motif.py"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00001-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00015-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00016-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00017-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00018-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00019-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00020-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00021-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00022-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00023-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00024-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00025-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00026-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00027-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00028-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00029-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00030-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00031-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00032-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00033-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00034-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00035-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00036-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00037-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00038-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00039-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00040-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00041-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00042-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00043-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00044-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00045-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00046-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00047-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00048-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00049-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00050-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00051-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00052-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00053-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00054-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00055-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00056-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00057-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00058-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00059-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00060-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00061-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00062-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00063-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00064-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00065-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00066-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00067-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00068-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00069-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00070-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00071-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00072-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00073-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00074-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00075-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00076-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00077-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00078-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00079-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00080-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00081-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00082-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00083-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00084-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00085-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00086-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00087-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00088-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00089-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00090-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00091-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00092-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00093-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00094-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00095-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00096-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00097-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00098-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00099-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00100-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00101-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00102-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00103-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00104-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00105-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00106-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00107-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00108-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00109-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00110-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00111-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00112-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00113-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00114-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00115-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00116-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00117-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00118-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00119-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00120-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00121-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00122-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00123-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00124-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00125-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00126-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00127-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00128-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00129-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00130-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00131-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00132-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00133-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00134-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00135-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00136-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00137-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00138-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00139-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00140-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00141-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00142-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00143-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00144-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00145-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00146-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00147-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00148-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00149-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00150-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00151-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00152-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00153-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00154-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model-00155-of-00155.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "modeling_motif.py"
+   },
+   {
+    "rfilename": "motif_3_technical_report.pdf"
+   },
+   {
+    "rfilename": "nvfp4_act_scales.safetensors"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [],
+  "createdAt": "2026-08-07T05:28:34.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 314841775750
+   },
+   "total": 314841775750
+  },
+  "usedStorage": 629704159838
+ },
+ "model_config": {
+  "_debug_force_load_balance": false,
+  "architectures": [
+   "MotifForCausalLM"
+  ],
+  "attention_cls": "gdla",
+  "attention_dropout": 0.0,
+  "auto_map": {
+   "AutoConfig": "configuration_motif.MotifConfig",
+   "AutoModel": "modeling_motif.MotifForCausalLM",
+   "AutoModelForCausalLM": "modeling_motif.MotifForCausalLM"
+  },
+  "diff_v2": true,
+  "dtype": "bfloat16",
+  "elementwise_attn_output_gate": true,
+  "eos_token_id": 0,
+  "experts_top_k": 8,
+  "head_dim": 192,
+  "headwise_attn_output_gate": false,
+  "hidden_act": "poly_norm",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "interleave_moe_layer_step": 1,
+  "intermediate_size": 12288,
+  "k_ratio": 1,
+  "kv_lora_rank": 512,
+  "load_balance_coeff": 0.0001,
+  "max_position_embeddings": 262144,
+  "max_window_layers": 9,
+  "mhc_enabled": true,
+  "mhc_expansion_rate": 4,
+  "mhc_identity_init": false,
+  "mhc_sinkhorn_iters": 20,
+  "model_type": "Motif",
+  "moe_intermediate_size": 1280,
+  "mscale": 1.0,
+  "n_dense_first_layers": 2,
+  "num_attention_heads": 80,
+  "num_experts": 384,
+  "num_hidden_layers": 53,
+  "num_key_value_heads": 16,
+  "num_noise_heads": 16,
+  "num_shared_experts": 1,
+  "output_router_logits": false,
+  "q_lora_rank": 1024,
+  "qk_rope_head_dim": 64,
+  "rms_norm_eps": 1e-05,
+  "rope_theta": 10000.0,
+  "route_norm": true,
+  "route_scale": 2.0,
+  "router_aux_loss_coef": 0.0,
+  "score_before_experts": false,
+  "score_func": "sigmoid",
+  "sliding_window": 128,
+  "sliding_window_pattern": "interleave",
+  "sliding_window_period": 4,
+  "swa_rope_theta": 10000.0,
+  "tie_word_embeddings": false,
+  "transformers_version": "5.7.0",
+  "use_cache": true,
+  "use_sliding_window": true,
+  "v_head_dim": 128,
+  "vocab_size": 220160,
+  "rope_factor": 64.0,
+  "original_seq_len": 4096,
+  "rope_scaling": {
+   "original_max_position_embeddings": 4096,
+   "factor": 64.0,
+   "mscale": 1.0,
+   "rope_type": "yarn",
+   "rope_theta": 10000.0,
+   "beta_fast": 32.0,
+   "beta_slow": 1.0,
+   "apply_yarn_scaling": false
+  },
+  "polynorm_output_scale": 0.5,
+  "polynorm_output_scale_per_layer": {},
+  "polynorm_bias_clamp": 0.5,
+  "hidden_clamp": 1000000.0,
+  "num_nextn_predict_layers": 1
+ }
+}

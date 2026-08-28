@@ -1,0 +1,330 @@
+{
+ "repo": "upstage/Solar-Open-100B",
+ "url": "https://huggingface.co/upstage/Solar-Open-100B",
+ "revision": "1f591439b14055004d1a5d1a975608953a022fea",
+ "card_metadata": {
+  "language": [],
+  "library_name": "transformers",
+  "license": "other",
+  "license_name": "upstage-solar-license",
+  "pipeline_tag": "text-generation",
+  "tags": [],
+  "arxiv": 2601.07022
+ },
+ "hub_metadata": {
+  "_id": "6938c88becd2624ea3d14b57",
+  "id": "upstage/Solar-Open-100B",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "solar_open",
+   "text-generation",
+   "upstage",
+   "solar",
+   "moe",
+   "100b",
+   "llm",
+   "conversational",
+   "en",
+   "ko",
+   "arxiv:2601.07022",
+   "license:other",
+   "endpoints_compatible",
+   "region:us"
+  ],
+  "downloads": 14453,
+  "likes": 495,
+  "modelId": "upstage/Solar-Open-100B",
+  "author": "upstage",
+  "sha": "1f591439b14055004d1a5d1a975608953a022fea",
+  "lastModified": "2026-01-30T04:46:43.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "model_type": "solar_open",
+   "architectures": [
+    "SolarOpenForCausalLM"
+   ],
+   "num_experts_per_tok": 8,
+   "tokenizer_config": {
+    "bos_token": "<|startoftext|>",
+    "eos_token": "<|endoftext|>",
+    "pad_token": "<|endoftext|>",
+    "unk_token": "<unk>",
+    "chat_template": "{#- ======== Template Parameters ========  #}\r\n{%- set add_generation_prompt = add_generation_prompt if add_generation_prompt is defined else true %}\r\n{%- set default_system_prompt = default_system_prompt if default_system_prompt is defined else true %}\r\n{%- set reasoning_effort = reasoning_effort if reasoning_effort is defined else \"high\" %}\r\n{%- set think_render_option = think_render_option if think_render_option is defined else \"lastthink\" %}\r\n\r\n{#- ======== System Block State ========  #}\r\n{%- set sys_ns = namespace(is_first_block=true) -%}\r\n\r\n{#- ======== Find last user message index ========  #}\r\n{%- set last_user_idx = namespace(value=-1) -%}\r\n{%- for message in messages -%}\r\n    {%- if message.role == 'user' -%}\r\n        {%- set last_user_idx.value = loop.index0 -%}\r\n    {%- endif -%}\r\n{%- endfor -%}\r\n\r\n{#- ======== System messages renderers ========  #}\r\n{%- macro render_system_message(user_system_messages) %}\r\n    {%- if default_system_prompt %}\r\n        {%- if not sys_ns.is_first_block %}{{- \"\\n\\n\" }}{%- endif %}\r\n        {%- set sys_ns.is_first_block = false %}\r\n        {{- \"## Provider System Prompt\\n\\nYou are Solar Open 100B, a large language model trained by Upstage AI, a Korean startup. Your knowledge cutoff is 2025-07. The current date is \" + strftime_now(\"%Y-%m-%d\") + \".\" }}\r\n    {%- endif -%}\r\n    {%- if user_system_messages %}\r\n        {%- if not sys_ns.is_first_block %}{{- \"\\n\\n\" }}{%- endif %}\r\n        {%- set sys_ns.is_first_block = false %}\r\n        {{- \"## System Prompt\" }}\r\n        {%- for system_message in user_system_messages %}\r\n            {{- \"\\n\\n\" }}\r\n            {{- system_message }}\r\n        {%- endfor %}\r\n    {%- endif -%}\r\n{%- endmacro %}\r\n\r\n{%- macro render_tool_instruction(tools) %}\r\n    {%- if not sys_ns.is_first_block %}{{- \"\\n\\n\" }}{%- endif %}\r\n    {%- set sys_ns.is_first_block = false %}\r\n    {{- \"## Tools\\n\\n### Tool Call Instruction\" }}\r\n    {{- \"\\nYou may invoke one or more tools to assist with the user's query. Available tools are provided in JSON Schema format: <|tools:begin|><|tool:begin|><tools-json-object><|tool:end|>...<|tools:end|>\\n\" }}\r\n    {{- \"\\n### Available Tools\\n\" }}\r\n    {{- \"<|tools:begin|>\" }}\r\n    {%- for tool in tools %}\r\n        {{- \"<|tool:begin|>\" }}\r\n        {{- tool.function | tojson }}\r\n        {{- \"<|tool:end|>\" }}\r\n    {%- endfor %}\r\n    {{- \"<|tools:end|>\\n\" }}\r\n    {{- \"\\n### Tool Call Format\\n\" }}\r\n    {{- \"For each tool call, return a JSON object with the following structure, enclosed within <|tool_call:begin|> and <|tool_call:end|> tags: \\n<|tool_call:begin|><tool-call-id><|tool_call:name|><tool-name><|tool_call:args|><args-json-object><|tool_call:end|>\\n\" }}\r\n    {{- \"- The <tool-call-id> must be a randomly generated string consisting of 10 lowercase letters (a-z) and/or digits (0-9) (e.g., a1b2c3d4e5)\\n\" }}\r\n    {{- \"\\n### Tool Response Format\\n\" }}\r\n    {{- \"Each tool is responded by `tool` with the following structure:\\n<|tool_response:id|><tool-call-id><|tool_response:name|><tool-name><|tool_response:result|><results><|tool_response:end|>\\n\" }}\r\n    {{- \"- Ensure the <tool-call-id> matches the corresponding tool call\" -}}\r\n{%- endmacro %}\r\n\r\n{%- macro render_json_response_format_instruction(response_format) %}\r\n    {%- if not sys_ns.is_first_block %}{{- \"\\n\\n\" }}{%- endif %}\r\n    {%- set sys_ns.is_first_block = false %}\r\n    {{- \"## Output Format Constraint\" }}\r\n    {{- \"\\n\\nYour final response should follow the JSON schema: \\n[Start of schema]\" }}\r\n    {{- response_format }}\r\n    {{- \"\\n[End of schema]\\nPlease ensure your answers adhere to this format and do not contain any unnecessary text.\" }}\r\n{%- endmacro %}\r\n\r\n{%- macro get_tool_name(messages, tool_call_id) %}\r\n    {%- for msg in messages -%}\r\n        {%- if msg.role == 'assistant' and msg.tool_calls -%}\r\n            {%- for tool_call in msg.tool_calls -%}\r\n                {%- if tool_call.id == tool_call_id -%}\r\n                    {{- tool_call.function.name }}\r\n                {%- endif -%}\r\n            {%- endfor -%}\r\n        {%- endif -%}\r\n    {%- endfor -%}\r\n{%- endmacro %}\r\n\r\n{%- macro render_tool_arguments(tool_arguments) %}\r\n    {%- if tool_arguments is mapping -%}\r\n        {{- tool_arguments | tojson }}\r\n    {%- else -%}\r\n        {{- tool_arguments }}\r\n    {%- endif -%}\r\n{%- endmacro %}\r\n\r\n{#- ======== Render system message ========  #}\r\n{%- set ns = namespace(system_messages=[]) -%}\r\n{%- for message in messages -%}\r\n    {%- if message.role == 'system' -%}\r\n        {%- set ns.system_messages = ns.system_messages + [message.content] -%}\r\n    {%- endif -%}\r\n{%- endfor -%}\r\n\r\n{%- if ns.system_messages or default_system_prompt or tools or response_format -%}\r\n    {{- \"<|begin|>system<|content|>\" }}\r\n        {{- render_system_message(ns.system_messages) }}\r\n        {%- if tools -%}\r\n            {{- render_tool_instruction(tools) }}\r\n        {%- endif %}\r\n        {%- if response_format -%}\r\n            {{- render_json_response_format_instruction(response_format) }}\r\n        {%- endif %}\r\n    {{- \"<|end|>\" }}\r\n{%- endif -%}\r\n\r\n{#- ======== Render main messages ========  #}\r\n{%- for message in messages -%}\r\n    {%- if message.role == 'user' -%}\r\n         {{- \"<|begin|>user<|content|>\" + message.content + \"<|end|>\" }}\r\n    {%- elif message.role == 'tool' -%}\r\n        {%- set prev_is_tool = loop.index0 > 0 and messages[loop.index0 - 1].role == 'tool' -%}\r\n        {%- set next_is_tool = loop.index0 < (messages | length - 1) and messages[loop.index0 + 1].role == 'tool' -%}\r\n        {%- if not prev_is_tool -%}\r\n            {{- \"<|begin|>tool<|tool_response|>\" }}\r\n        {%- endif -%}\r\n        {{- \"<|tool_response:begin|>\" + message.tool_call_id + \"<|tool_response:name|>\" }}\r\n        {{- get_tool_name(messages, message.tool_call_id) }}\r\n        {{- \"<|tool_response:result|>\" }}\r\n        {{- message.content }}\r\n        {{- \"<|tool_response:end|>\" }}\r\n        {%- if not next_is_tool -%}\r\n            {{- \"<|end|>\" }}\r\n        {%- endif -%}\r\n    {%- elif message.role == 'assistant' -%}\r\n        {#- ======== Assistant Thinking ========  #}\r\n        {%- if think_render_option == \"all\" -%}\r\n            {%- if message.reasoning -%}\r\n                {{- \"<|begin|>assistant<|think|>\" + message.reasoning + \"<|end|>\" }}\r\n            {%- endif -%}\r\n        {%- elif think_render_option == \"lastthink\" -%}\r\n            {%- if message.reasoning and loop.index0 > last_user_idx.value -%}\r\n                {{- \"<|begin|>assistant<|think|>\" + message.reasoning + \"<|end|>\" }}\r\n            {%- endif -%}\r\n        {%- endif -%}\r\n\r\n        {#- ======== Assistant Messages ========  #}\r\n        {%- if message.tool_calls -%}\r\n            {{- \"<|begin|>assistant<|tool_calls|>\" }}\r\n            {%- for tool_call in message.tool_calls -%}\r\n                {{- \"<|tool_call:begin|>\" + tool_call.id +\"<|tool_call:name|>\" + tool_call.function.name + \"<|tool_call:args|>\" }}\r\n                {{- render_tool_arguments(tool_call.function.arguments) }}\r\n                {{- \"<|tool_call:end|>\" }}\r\n            {%- endfor -%}\r\n            {{- \"<|calls|>\" }}\r\n        {%- else -%}\r\n            {{- \"<|begin|>assistant<|content|>\" + message.content + \"<|end|>\" }}\r\n        {%- endif -%}\r\n    {%- endif -%}\r\n{%- endfor -%}\r\n\r\n{%- if add_generation_prompt -%}\r\n    {%- if reasoning_effort in [\"low\", \"minimal\"] -%}\r\n        {{- \"<|begin|>assistant<|think|><|end|>\" }}\r\n    {%- endif -%}\r\n    {{- \"<|begin|>assistant\" }}\r\n{%- endif -%}"
+   },
+   "chat_template_jinja": "{#- ======== Template Parameters ========  #}\n{%- set add_generation_prompt = add_generation_prompt if add_generation_prompt is defined else true %}\n{%- set default_system_prompt = default_system_prompt if default_system_prompt is defined else true %}\n{%- set reasoning_effort = reasoning_effort if reasoning_effort is defined else \"high\" %}\n{%- set think_render_option = think_render_option if think_render_option is defined else \"lastthink\" %}\n\n{#- ======== System Block State ========  #}\n{%- set sys_ns = namespace(is_first_block=true) -%}\n\n{#- ======== Find last user message index ========  #}\n{%- set last_user_idx = namespace(value=-1) -%}\n{%- for message in messages -%}\n    {%- if message.role == 'user' -%}\n        {%- set last_user_idx.value = loop.index0 -%}\n    {%- endif -%}\n{%- endfor -%}\n\n{#- ======== System messages renderers ========  #}\n{%- macro render_system_message(user_system_messages) %}\n    {%- if default_system_prompt %}\n        {%- if not sys_ns.is_first_block %}{{- \"\\n\\n\" }}{%- endif %}\n        {%- set sys_ns.is_first_block = false %}\n        {{- \"## Provider System Prompt\\n\\nYou are Solar Open 100B, a large language model trained by Upstage AI, a Korean startup. Your knowledge cutoff is 2025-07. The current date is \" + strftime_now(\"%Y-%m-%d\") + \".\" }}\n    {%- endif -%}\n    {%- if user_system_messages %}\n        {%- if not sys_ns.is_first_block %}{{- \"\\n\\n\" }}{%- endif %}\n        {%- set sys_ns.is_first_block = false %}\n        {{- \"## System Prompt\" }}\n        {%- for system_message in user_system_messages %}\n            {{- \"\\n\\n\" }}\n            {{- system_message }}\n        {%- endfor %}\n    {%- endif -%}\n{%- endmacro %}\n\n{%- macro render_tool_instruction(tools) %}\n    {%- if not sys_ns.is_first_block %}{{- \"\\n\\n\" }}{%- endif %}\n    {%- set sys_ns.is_first_block = false %}\n    {{- \"## Tools\\n\\n### Tool Call Instruction\" }}\n    {{- \"\\nYou may invoke one or more tools to assist with the user's query. Available tools are provided in JSON Schema format: <|tools:begin|><|tool:begin|><tools-json-object><|tool:end|>...<|tools:end|>\\n\" }}\n    {{- \"\\n### Available Tools\\n\" }}\n    {{- \"<|tools:begin|>\" }}\n    {%- for tool in tools %}\n        {{- \"<|tool:begin|>\" }}\n        {{- tool.function | tojson }}\n        {{- \"<|tool:end|>\" }}\n    {%- endfor %}\n    {{- \"<|tools:end|>\\n\" }}\n    {{- \"\\n### Tool Call Format\\n\" }}\n    {{- \"For each tool call, return a JSON object with the following structure, enclosed within <|tool_call:begin|> and <|tool_call:end|> tags: \\n<|tool_call:begin|><tool-call-id><|tool_call:name|><tool-name><|tool_call:args|><args-json-object><|tool_call:end|>\\n\" }}\n    {{- \"- The <tool-call-id> must be a randomly generated string consisting of 10 lowercase letters (a-z) and/or digits (0-9) (e.g., a1b2c3d4e5)\\n\" }}\n    {{- \"\\n### Tool Response Format\\n\" }}\n    {{- \"Each tool is responded by `tool` with the following structure:\\n<|tool_response:id|><tool-call-id><|tool_response:name|><tool-name><|tool_response:result|><results><|tool_response:end|>\\n\" }}\n    {{- \"- Ensure the <tool-call-id> matches the corresponding tool call\" -}}\n{%- endmacro %}\n\n{%- macro render_json_response_format_instruction(response_format) %}\n    {%- if not sys_ns.is_first_block %}{{- \"\\n\\n\" }}{%- endif %}\n    {%- set sys_ns.is_first_block = false %}\n    {{- \"## Output Format Constraint\" }}\n    {{- \"\\n\\nYour final response should follow the JSON schema: \\n[Start of schema]\" }}\n    {{- response_format }}\n    {{- \"\\n[End of schema]\\nPlease ensure your answers adhere to this format and do not contain any unnecessary text.\" }}\n{%- endmacro %}\n\n{%- macro get_tool_name(messages, tool_call_id) %}\n    {%- for msg in messages -%}\n        {%- if msg.role == 'assistant' and msg.tool_calls -%}\n            {%- for tool_call in msg.tool_calls -%}\n                {%- if tool_call.id == tool_call_id -%}\n                    {{- tool_call.function.name }}\n                {%- endif -%}\n            {%- endfor -%}\n        {%- endif -%}\n    {%- endfor -%}\n{%- endmacro %}\n\n{%- macro render_tool_arguments(tool_arguments) %}\n    {%- if tool_arguments is mapping -%}\n        {{- tool_arguments | tojson }}\n    {%- else -%}\n        {{- tool_arguments }}\n    {%- endif -%}\n{%- endmacro %}\n\n{#- ======== Render system message ========  #}\n{%- set ns = namespace(system_messages=[]) -%}\n{%- for message in messages -%}\n    {%- if message.role == 'system' -%}\n        {%- set ns.system_messages = ns.system_messages + [message.content] -%}\n    {%- endif -%}\n{%- endfor -%}\n\n{%- if ns.system_messages or default_system_prompt or tools or response_format -%}\n    {{- \"<|begin|>system<|content|>\" }}\n        {{- render_system_message(ns.system_messages) }}\n        {%- if tools -%}\n            {{- render_tool_instruction(tools) }}\n        {%- endif %}\n        {%- if response_format -%}\n            {{- render_json_response_format_instruction(response_format) }}\n        {%- endif %}\n    {{- \"<|end|>\" }}\n{%- endif -%}\n\n{#- ======== Render main messages ========  #}\n{%- for message in messages -%}\n    {%- if message.role == 'user' -%}\n         {{- \"<|begin|>user<|content|>\" + message.content + \"<|end|>\" }}\n    {%- elif message.role == 'tool' -%}\n        {%- set prev_is_tool = loop.index0 > 0 and messages[loop.index0 - 1].role == 'tool' -%}\n        {%- set next_is_tool = loop.index0 < (messages | length - 1) and messages[loop.index0 + 1].role == 'tool' -%}\n        {%- if not prev_is_tool -%}\n            {{- \"<|begin|>tool<|tool_response|>\" }}\n        {%- endif -%}\n        {{- \"<|tool_response:begin|>\" + message.tool_call_id + \"<|tool_response:name|>\" }}\n        {{- get_tool_name(messages, message.tool_call_id) }}\n        {{- \"<|tool_response:result|>\" }}\n        {{- message.content }}\n        {{- \"<|tool_response:end|>\" }}\n        {%- if not next_is_tool -%}\n            {{- \"<|end|>\" }}\n        {%- endif -%}\n    {%- elif message.role == 'assistant' -%}\n        {#- ======== Assistant Thinking ========  #}\n        {%- if think_render_option == \"all\" -%}\n            {%- if message.reasoning -%}\n                {{- \"<|begin|>assistant<|think|>\" + message.reasoning + \"<|end|>\" }}\n            {%- endif -%}\n        {%- elif think_render_option == \"lastthink\" -%}\n            {%- if message.reasoning and loop.index0 > last_user_idx.value -%}\n                {{- \"<|begin|>assistant<|think|>\" + message.reasoning + \"<|end|>\" }}\n            {%- endif -%}\n        {%- endif -%}\n\n        {#- ======== Assistant Messages ========  #}\n        {%- if message.tool_calls -%}\n            {{- \"<|begin|>assistant<|tool_calls|>\" }}\n            {%- for tool_call in message.tool_calls -%}\n                {{- \"<|tool_call:begin|>\" + tool_call.id +\"<|tool_call:name|>\" + tool_call.function.name + \"<|tool_call:args|>\" }}\n                {{- render_tool_arguments(tool_call.function.arguments) }}\n                {{- \"<|tool_call:end|>\" }}\n            {%- endfor -%}\n            {{- \"<|calls|>\" }}\n        {%- else -%}\n            {{- \"<|begin|>assistant<|content|>\" + message.content + \"<|end|>\" }}\n        {%- endif -%}\n    {%- endif -%}\n{%- endfor -%}\n\n{%- if add_generation_prompt -%}\n    {%- if reasoning_effort in [\"low\", \"minimal\"] -%}\n        {{- \"<|begin|>assistant<|think|><|end|>\" }}\n    {%- endif -%}\n    {{- \"<|begin|>assistant\" }}\n{%- endif -%}\n"
+  },
+  "cardData": {
+   "language": [
+    "en",
+    "ko"
+   ],
+   "library_name": "transformers",
+   "license": "other",
+   "license_name": "upstage-solar-license",
+   "pipeline_tag": "text-generation",
+   "tags": [
+    "upstage",
+    "solar",
+    "moe",
+    "100b",
+    "llm"
+   ],
+   "arxiv": 2601.07022
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForCausalLM",
+   "pipeline_tag": "text-generation",
+   "processor": "AutoTokenizer"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "LICENSE"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "Solar-Open-100B.png"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00001-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00015-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00016-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00017-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00018-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00019-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00020-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00021-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00022-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00023-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00024-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00025-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00026-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00027-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00028-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00029-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00030-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00031-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00032-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00033-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00034-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00035-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00036-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00037-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00038-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00039-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00040-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00041-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model-00042-of-00042.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "parallel_tool_call_logits_processor.py"
+   },
+   {
+    "rfilename": "solar-open-technical-report.pdf"
+   },
+   {
+    "rfilename": "solar_open_logits_processor.py"
+   },
+   {
+    "rfilename": "solar_open_reasoning_parser.py"
+   },
+   {
+    "rfilename": "solar_open_tool_parser.py"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [
+   "FINAL-Bench/all-bench-leaderboard",
+   "mayafree/Model-Genome-Korea",
+   "eduagarcia/multilingual-tokenizer-leaderboard",
+   "arudradey/all-bench-leaderboard",
+   "mayafree/all-bench",
+   "Nuanmanee/all-bench-leaderboard",
+   "kazutab/mindmap-studio"
+  ],
+  "createdAt": "2025-12-10T01:10:35.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 102651793408,
+    "F32": 6144
+   },
+   "total": 102651793408
+  },
+  "usedStorage": 205323299052
+ },
+ "model_config": {
+  "model_type": "solar_open",
+  "architectures": [
+   "SolarOpenForCausalLM"
+  ],
+  "pad_token_id": 2,
+  "bos_token_id": 1,
+  "eos_token_id": 2,
+  "partial_rotary_factor": 1.0,
+  "hidden_size": 4096,
+  "num_hidden_layers": 48,
+  "num_attention_heads": 64,
+  "head_dim": 128,
+  "num_key_value_heads": 8,
+  "vocab_size": 196608,
+  "intermediate_size": 10240,
+  "moe_intermediate_size": 1280,
+  "rms_norm_eps": 1e-05,
+  "rope_theta": 1000000,
+  "max_position_embeddings": 131072,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "routed_scaling_factor": 1.0,
+  "num_experts_per_tok": 8,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "first_k_dense_replace": 0,
+  "use_cache": true,
+  "transformers_version": "4.57.1",
+  "rope_scaling": {
+   "type": "yarn",
+   "factor": 2.0,
+   "original_max_position_embeddings": 65536
+  }
+ }
+}

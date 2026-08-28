@@ -1,0 +1,340 @@
+{
+ "repo": "allenai/Olmo-3.1-32B-Think",
+ "url": "https://huggingface.co/allenai/Olmo-3.1-32B-Think",
+ "revision": "832c3f543499af8fe68b88359501de9cb7840544",
+ "card_metadata": {
+  "license": "apache-2.0",
+  "base_model": "allenai/Olmo-3-32B-Think-DPO",
+  "language": [],
+  "datasets": [],
+  "library_name": "transformers"
+ },
+ "hub_metadata": {
+  "_id": "693921b110918d0310c22c77",
+  "id": "allenai/Olmo-3.1-32B-Think",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "olmo3",
+   "text-generation",
+   "conversational",
+   "en",
+   "dataset:allenai/Dolci-Think-RL",
+   "arxiv:2512.13961",
+   "base_model:allenai/Olmo-3-32B-Think-DPO",
+   "base_model:finetune:allenai/Olmo-3-32B-Think-DPO",
+   "license:apache-2.0",
+   "eval-results",
+   "endpoints_compatible",
+   "region:us"
+  ],
+  "downloads": 5871,
+  "likes": 112,
+  "modelId": "allenai/Olmo-3.1-32B-Think",
+  "author": "allenai",
+  "sha": "832c3f543499af8fe68b88359501de9cb7840544",
+  "lastModified": "2026-01-05T16:25:04.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "Olmo3ForCausalLM"
+   ],
+   "model_type": "olmo3",
+   "tokenizer_config": {
+    "bos_token": "<|endoftext|>",
+    "eos_token": "<|endoftext|>",
+    "pad_token": "<|pad|>",
+    "unk_token": "<|endoftext|>",
+    "chat_template": "{% set has_system = messages|selectattr('role', 'equalto', 'system')|list|length > 0 %}{% if not has_system %}{{ '<|im_start|>system\nYou are Olmo, a helpful AI assistant built by Ai2. Your date cutoff is December 2024, and your model weights are available at https://huggingface.co/allenai.<|im_end|>\n' }}{% endif %}{% for message in messages %}{% if message['role'] == 'system' %}{{ '<|im_start|>system\n' + message['content'] }}{% if message.get('functions', none) is not none %}{{ ' <functions>' + message['functions'] + '</functions><|im_end|>\n' }}{% else %}{{ ' You do not currently have access to any functions. <functions></functions><|im_end|>\n' }}{% endif %}{% elif message['role'] == 'user' %}{% if message.get('functions', none) is not none %}{{ '<|im_start|>user\n' + message['content'] + '\n' + '<functions>' + message['functions'] + '</functions><|im_end|>\n' }}{% else %}{{ '<|im_start|>user\n' + message['content'] + '<|im_end|>\n' }}{% endif %}{% elif message['role'] == 'assistant' %}{{ '<|im_start|>assistant\n' }}{% if message.get('content', none) is not none %}{{ message['content'] }}{% endif %}{% if message.get('function_calls', none) is not none %}{{ '<function_calls>' + message['function_calls'] + '</function_calls>' }}{% endif %}{% if not loop.last %}{{ '<|im_end|>' + '\n' }}{% else %}{{ eos_token }}{% endif %}{% elif message['role'] == 'environment' %}{{ '<|im_start|>environment\n' + message['content'] + '<|im_end|>\n' }}{% endif %}{% if loop.last and add_generation_prompt %}{{ '<|im_start|>assistant\n<think>' }}{% endif %}{% endfor %}"
+   },
+   "chat_template_jinja": "{% set has_system = messages|selectattr('role', 'equalto', 'system')|list|length > 0 %}{% if not has_system %}{{ '<|im_start|>system\nYou are Olmo, a helpful AI assistant built by Ai2. Your date cutoff is December 2024, and your model weights are available at https://huggingface.co/allenai.<|im_end|>\n' }}{% endif %}{% for message in messages %}{% if message['role'] == 'system' %}{{ '<|im_start|>system\n' + message['content'] }}{% if message.get('functions', none) is not none %}{{ ' <functions>' + message['functions'] + '</functions><|im_end|>\n' }}{% else %}{{ ' You do not currently have access to any functions. <functions></functions><|im_end|>\n' }}{% endif %}{% elif message['role'] == 'user' %}{% if message.get('functions', none) is not none %}{{ '<|im_start|>user\n' + message['content'] + '\n' + '<functions>' + message['functions'] + '</functions><|im_end|>\n' }}{% else %}{{ '<|im_start|>user\n' + message['content'] + '<|im_end|>\n' }}{% endif %}{% elif message['role'] == 'assistant' %}{{ '<|im_start|>assistant\n' }}{% if message.get('content', none) is not none %}{{ message['content'] }}{% endif %}{% if message.get('function_calls', none) is not none %}{{ '<function_calls>' + message['function_calls'] + '</function_calls>' }}{% endif %}{% if not loop.last %}{{ '<|im_end|>' + '\n' }}{% else %}{{ eos_token }}{% endif %}{% elif message['role'] == 'environment' %}{{ '<|im_start|>environment\n' + message['content'] + '<|im_end|>\n' }}{% endif %}{% if loop.last and add_generation_prompt %}{{ '<|im_start|>assistant\n<think>' }}{% endif %}{% endfor %}"
+  },
+  "cardData": {
+   "license": "apache-2.0",
+   "base_model": "allenai/Olmo-3-32B-Think-DPO",
+   "language": [
+    "en"
+   ],
+   "datasets": [
+    "allenai/Dolci-Think-RL"
+   ],
+   "library_name": "transformers"
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForCausalLM",
+   "pipeline_tag": "text-generation",
+   "processor": "AutoTokenizer"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "merges.txt"
+   },
+   {
+    "rfilename": "model-00001-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-00014.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "olmo-think.png"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   },
+   {
+    "rfilename": "vocab.json"
+   }
+  ],
+  "spaces": [
+   "pliny-the-prompter/obliteratus",
+   "EuroEval/euroeval_leaderboard",
+   "Kodacoda/obliteratus",
+   "dumbordumber/obliteratus",
+   "Rishabh2095/AgentWorkflowJobApplications",
+   "dromero14521/obliteratus",
+   "kicfk/obliteratus",
+   "aaahmet/obliteratus",
+   "rbinrs/obliteratus",
+   "Ngixdev/obliteratus",
+   "Deadmon/obliteratus",
+   "RavichandranJ/obliteratus",
+   "S-Dreamer/obliteratus",
+   "AlanaSky/asgaard",
+   "marchkamal51/obliteratus",
+   "crazyforprogramming/virtual-resume",
+   "Fizu123/Physical-AI-Backend",
+   "Ensarioglu/NoxBall",
+   "sub314xxl/obliteratus",
+   "cw4444/obliteratus",
+   "kalmuahlaunda/obliteratus",
+   "mastodonitis/obliteratus",
+   "GrozniMilitq/obliteratus",
+   "liminal4423/obliteratus",
+   "kirikir13/obliteratus",
+   "RaccoonStampede/obliteratus",
+   "cypher109/obliteratus",
+   "duarffodog/obliteratus",
+   "TOpNeT7/obliteratus",
+   "milkygingers/obliteratus",
+   "impresionist/OBLITERATUS",
+   "bresseporix22/obliteratus",
+   "Sendpns/obliteratus",
+   "epixdonkey/obliteratus",
+   "jessy38472/obliteratus",
+   "ymonoce/obliteratus",
+   "shmr90661/haven-ai-backend",
+   "Jjopajd1334/obliteratus",
+   "dryouviavant/obliteratus",
+   "minta27/obliteratus",
+   "profanitys/obliteratus",
+   "CandelaGreen/obliteratus",
+   "steindev/obliteratus",
+   "Tdizzle15/obliteratus",
+   "hrmndev/obliteratus",
+   "jussix/obliteratus",
+   "gbenga-face/obliteratus",
+   "nosdxh/obliteratus",
+   "Sixiong33/obliter8",
+   "acnmc/obliteratus",
+   "jannat2363/obliteratus",
+   "Johnblick187/obliteratus",
+   "gianface/obliteratus",
+   "Xhaheen/obliteratus",
+   "bloodymatzohball/obliteratus",
+   "michaelshapkin/obliteratus",
+   "johndeadlock/obliteratus",
+   "hplisiecki/pinocchio-inventory-explorer",
+   "Mspanz88/obliteratus",
+   "DannyBrennan1995/obliteratus",
+   "Zmu/obliteratus",
+   "lactroiii/obliteratus"
+  ],
+  "createdAt": "2025-12-10T07:30:57.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 32233522176
+   },
+   "total": 32233522176
+  },
+  "usedStorage": 2965487855616
+ },
+ "model_config": {
+  "architectures": [
+   "Olmo3ForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "dtype": "bfloat16",
+  "eos_token_id": 100257,
+  "hidden_act": "silu",
+  "hidden_size": 5120,
+  "initializer_range": 0.02,
+  "intermediate_size": 27648,
+  "layer_types": [
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "sliding_attention",
+   "full_attention"
+  ],
+  "max_position_embeddings": 65536,
+  "model_type": "olmo3",
+  "num_attention_heads": 40,
+  "num_hidden_layers": 64,
+  "num_key_value_heads": 8,
+  "pad_token_id": 100277,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": {
+   "attention_factor": 1.2079441541679836,
+   "beta_fast": 32.0,
+   "beta_slow": 1.0,
+   "factor": 8.0,
+   "original_max_position_embeddings": 8192,
+   "rope_type": "yarn"
+  },
+  "rope_theta": 500000,
+  "sliding_window": 4096,
+  "tie_word_embeddings": false,
+  "transformers_version": "4.57.1",
+  "use_cache": false,
+  "vocab_size": 100278
+ }
+}

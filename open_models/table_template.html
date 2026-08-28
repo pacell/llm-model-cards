@@ -1,0 +1,588 @@
+<title>Open Weights Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+  --ground: #F0F2EE;
+  --surface: #FBFCFA;
+  --surface-2: #E4E7E1;
+  --ink: #12171A;
+  --ink-2: #4C565B;
+  --ink-3: #7C868C;
+  --rule: #D2D7D0;
+  --rule-soft: #E2E6E0;
+  --accent: #0E6E7A;
+  --accent-ink: #0A545E;
+  --accent-soft: rgba(14, 110, 122, .13);
+  --ochre: #9A6B14;
+  --ochre-soft: rgba(154, 107, 20, .13);
+  --clay: #97382A;
+  --clay-soft: rgba(151, 56, 42, .12);
+  --bar: linear-gradient(90deg, #0E6E7A, #2E9AA0);
+  --shadow: 0 1px 2px rgba(18, 23, 26, .06), 0 8px 24px -16px rgba(18, 23, 26, .3);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0C1012;
+    --surface: #141A1C;
+    --surface-2: #1D2528;
+    --ink: #E9EDEA;
+    --ink-2: #9DA9AC;
+    --ink-3: #6C787C;
+    --rule: #253032;
+    --rule-soft: #1B2325;
+    --accent: #46B9C4;
+    --accent-ink: #7FD6DE;
+    --accent-soft: rgba(70, 185, 196, .16);
+    --ochre: #D6A551;
+    --ochre-soft: rgba(214, 165, 81, .15);
+    --clay: #DE7C68;
+    --clay-soft: rgba(222, 124, 104, .14);
+    --bar: linear-gradient(90deg, #2E8E99, #58C8D2);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 10px 28px -18px rgba(0, 0, 0, .9);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #0C1012;
+  --surface: #141A1C;
+  --surface-2: #1D2528;
+  --ink: #E9EDEA;
+  --ink-2: #9DA9AC;
+  --ink-3: #6C787C;
+  --rule: #253032;
+  --rule-soft: #1B2325;
+  --accent: #46B9C4;
+  --accent-ink: #7FD6DE;
+  --accent-soft: rgba(70, 185, 196, .16);
+  --ochre: #D6A551;
+  --ochre-soft: rgba(214, 165, 81, .15);
+  --clay: #DE7C68;
+  --clay-soft: rgba(222, 124, 104, .14);
+  --bar: linear-gradient(90deg, #2E8E99, #58C8D2);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 10px 28px -18px rgba(0, 0, 0, .9);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1340px; margin: 0 auto; padding: 40px 24px 96px; }
+
+/* ---------- masthead ---------- */
+.masthead { display: flex; flex-direction: column; gap: 14px; padding-bottom: 26px; }
+.eyebrow {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent-ink);
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+}
+.eyebrow .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+h1 {
+  font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700; font-size: clamp(34px, 6vw, 58px); line-height: .98;
+  letter-spacing: -.025em; margin: 0; text-wrap: balance;
+}
+.standfirst { max-width: 62ch; color: var(--ink-2); font-size: 16.5px; margin: 0; text-wrap: pretty; }
+.standfirst a { color: var(--accent-ink); text-underline-offset: 3px; }
+
+/* ---------- stat strip ---------- */
+.stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  margin: 4px 0 26px;
+}
+.stat { padding: 16px 18px 15px; border-right: 1px solid var(--rule-soft); }
+.stat:last-child { border-right: 0; }
+.stat dt {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  margin: 0 0 5px;
+}
+.stat dd {
+  margin: 0; font-family: "Archivo", sans-serif; font-variation-settings: "wdth" 100;
+  font-weight: 600; font-size: 25px; letter-spacing: -.02em; font-variant-numeric: tabular-nums;
+}
+.stat dd small { font-size: 13px; font-weight: 500; color: var(--ink-2); letter-spacing: 0; }
+
+/* ---------- controls ---------- */
+.controls {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  padding: 0 0 16px;
+}
+.field { position: relative; display: flex; align-items: center; }
+input[type="search"], select {
+  font: inherit; font-size: 14px; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 3px;
+  padding: 8px 11px; appearance: none;
+}
+input[type="search"] { width: 250px; padding-left: 32px; }
+.field svg { position: absolute; left: 10px; width: 14px; height: 14px; color: var(--ink-3); pointer-events: none; }
+select { padding-right: 30px; background-image: none; cursor: pointer; }
+.selwrap { position: relative; display: inline-flex; align-items: center; }
+.selwrap::after {
+  content: ""; position: absolute; right: 12px; width: 6px; height: 6px;
+  border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3);
+  transform: translateY(-2px) rotate(45deg); pointer-events: none;
+}
+.toggle {
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+  font-size: 13.5px; color: var(--ink-2); user-select: none;
+  border: 1px solid var(--rule); border-radius: 3px; padding: 8px 11px; background: var(--surface);
+}
+.toggle input { accent-color: var(--accent); margin: 0; }
+.count {
+  margin-left: auto; font-family: "IBM Plex Mono", monospace; font-size: 12px;
+  color: var(--ink-3); letter-spacing: .04em;
+}
+:is(input, select, .toggle, th button, .row):focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+
+/* ---------- table ---------- */
+.tablewrap {
+  overflow-x: auto; background: var(--surface);
+  border: 1px solid var(--rule); border-radius: 4px; box-shadow: var(--shadow);
+}
+table { width: 100%; border-collapse: collapse; min-width: 940px; }
+thead th {
+  position: sticky; top: 0; z-index: 3; background: var(--surface);
+  border-bottom: 1px solid var(--rule); padding: 0; text-align: left;
+  box-shadow: inset 0 -1px 0 var(--rule);
+}
+th button {
+  all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 5px;
+  width: 100%; padding: 11px 10px; cursor: pointer;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10.5px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3); white-space: nowrap;
+}
+th button:hover { color: var(--ink); }
+th.num button { justify-content: flex-end; }
+th button .caret { opacity: 0; font-size: 9px; }
+th[aria-sort] button { color: var(--ink); }
+th[aria-sort] button .caret { opacity: 1; color: var(--accent); }
+
+tbody td { padding: 10px 10px; border-bottom: 1px solid var(--rule-soft); vertical-align: middle; }
+tbody tr.row { cursor: pointer; }
+tbody tr.row:hover td { background: var(--accent-soft); }
+tbody tr.open td { background: var(--accent-soft); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.rank {
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px; color: var(--ink-3);
+  width: 34px; text-align: right;
+}
+.model { min-width: 210px; }
+.model .name { font-weight: 600; letter-spacing: -.005em; }
+.model .repo {
+  display: block; font-family: "IBM Plex Mono", monospace; font-size: 11px;
+  color: var(--ink-3); margin-top: 2px; overflow-wrap: anywhere;
+}
+.lab { width: 1px; white-space: nowrap; font-size: 14px; color: var(--ink-2); }
+.lab .cc {
+  font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-3); border: 1px solid var(--rule);
+  border-radius: 2px; padding: 1px 4px; margin-left: 6px;
+}
+
+/* intelligence cell: number + inline bar */
+.ii { display: flex; align-items: center; gap: 9px; justify-content: flex-end; min-width: 116px; }
+.ii .val {
+  font-family: "Archivo", sans-serif; font-variation-settings: "wdth" 100;
+  font-weight: 600; font-size: 16px; font-variant-numeric: tabular-nums; min-width: 38px; text-align: right;
+}
+.ii .track { flex: 0 0 54px; height: 6px; background: var(--surface-2); border-radius: 1px; overflow: hidden; }
+.ii .fill { display: block; height: 100%; background: var(--bar); }
+.ii.none .val { color: var(--ink-3); font-weight: 400; }
+
+.params { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.params .active { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink-3); }
+.ctx { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--ink-2); }
+
+.chip {
+  display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 10.5px;
+  letter-spacing: .04em; padding: 3px 7px; border-radius: 2px; white-space: nowrap;
+  max-width: 152px; overflow: hidden; text-overflow: ellipsis;
+}
+.chip.permissive { background: var(--accent-soft); color: var(--accent-ink); }
+.chip.custom { background: var(--ochre-soft); color: var(--ochre); }
+.chip.restricted { background: var(--clay-soft); color: var(--clay); }
+.date { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; color: var(--ink-2); white-space: nowrap; }
+.dl { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink-2); }
+
+/* ---------- detail ---------- */
+tr.detail td { padding: 0; border-bottom: 1px solid var(--rule); background: var(--surface-2); }
+.panel { display: grid; grid-template-columns: minmax(280px, 1.1fr) minmax(260px, 1fr); gap: 28px; padding: 20px 24px 24px; }
+.panel h3 {
+  font-family: "IBM Plex Mono", monospace; font-size: 10.5px; font-weight: 600;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  margin: 0 0 12px; padding-bottom: 7px; border-bottom: 1px solid var(--rule);
+}
+.evals { display: flex; flex-direction: column; gap: 7px; }
+.eval { display: grid; grid-template-columns: 132px 1fr 46px; gap: 10px; align-items: center; font-size: 13px; }
+.eval .lbl { color: var(--ink-2); }
+.eval .track { height: 5px; background: var(--rule); border-radius: 1px; overflow: hidden; }
+.eval .fill { display: block; height: 100%; background: var(--accent); opacity: .8; }
+.eval .n { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; text-align: right; font-variant-numeric: tabular-nums; }
+.eval.absent .lbl, .eval.absent .n { color: var(--ink-3); }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; }
+.fact dt {
+  font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 3px;
+}
+.fact dd { margin: 0; font-size: 13.5px; overflow-wrap: anywhere; }
+.fact.wide { grid-column: 1 / -1; }
+.panel a.cardlink {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 4px;
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px; color: var(--accent-ink);
+  text-decoration: none; border-bottom: 1px solid var(--accent-soft); padding-bottom: 2px;
+}
+.panel a.cardlink:hover { border-bottom-color: var(--accent); }
+
+.empty { padding: 40px 24px; text-align: center; color: var(--ink-3); font-size: 14px; }
+
+/* ---------- footnotes ---------- */
+.notes {
+  margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--rule);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px;
+  font-size: 13px; color: var(--ink-2); max-width: 100%;
+}
+.notes h4 {
+  font-family: "IBM Plex Mono", monospace; font-size: 10.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-3); margin: 0 0 7px; font-weight: 600;
+}
+.notes p { margin: 0 0 8px; text-wrap: pretty; }
+.notes a { color: var(--accent-ink); text-underline-offset: 3px; }
+.notes code {
+  font-family: "IBM Plex Mono", monospace; font-size: 12px;
+  background: var(--surface-2); padding: 1px 4px; border-radius: 2px;
+}
+
+@media (max-width: 720px) {
+  .wrap { padding: 28px 14px 72px; }
+  .panel { grid-template-columns: 1fr; gap: 22px; }
+  .eval { grid-template-columns: 108px 1fr 42px; }
+  input[type="search"] { width: 100%; }
+  .field { flex: 1 1 100%; }
+  .count { margin-left: 0; flex: 1 1 100%; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">
+      <span class="dot"></span><span>Open-weights registry</span>
+      <span>&middot;</span><span id="stamp">__GENERATED__</span>
+      <span>&middot;</span><span>Intelligence Index __II_VERSION__</span>
+    </div>
+    <h1>Open Weights Index</h1>
+    <p class="standfirst">
+      The current release of every open-weights model Artificial Analysis benchmarks, joined to the
+      machine-readable model card each lab publishes on the Hugging Face Hub. Parameter counts,
+      context windows and licences come from the cards themselves; the score is the
+      <strong>Artificial Analysis Intelligence Index</strong>, at the model's best reasoning setting.
+    </p>
+  </header>
+
+  <dl class="stats" id="stats"></dl>
+
+  <div class="controls">
+    <label class="field">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5L14 14"></path>
+      </svg>
+      <input type="search" id="q" placeholder="Model, lab or repo" aria-label="Search models">
+    </label>
+    <span class="selwrap"><select id="lab" aria-label="Filter by lab"></select></span>
+    <span class="selwrap"><select id="lic" aria-label="Filter by licence">
+      <option value="">All licences</option>
+      <option value="permissive">Permissive (MIT / Apache)</option>
+      <option value="custom">Lab licence</option>
+      <option value="restricted">Non-commercial</option>
+    </select></span>
+    <span class="selwrap"><select id="size" aria-label="Filter by size">
+      <option value="">Any size</option>
+      <option value="0-15">Under 15B</option>
+      <option value="15-100">15B – 100B</option>
+      <option value="100-500">100B – 500B</option>
+      <option value="500-99999">Over 500B</option>
+    </select></span>
+    <label class="toggle"><input type="checkbox" id="reason"> Reasoning only</label>
+    <span class="count" id="count"></span>
+  </div>
+
+  <div class="tablewrap">
+    <table id="table">
+      <thead><tr id="head"></tr></thead>
+      <tbody id="body"></tbody>
+    </table>
+    <div class="empty" id="empty" hidden>No model matches those filters.</div>
+  </div>
+
+  <div class="notes">
+    <div>
+      <h4>What counts as current</h4>
+      <p>One row per release, not per checkpoint. Reasoning-effort variants of the same model
+      collapse into a single row scored at its best setting &mdash; the spread is in the detail
+      panel. A release drops off when its own lab ships something newer and better in the same
+      size class, so what remains is each lab's live lineup.</p>
+    </div>
+    <div>
+      <h4>Reading the score</h4>
+      <p>The Intelligence Index is a composite of nine evaluations run independently by
+      Artificial Analysis; the detail panel breaks out the components. It is a measure of
+      capability, not of cost or speed &mdash; and not of openness, which the
+      <em>openness</em> figure tracks separately.</p>
+    </div>
+    <div>
+      <h4>Sources</h4>
+      <p>Cards: <code>huggingface.co/api/models/&lt;repo&gt;</code> plus the YAML front matter of
+      each card and its <code>config.json</code>. Scores:
+      <a href="https://artificialanalysis.ai/models/open-source">artificialanalysis.ai</a>.
+      Parameter totals are summed from the safetensors index, so they are the shipped weights
+      rather than a rounded marketing figure.</p>
+      <p id="skipnote"></p>
+    </div>
+  </div>
+</div>
+
+<script id="model-data" type="application/json">__DATA__</script>
+<script>
+(function () {
+  "use strict";
+  var DATA = JSON.parse(document.getElementById("model-data").textContent);
+  var MODELS = DATA.models;
+  var EVALS = ["GDPval-AA v2", "\u03c4\u00b3-Banking", "Terminal-Bench v2.1", "SciCode",
+               "Humanity's Last Exam", "GPQA Diamond", "CritPt", "AA-Omniscience", "AA-LCR"];
+
+  var COLUMNS = [
+    { key: "rank",  label: "#",           num: true,  sortable: false },
+    { key: "name",  label: "Model",       num: false },
+    { key: "creator", label: "Lab",       num: false },
+    { key: "intelligence_index", label: "Intelligence", num: true, desc: true },
+    { key: "params_billions", label: "Params", num: true, desc: true },
+    { key: "context_window_tokens", label: "Context", num: true, desc: true },
+    { key: "license", label: "Licence",   num: false },
+    { key: "release_date", label: "Released", num: false, desc: true },
+    { key: "downloads_30d", label: "Downloads", num: true, desc: true }
+  ];
+
+  var maxII = Math.max.apply(null, MODELS.map(function (m) { return m.intelligence_index || 0; }));
+  var sortKey = "intelligence_index", sortDir = -1, openRepo = null;
+
+  /* ---------- formatting ---------- */
+  function fmtParams(b) {
+    if (b == null) return "&mdash;";
+    if (b >= 1000) return (b / 1000).toFixed(b >= 10000 ? 0 : 2) + "T";
+    return (b >= 100 ? b.toFixed(0) : b.toFixed(1)) + "B";
+  }
+  function fmtCtx(t) {
+    if (!t) return "&mdash;";
+    if (t >= 1000000) return (t / 1048576 >= 0.95 && t / 1048576 <= 1.05 ? "1M" : (t / 1e6).toFixed(t % 1e6 === 0 ? 0 : 1) + "M");
+    return Math.round(t / 1000) + "k";
+  }
+  function fmtDl(n) {
+    if (n == null) return "&mdash;";
+    if (n >= 1e6) return (n / 1e6).toFixed(1) + "M";
+    if (n >= 1e3) return Math.round(n / 1e3) + "k";
+    return String(n);
+  }
+  function licenceClass(m) {
+    var l = (m.license || "").toLowerCase();
+    if (/non-?commercial|-nc\b|cc.by.nc|research only/.test(l)) return "restricted";
+    if (/^mit$|^apache|^bsd|^cc by 4/.test(l)) return "permissive";
+    return "custom";
+  }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  /* ---------- summary ---------- */
+  function renderStats() {
+    var labs = {}, permissive = 0, ctx = [];
+    MODELS.forEach(function (m) {
+      labs[m.creator] = 1;
+      if (licenceClass(m) === "permissive") permissive++;
+      if (m.context_window_tokens) ctx.push(m.context_window_tokens);
+    });
+    ctx.sort(function (a, b) { return a - b; });
+    var median = ctx[Math.floor(ctx.length / 2)];
+    var top = MODELS.reduce(function (a, b) {
+      return (b.intelligence_index || 0) > (a.intelligence_index || 0) ? b : a;
+    });
+    var cells = [
+      ["Releases", MODELS.length, ""],
+      ["Labs", Object.keys(labs).length, ""],
+      ["Top score", top.intelligence_index.toFixed(1), top.name],
+      ["Permissively licensed", Math.round(permissive / MODELS.length * 100) + "%", permissive + " of " + MODELS.length],
+      ["Median context", fmtCtx(median), "tokens"]
+    ];
+    document.getElementById("stats").innerHTML = cells.map(function (c) {
+      return '<div class="stat"><dt>' + esc(c[0]) + "</dt><dd>" + c[1] +
+             (c[2] ? " <small>" + esc(c[2]) + "</small>" : "") + "</dd></div>";
+    }).join("");
+    var skipped = DATA.skipped || [];
+    if (skipped.length) {
+      document.getElementById("skipnote").innerHTML =
+        "Excluded for want of a readable card: " +
+        skipped.map(function (s) { return "<code>" + esc(s.hf_repo) + "</code>"; }).join(", ") + ".";
+    }
+  }
+
+  /* ---------- head ---------- */
+  function renderHead() {
+    document.getElementById("head").innerHTML = COLUMNS.map(function (c) {
+      if (c.sortable === false) return '<th class="num"><button type="button" tabindex="-1">' + c.label + "</button></th>";
+      var sorted = sortKey === c.key;
+      return '<th class="' + (c.num ? "num" : "") + '"' + (sorted ? ' aria-sort="' + (sortDir < 0 ? "descending" : "ascending") + '"' : "") +
+        '><button type="button" data-key="' + c.key + '">' + c.label +
+        '<span class="caret">' + (sorted && sortDir > 0 ? "▲" : "▼") + "</span></button></th>";
+    }).join("");
+    Array.prototype.forEach.call(document.querySelectorAll("th button[data-key]"), function (b) {
+      b.addEventListener("click", function () {
+        var key = b.dataset.key;
+        var col = COLUMNS.filter(function (c) { return c.key === key; })[0];
+        if (sortKey === key) { sortDir = -sortDir; }
+        else { sortKey = key; sortDir = col.desc ? -1 : 1; }
+        renderHead(); renderBody();
+      });
+    });
+  }
+
+  /* ---------- filters ---------- */
+  function filtered() {
+    var q = document.getElementById("q").value.trim().toLowerCase();
+    var lab = document.getElementById("lab").value;
+    var lic = document.getElementById("lic").value;
+    var size = document.getElementById("size").value;
+    var reasoning = document.getElementById("reason").checked;
+    var lo = 0, hi = Infinity;
+    if (size) { var p = size.split("-"); lo = +p[0]; hi = +p[1]; }
+    return MODELS.filter(function (m) {
+      if (q && (m.name + " " + m.creator + " " + m.hf_repo + " " + m.architecture).toLowerCase().indexOf(q) < 0) return false;
+      if (lab && m.creator !== lab) return false;
+      if (lic && licenceClass(m) !== lic) return false;
+      if (reasoning && !m.reasoning) return false;
+      if (size) { var b = m.params_billions; if (b == null || b < lo || b >= hi) return false; }
+      return true;
+    });
+  }
+
+  function sorted(rows) {
+    var out = rows.slice();
+    out.sort(function (a, b) {
+      var x = a[sortKey], y = b[sortKey];
+      if (x == null && y == null) return 0;
+      if (x == null) return 1;
+      if (y == null) return -1;
+      if (typeof x === "string") return sortDir * x.localeCompare(y);
+      return sortDir * (x - y);
+    });
+    return out;
+  }
+
+  /* ---------- rows ---------- */
+  function detailPanel(m) {
+    var evalRows = EVALS.map(function (name) {
+      var v = m.evals[name];
+      var pct = v == null ? 0 : Math.max(0, Math.min(100, v));
+      var shown = v == null ? "&mdash;" : v.toFixed(1);
+      return '<div class="eval' + (v == null ? " absent" : "") + '"><span class="lbl">' + esc(name) +
+        '</span><span class="track"><span class="fill" style="width:' + pct.toFixed(1) + '%"></span></span>' +
+        '<span class="n">' + shown + "</span></div>";
+    }).join("");
+    var spread = Object.keys(m.effort_spread || {}).map(function (k) {
+      return k + " " + m.effort_spread[k];
+    }).join("  ·  ") || "&mdash;";
+    var facts = [
+      ["Architecture", esc(m.architecture) || "&mdash;"],
+      ["Task", esc(m.pipeline_tag) || "&mdash;"],
+      ["Active params", m.active_params_billions ? fmtParams(m.active_params_billions) : "dense"],
+      ["Context", fmtCtx(m.context_window_tokens) + " tokens"],
+      ["Inputs", esc((m.modalities_in || []).join(", ")) || "&mdash;"],
+      ["Knowledge cutoff", esc(m.knowledge_cutoff) || "not stated"],
+      ["Openness index", m.openness_index == null ? "not rated" : m.openness_index + " / 100"],
+      ["Agentic index", m.agentic_index == null ? "not rated" : m.agentic_index.toFixed(1)],
+      ["Hub likes", m.likes == null ? "&mdash;" : m.likes.toLocaleString()],
+      ["Score by effort", spread],
+      ["Licence", esc(m.license) + (m.license_url ? ' <a class="cardlink" href="' + esc(m.license_url) + '" target="_blank" rel="noopener">terms</a>' : "")]
+    ];
+    return '<div class="panel"><section><h3>Intelligence Index components</h3><div class="evals">' + evalRows +
+      '</div></section><section><h3>From the model card</h3><dl class="facts">' +
+      facts.map(function (f, i) {
+        return '<div class="fact' + (i >= 9 ? " wide" : "") + '"><dt>' + f[0] + "</dt><dd>" + f[1] + "</dd></div>";
+      }).join("") +
+      '</dl><a class="cardlink" href="' + esc(m.hf_url) + '" target="_blank" rel="noopener">' +
+      esc(m.hf_repo) + " ↗</a></section></div>";
+  }
+
+  function renderBody() {
+    var rows = sorted(filtered());
+    var body = document.getElementById("body");
+    document.getElementById("empty").hidden = rows.length > 0;
+    document.getElementById("count").textContent =
+      rows.length + " of " + MODELS.length + " releases";
+    body.innerHTML = rows.map(function (m, i) {
+      var ii = m.intelligence_index;
+      var pct = ii == null ? 0 : (ii / maxII) * 100;
+      var open = openRepo === m.hf_repo;
+      var tr = '<tr class="row' + (open ? " open" : "") + '" data-repo="' + esc(m.hf_repo) + '" tabindex="0">' +
+        '<td class="rank">' + (i + 1) + "</td>" +
+        '<td class="model"><span class="name">' + esc(m.name) + '</span><span class="repo">' + esc(m.hf_repo) + "</span></td>" +
+        '<td class="lab">' + esc(m.creator) + (m.country ? '<span class="cc">' + esc(m.country) + "</span>" : "") + "</td>" +
+        '<td class="num"><span class="ii' + (ii == null ? " none" : "") + '"><span class="track"><span class="fill" style="width:' +
+          pct.toFixed(1) + '%"></span></span><span class="val">' + (ii == null ? "&mdash;" : ii.toFixed(1)) + "</span></span></td>" +
+        '<td class="num params">' + fmtParams(m.params_billions) +
+          (m.active_params_billions ? '<span class="active"> / ' + fmtParams(m.active_params_billions) + " act</span>" : "") + "</td>" +
+        '<td class="num ctx">' + fmtCtx(m.context_window_tokens) + "</td>" +
+        '<td><span class="chip ' + licenceClass(m) + '" title="' + esc(m.license) + '">' + esc(m.license) + "</span></td>" +
+        '<td class="date">' + esc(m.release_date) + "</td>" +
+        '<td class="num dl">' + fmtDl(m.downloads_30d) + "</td></tr>";
+      return open
+        ? tr + '<tr class="detail"><td colspan="' + COLUMNS.length + '">' + detailPanel(m) + "</td></tr>"
+        : tr;
+    }).join("");
+  }
+
+  /* ---------- wiring ---------- */
+  function toggleRow(repo) {
+    openRepo = openRepo === repo ? null : repo;
+    renderBody();
+  }
+  document.getElementById("body").addEventListener("click", function (e) {
+    var tr = e.target.closest("tr.row");
+    if (tr && !e.target.closest("a")) toggleRow(tr.dataset.repo);
+  });
+  document.getElementById("body").addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    var tr = e.target.closest("tr.row");
+    if (tr) { e.preventDefault(); toggleRow(tr.dataset.repo); }
+  });
+
+  var labs = MODELS.map(function (m) { return m.creator; })
+    .filter(function (v, i, a) { return v && a.indexOf(v) === i; }).sort();
+  document.getElementById("lab").innerHTML =
+    '<option value="">All labs</option>' + labs.map(function (l) {
+      return '<option value="' + esc(l) + '">' + esc(l) + "</option>";
+    }).join("");
+
+  ["q", "lab", "lic", "size", "reason"].forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener(el.tagName === "INPUT" && el.type !== "checkbox" ? "input" : "change", function () {
+      openRepo = null; renderBody();
+    });
+  });
+
+  renderStats(); renderHead(); renderBody();
+})();
+</script>

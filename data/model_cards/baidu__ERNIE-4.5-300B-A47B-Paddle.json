@@ -1,0 +1,536 @@
+{
+ "repo": "baidu/ERNIE-4.5-300B-A47B-Paddle",
+ "url": "https://huggingface.co/baidu/ERNIE-4.5-300B-A47B-Paddle",
+ "revision": "c96334ddf7c1dae19e50cf5f972d8820531f7e59",
+ "card_metadata": {
+  "license": "apache-2.0",
+  "language": [],
+  "pipeline_tag": "text-generation",
+  "tags": [],
+  "library_name": "PaddlePaddle"
+ },
+ "hub_metadata": {
+  "_id": "685f657adc40877255563904",
+  "id": "baidu/ERNIE-4.5-300B-A47B-Paddle",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "PaddlePaddle",
+  "tags": [
+   "PaddlePaddle",
+   "safetensors",
+   "ernie4_5_moe",
+   "ERNIE4.5",
+   "text-generation",
+   "conversational",
+   "en",
+   "zh",
+   "license:apache-2.0",
+   "region:us"
+  ],
+  "downloads": 311,
+  "likes": 16,
+  "modelId": "baidu/ERNIE-4.5-300B-A47B-Paddle",
+  "author": "baidu",
+  "sha": "c96334ddf7c1dae19e50cf5f972d8820531f7e59",
+  "lastModified": "2025-09-09T02:49:37.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "Ernie4_5_MoeForCausalLM"
+   ],
+   "model_type": "ernie4_5_moe",
+   "tokenizer_config": {
+    "bos_token": "<s>",
+    "eos_token": "</s>",
+    "pad_token": "<unk>",
+    "unk_token": "<unk>",
+    "cls_token": "<|begin_of_sentence|>",
+    "sep_token": "<|end_of_sentence|>",
+    "mask_token": "<mask:1>",
+    "chat_template": "{%- if not add_generation_prompt is defined -%}\n    {%- set add_generation_prompt = true -%}\n{%- endif -%}\n{%- if not cls_token is defined -%}\n    {%- set cls_token = \"<|begin_of_sentence|>\" -%}\n{%- endif -%}\n{%- if not sep_token is defined -%}\n    {%- set sep_token = \"<|end_of_sentence|>\" -%}\n{%- endif -%}\n{{- cls_token -}}\n{%- for message in messages -%}\n    {%- if message[\"role\"] == \"user\" -%}\n        {{- \"User: \" + message[\"content\"] + \"\n\" -}}\n    {%- elif message[\"role\"] == \"assistant\" -%}\n        {{- \"Assistant: \" + message[\"content\"] + sep_token -}}\n    {%- elif message[\"role\"] == \"system\" -%}\n        {{- message[\"content\"] + \"\n\" -}}\n    {%- endif -%}\n{%- endfor -%}\n{%- if add_generation_prompt -%}\n    {{- \"Assistant: \" -}}\n{%- endif -%}"
+   }
+  },
+  "cardData": {
+   "license": "apache-2.0",
+   "language": [
+    "en",
+    "zh"
+   ],
+   "pipeline_tag": "text-generation",
+   "tags": [
+    "ERNIE4.5"
+   ],
+   "library_name": "PaddlePaddle"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "LICENSE"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "added_tokens.json"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00001-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00015-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00016-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00017-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00018-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00019-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00020-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00021-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00022-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00023-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00024-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00025-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00026-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00027-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00028-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00029-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00030-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00031-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00032-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00033-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00034-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00035-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00036-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00037-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00038-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00039-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00040-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00041-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00042-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00043-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00044-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00045-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00046-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00047-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00048-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00049-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00050-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00051-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00052-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00053-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00054-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00055-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00056-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00057-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00058-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00059-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00060-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00061-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00062-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00063-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00064-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00065-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00066-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00067-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00068-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00069-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00070-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00071-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00072-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00073-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00074-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00075-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00076-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00077-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00078-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00079-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00080-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00081-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00082-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00083-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00084-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00085-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00086-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00087-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00088-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00089-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00090-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00091-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00092-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00093-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00094-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00095-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00096-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00097-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00098-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00099-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00100-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00101-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00102-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00103-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00104-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00105-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00106-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00107-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00108-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00109-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00110-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00111-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00112-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00113-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00114-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00115-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00116-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00117-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00118-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00119-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00120-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00121-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00122-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model-00123-of-00123.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "mtp/model.safetensors"
+   },
+   {
+    "rfilename": "plas_attention_mlp_weight.safetensors"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.model"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [],
+  "createdAt": "2025-06-28T03:46:02.000Z",
+  "safetensors": {
+   "parameters": {
+    "U16": 300447309824,
+    "F32": 26741952
+   },
+   "total": 300474051776
+  },
+  "usedStorage": 602997743747
+ },
+ "model_config": {
+  "architectures": [
+   "Ernie4_5_MoeForCausalLM"
+  ],
+  "bos_token_id": 1,
+  "eos_token_id": 2,
+  "dtype": "bfloat16",
+  "hidden_act": "silu",
+  "hidden_size": 8192,
+  "intermediate_size": 28672,
+  "max_position_embeddings": 131072,
+  "model_type": "ernie4_5_moe",
+  "num_attention_heads": 64,
+  "num_key_value_heads": 8,
+  "num_hidden_layers": 54,
+  "pad_token_id": 0,
+  "rms_norm_eps": 1e-05,
+  "use_cache": false,
+  "vocab_size": 103424,
+  "rope_theta": 500000,
+  "use_rmsnorm": true,
+  "use_bias": false,
+  "moe_num_experts": 64,
+  "moe_layer_start_index": 3,
+  "moe_intermediate_size": 3584,
+  "moe_capacity": [
+   64,
+   64,
+   64
+  ],
+  "moe_gate": "topk",
+  "moe_k": 8,
+  "moe_layer_interval": 1,
+  "moe_use_aux_free": true,
+  "num_nextn_predict_layers": 1,
+  "tie_word_embeddings": false
+ }
+}

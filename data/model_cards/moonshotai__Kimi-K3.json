@@ -1,0 +1,827 @@
+{
+ "repo": "moonshotai/Kimi-K3",
+ "url": "https://huggingface.co/moonshotai/Kimi-K3",
+ "revision": "a590ce090cb049c93a33dfe8c208ec652aa20503",
+ "card_metadata": {
+  "tags": [],
+  "license": "other",
+  "license_name": "kimi-k3",
+  "library_name": "transformers",
+  "pipeline_tag": "image-text-to-text"
+ },
+ "hub_metadata": {
+  "_id": "6a2cfbf15c4b5ce712d08eb6",
+  "id": "moonshotai/Kimi-K3",
+  "private": false,
+  "pipeline_tag": "image-text-to-text",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "kimi_k3",
+   "feature-extraction",
+   "compressed-tensors",
+   "conversational",
+   "image-text-to-text",
+   "custom_code",
+   "license:other",
+   "eval-results",
+   "8-bit",
+   "region:us"
+  ],
+  "downloads": 2675145,
+  "likes": 11054,
+  "modelId": "moonshotai/Kimi-K3",
+  "author": "moonshotai",
+  "sha": "a590ce090cb049c93a33dfe8c208ec652aa20503",
+  "lastModified": "2026-08-20T04:57:37.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "KimiK3ForConditionalGeneration"
+   ],
+   "auto_map": {
+    "AutoConfig": "configuration_kimi_k3.KimiK3Config",
+    "AutoModel": "modeling_kimi_k3.KimiK3ForConditionalGeneration",
+    "AutoModelForCausalLM": "modeling_kimi_k3.KimiK3ForConditionalGeneration"
+   },
+   "model_type": "kimi_k3",
+   "text_config": {
+    "quantization_config": {
+     "config_groups": {
+      "group_0": {
+       "format": "mxfp4-pack-quantized",
+       "targets": [
+        "Linear"
+       ],
+       "weights": {
+        "num_bits": 4
+       }
+      }
+     },
+     "format": "mxfp4-pack-quantized",
+     "ignore": [
+      "re:.*self_attn.*",
+      "re:.*shared_experts.*",
+      "re:.*mlp\\.(gate|up|gate_up|down)_proj.*",
+      "re:.*lm_head.*",
+      "re:.*vision_tower.*",
+      "re:.*mm_projector.*"
+     ],
+     "quant_method": "compressed-tensors"
+    }
+   },
+   "tokenizer_config": {
+    "bos_token": "[BOS]",
+    "eos_token": "[EOS]",
+    "pad_token": "[PAD]",
+    "unk_token": "[UNK]"
+   }
+  },
+  "cardData": {
+   "tags": [
+    "compressed-tensors",
+    "conversational"
+   ],
+   "license": "other",
+   "license_name": "kimi-k3",
+   "library_name": "transformers",
+   "pipeline_tag": "image-text-to-text"
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModel",
+   "custom_class": "modeling_kimi_k3.KimiK3ForConditionalGeneration",
+   "pipeline_tag": "feature-extraction"
+  },
+  "siblings": [
+   {
+    "rfilename": ".eval_results/apex-agents.yaml"
+   },
+   {
+    "rfilename": ".eval_results/deep-swe.yaml"
+   },
+   {
+    "rfilename": ".eval_results/gpqa.yaml"
+   },
+   {
+    "rfilename": ".eval_results/hle.yaml"
+   },
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "LICENSE"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "assets/kimi-logo.png"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "configuration_kimi_k3.py"
+   },
+   {
+    "rfilename": "encoding_k3.py"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "kimi_k3_processor.py"
+   },
+   {
+    "rfilename": "kimi_k3_vision_processing.py"
+   },
+   {
+    "rfilename": "media_utils.py"
+   },
+   {
+    "rfilename": "model-00001-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00015-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00016-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00017-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00018-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00019-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00020-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00021-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00022-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00023-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00024-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00025-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00026-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00027-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00028-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00029-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00030-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00031-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00032-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00033-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00034-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00035-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00036-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00037-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00038-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00039-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00040-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00041-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00042-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00043-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00044-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00045-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00046-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00047-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00048-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00049-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00050-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00051-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00052-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00053-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00054-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00055-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00056-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00057-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00058-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00059-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00060-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00061-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00062-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00063-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00064-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00065-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00066-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00067-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00068-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00069-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00070-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00071-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00072-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00073-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00074-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00075-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00076-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00077-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00078-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00079-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00080-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00081-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00082-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00083-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00084-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00085-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00086-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00087-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00088-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00089-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00090-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00091-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00092-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00093-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00094-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00095-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model-00096-of-000096.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "modeling_kimi_k3.py"
+   },
+   {
+    "rfilename": "modeling_kimi_linear.py"
+   },
+   {
+    "rfilename": "preprocessor_config.json"
+   },
+   {
+    "rfilename": "tiktoken.model"
+   },
+   {
+    "rfilename": "tokenization_kimi.py"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [
+   "pollen-robotics/reachy-mini-text-to-motion",
+   "akhaliq/Kimi-K3",
+   "lalopenguin/kimi-k3-chat",
+   "HapppyHooochie/Kimi-K3-Abliterated-Demo",
+   "Alireza1913/HuggingShield-Kimi-Drop",
+   "jbsong/clt805",
+   "lupcao/Thunder.and.Lightning-Synastry",
+   "lulavc/llama-3.2-1b-instruct-demo",
+   "cw-105/kimi-k3-gguf-demo",
+   "Xunjunaa/pp01",
+   "cuivienen/synderesis-api",
+   "nickong4134/moa-fusion",
+   "naman411/micromanus-agent",
+   "Shublub/kimi-k3-demo",
+   "llamameta/kimi-glm5.5-game-k3",
+   "jiuguilaohu2026/kimi-k3",
+   "keithproject/kimi-k3-demo",
+   "qiguanfei/Kimi-K3-Demo",
+   "angelorovatti/kimi-k3-chat",
+   "akpsahan/kimi-glm5.5-game-k3",
+   "wuisimo/Kimi-K3-Demo",
+   "HugmeDEV/kimi-k3-demo",
+   "suvadityamuk/blender-agent",
+   "lukebanc/kimi-k3-demo",
+   "iwtwin/kimi-k3-demo",
+   "DPorwal/kimi-k3-demo",
+   "mirxa2/laguna-s-21-uncensored-demo",
+   "jstpl-docchat/aigenie-proxy-v2",
+   "ttpearso/kimi-k3-test",
+   "ajay-citadel/anzen-kimi-k3-safety-audit",
+   "Dorman11/kimi-k3-demo",
+   "Banu007/K3",
+   "patooriginal/Kimi-K3-Abliterated-Demo",
+   "RespawnerzStudioz/BlockSmith-Minecraft",
+   "ajay-citadel/anzen-k3-safety-audit-v4",
+   "Jackken/Hermes-Agent",
+   "aayu-outdooragi/contextcruxbench",
+   "organput/gaia-benchmark-agent",
+   "Tiger4589/kimi-k3-demo",
+   "sooprstshs/onebigspace",
+   "anzenresearch/anzen-k3-safety-audit",
+   "anzenresearch/cybench-oc3-reports",
+   "HuggingFaceHarness/Open-Harness-Leaderboard",
+   "ravinsan/my_new_agent",
+   "rabotatony/dudududi144"
+  ],
+  "createdAt": "2026-06-13T06:42:57.000Z",
+  "safetensors": {
+   "parameters": {
+    "F32": 11122432,
+    "BF16": 57179884544,
+    "U8": 2722740830208
+   },
+   "total": 2779931837184
+  },
+  "inference": "warm",
+  "usedStorage": 1561018243668
+ },
+ "model_config": {
+  "architectures": [
+   "KimiK3ForConditionalGeneration"
+  ],
+  "auto_map": {
+   "AutoConfig": "configuration_kimi_k3.KimiK3Config",
+   "AutoModel": "modeling_kimi_k3.KimiK3ForConditionalGeneration",
+   "AutoModelForCausalLM": "modeling_kimi_k3.KimiK3ForConditionalGeneration"
+  },
+  "bos_token_id": 163584,
+  "dtype": "bfloat16",
+  "eos_token_id": 163586,
+  "ignore_index": -100,
+  "image_placeholder": "<|kimi_image_placeholder|>",
+  "media_placeholder_token_id": 163605,
+  "model_type": "kimi_k3",
+  "pad_token_id": 163839,
+  "text_config": {
+   "_name_or_path": "",
+   "activation_situ_beta": 4.0,
+   "activation_situ_linear_beta": 25.0,
+   "add_cross_attention": false,
+   "architectures": [
+    "KimiLinearForCausalLM"
+   ],
+   "attn_res_block_size": 12,
+   "auto_map": {
+    "AutoConfig": "configuration_kimi_k3.KimiLinearConfig",
+    "AutoModel": "modeling_kimi_linear.KimiLinearModel",
+    "AutoModelForCausalLM": "modeling_kimi_linear.KimiLinearForCausalLM"
+   },
+   "bad_words_ids": null,
+   "begin_suppress_tokens": null,
+   "bos_token_id": 163584,
+   "chunk_size_feed_forward": 0,
+   "cross_attention_hidden_size": null,
+   "decoder_start_token_id": null,
+   "diversity_penalty": 0.0,
+   "do_sample": false,
+   "dtype": "bfloat16",
+   "early_stopping": false,
+   "encoder_no_repeat_ngram_size": 0,
+   "eos_token_id": 163586,
+   "exponential_decay_length_penalty": null,
+   "finetuning_task": null,
+   "first_k_dense_replace": 1,
+   "forced_bos_token_id": null,
+   "forced_eos_token_id": null,
+   "hidden_act": "situ",
+   "hidden_size": 7168,
+   "id2label": {
+    "0": "LABEL_0",
+    "1": "LABEL_1"
+   },
+   "initializer_range": 0.02,
+   "intermediate_size": 33792,
+   "is_decoder": false,
+   "is_encoder_decoder": false,
+   "kv_lora_rank": 512,
+   "label2id": {
+    "LABEL_0": 0,
+    "LABEL_1": 1
+   },
+   "latent_moe_use_norm": true,
+   "length_penalty": 1.0,
+   "linear_attn_config": {
+    "full_attn_layers": [
+     4,
+     8,
+     12,
+     16,
+     20,
+     24,
+     28,
+     32,
+     36,
+     40,
+     44,
+     48,
+     52,
+     56,
+     60,
+     64,
+     68,
+     72,
+     76,
+     80,
+     84,
+     88,
+     92,
+     93
+    ],
+    "gate_lower_bound": -5.0,
+    "head_dim": 128,
+    "kda_layers": [
+     1,
+     2,
+     3,
+     5,
+     6,
+     7,
+     9,
+     10,
+     11,
+     13,
+     14,
+     15,
+     17,
+     18,
+     19,
+     21,
+     22,
+     23,
+     25,
+     26,
+     27,
+     29,
+     30,
+     31,
+     33,
+     34,
+     35,
+     37,
+     38,
+     39,
+     41,
+     42,
+     43,
+     45,
+     46,
+     47,
+     49,
+     50,
+     51,
+     53,
+     54,
+     55,
+     57,
+     58,
+     59,
+     61,
+     62,
+     63,
+     65,
+     66,
+     67,
+     69,
+     70,
+     71,
+     73,
+     74,
+     75,
+     77,
+     78,
+     79,
+     81,
+     82,
+     83,
+     85,
+     86,
+     87,
+     89,
+     90,
+     91
+    ],
+    "num_heads": 96,
+    "short_conv_kernel_size": 4,
+    "use_full_rank_gate": true
+   },
+   "max_length": 20,
+   "max_position_embeddings": 1048576,
+   "min_length": 0,
+   "mla_use_nope": true,
+   "mla_use_output_gate": true,
+   "model_type": "kimi_linear",
+   "moe_intermediate_size": 3072,
+   "moe_layer_freq": 1,
+   "moe_renormalize": true,
+   "moe_router_activation_func": "sigmoid",
+   "no_repeat_ngram_size": 0,
+   "num_attention_heads": 96,
+   "num_beam_groups": 1,
+   "num_beams": 1,
+   "num_expert_group": 1,
+   "num_experts": 896,
+   "num_experts_per_token": 16,
+   "num_hidden_layers": 93,
+   "num_key_value_heads": 96,
+   "num_nextn_predict_layers": 0,
+   "num_return_sequences": 1,
+   "num_shared_experts": 2,
+   "output_attentions": false,
+   "output_hidden_states": false,
+   "output_scores": false,
+   "pad_token_id": 163839,
+   "prefix": null,
+   "problem_type": null,
+   "pruned_heads": {},
+   "q_lora_rank": 1536,
+   "qk_nope_head_dim": 128,
+   "qk_rope_head_dim": 64,
+   "quantization_config": {
+    "config_groups": {
+     "group_0": {
+      "format": "mxfp4-pack-quantized",
+      "input_activations": null,
+      "output_activations": null,
+      "targets": [
+       "Linear"
+      ],
+      "weights": {
+       "actorder": null,
+       "block_structure": null,
+       "dynamic": false,
+       "group_size": 32,
+       "num_bits": 4,
+       "observer": "minmax",
+       "observer_kwargs": {},
+       "scale_dtype": "torch.uint8",
+       "strategy": "group",
+       "symmetric": true,
+       "type": "float",
+       "zp_dtype": null
+      }
+     }
+    },
+    "format": "mxfp4-pack-quantized",
+    "global_compression_ratio": null,
+    "ignore": [
+     "re:.*self_attn.*",
+     "re:.*shared_experts.*",
+     "re:.*mlp\\.(gate|up|gate_up|down)_proj.*",
+     "re:.*lm_head.*",
+     "re:.*vision_tower.*",
+     "re:.*mm_projector.*"
+    ],
+    "kv_cache_scheme": null,
+    "quant_method": "compressed-tensors",
+    "quantization_status": "compressed"
+   },
+   "remove_invalid_values": false,
+   "repetition_penalty": 1.0,
+   "return_dict": true,
+   "return_dict_in_generate": false,
+   "rms_norm_eps": 1e-05,
+   "routed_expert_hidden_size": 3584,
+   "routed_scaling_factor": 1.0,
+   "sep_token_id": null,
+   "suppress_tokens": null,
+   "task_specific_params": null,
+   "temperature": 1.0,
+   "tf_legacy_loss": false,
+   "tie_encoder_decoder": false,
+   "tie_word_embeddings": false,
+   "tokenizer_class": null,
+   "top_k": 50,
+   "top_p": 1.0,
+   "topk_group": 1,
+   "topk_method": "noaux_tc",
+   "torchscript": false,
+   "transformers_version": "4.56.2",
+   "typical_p": 1.0,
+   "use_bfloat16": false,
+   "use_cache": true,
+   "use_grouped_topk": true,
+   "v_head_dim": 128,
+   "vocab_size": 163840
+  },
+  "tie_word_embeddings": false,
+  "vision_config": {
+   "_attn_implementation": "flash_attention_2",
+   "activation_func": "gelu_pytorch_tanh",
+   "attn_bias": false,
+   "init_pos_emb_height": 64,
+   "init_pos_emb_time": 4,
+   "init_pos_emb_width": 64,
+   "linear_bias": false,
+   "merge_kernel_size": [
+    2,
+    2
+   ],
+   "merge_type": "sd2_tpool",
+   "mlp_type": "mlp2",
+   "mm_hidden_size": 1024,
+   "mm_projector_type": "patchmergerv2",
+   "norm_type": "rmsnorm",
+   "patch_embed_proj_bias": false,
+   "patch_size": 14,
+   "pos_emb_interpolation_mode": "bilinear",
+   "pos_emb_type": "divided_fixed",
+   "projector_hidden_act": "gelu",
+   "projector_ln_eps": 1e-05,
+   "qkv_hidden_size": 1536,
+   "text_hidden_size": 7168,
+   "vt_hidden_size": 1024,
+   "vt_intermediate_size": 4096,
+   "vt_num_attention_heads": 12,
+   "vt_num_hidden_layers": 27
+  }
+ }
+}

@@ -1,0 +1,240 @@
+{
+ "repo": "LiquidAI/LFM2.5-2.6B",
+ "url": "https://huggingface.co/LiquidAI/LFM2.5-2.6B",
+ "revision": "654f9463ce32b05d0429d76fe1f580b27d4c1ac0",
+ "card_metadata": {
+  "library_name": "transformers",
+  "license": "other",
+  "license_name": "lfm1.0",
+  "license_link": "LICENSE",
+  "language": [],
+  "pipeline_tag": "text-generation",
+  "tags": [],
+  "base_model": "LiquidAI/LFM2.5-2.6B-Base"
+ },
+ "hub_metadata": {
+  "_id": "6a6929c85c8cc5852a1b3dab",
+  "id": "LiquidAI/LFM2.5-2.6B",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "lfm2",
+   "text-generation",
+   "liquid",
+   "lfm2.5",
+   "edge",
+   "conversational",
+   "ar",
+   "zh",
+   "en",
+   "fr",
+   "de",
+   "hi",
+   "id",
+   "it",
+   "ja",
+   "ko",
+   "pl",
+   "pt",
+   "ru",
+   "es",
+   "th",
+   "vi",
+   "arxiv:2511.23404",
+   "base_model:LiquidAI/LFM2.5-2.6B-Base",
+   "base_model:finetune:LiquidAI/LFM2.5-2.6B-Base",
+   "license:other",
+   "eval-results",
+   "endpoints_compatible",
+   "region:us"
+  ],
+  "downloads": 183166,
+  "likes": 707,
+  "modelId": "LiquidAI/LFM2.5-2.6B",
+  "author": "LiquidAI",
+  "sha": "654f9463ce32b05d0429d76fe1f580b27d4c1ac0",
+  "lastModified": "2026-08-24T21:06:45.000Z",
+  "gated": false,
+  "disabled": false,
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "Lfm2ForCausalLM"
+   ],
+   "model_type": "lfm2",
+   "tokenizer_config": {
+    "bos_token": "<|startoftext|>",
+    "eos_token": "<|im_end|>",
+    "pad_token": "<|pad|>",
+    "use_default_system_prompt": false
+   },
+   "chat_template_jinja": "{{- bos_token -}}\n{%- set preserve_thinking = preserve_thinking | default(false) -%}\n\n{%- macro format_arg_value(arg_value) -%}\n    {%- if arg_value is string -%}\n        {{- \"'\" + (arg_value | replace(\"\\\\\", \"\\\\\\\\\") | replace(\"'\", \"\\\\'\") | replace(\"\\n\", \"\\\\n\") | replace(\"\\r\", \"\\\\r\")) + \"'\" -}}\n    {%- elif arg_value is mapping or arg_value is iterable -%}\n        {{- arg_value | tojson -}}\n    {%- else -%}\n        {{- arg_value | string -}}\n    {%- endif -%}\n{%- endmacro -%}\n\n{%- macro parse_content(content) -%}\n    {%- if content is string -%}\n        {{- content -}}\n    {%- elif content is mapping -%}\n        {{- content | tojson -}}\n    {%- elif content is iterable -%}\n        {%- set _ns = namespace(result=\"\") -%}\n        {%- for item in content -%}\n            {%- if item is string -%}\n                {%- set _ns.result = _ns.result + item -%}\n            {%- elif item is mapping and item.get(\"type\") == \"image\" -%}\n                {%- set _ns.result = _ns.result + \"<image>\" -%}\n            {%- elif item is mapping and item.get(\"type\") == \"text\" -%}\n                {%- set _ns.result = _ns.result + ((item.get(\"text\") or \"\") | string) -%}\n            {%- else -%}\n                {%- set _ns.result = _ns.result + (item | tojson) -%}\n            {%- endif -%}\n        {%- endfor -%}\n        {{- _ns.result -}}\n    {%- endif -%}\n{%- endmacro -%}\n\n{%- macro render_tool_calls(tool_calls) -%}\n    {%- set tool_calls_ns = namespace(tool_calls=[]) -%}\n    {%- for tool_call in tool_calls -%}\n        {%- set func = tool_call[\"function\"] if \"function\" in tool_call else tool_call -%}\n        {%- set func_name = func[\"name\"] -%}\n        {%- set func_args = func.get(\"arguments\") -%}\n        {%- set args_ns = namespace(arg_strings=[]) -%}\n        {%- if func_args is mapping -%}\n            {%- for arg_name, arg_value in func_args.items() -%}\n                {%- set args_ns.arg_strings = args_ns.arg_strings + [arg_name + \"=\" + format_arg_value(arg_value)] -%}\n            {%- endfor -%}\n        {%- elif func_args is string and (func_args | trim) not in [\"\", \"{}\", \"null\"] -%}\n            {{- raise_exception(\"Tool call arguments must be a mapping, got a JSON-encoded string: parse arguments with json.loads() before applying the chat template\") -}}\n        {%- endif -%}\n        {%- set tool_calls_ns.tool_calls = tool_calls_ns.tool_calls + [func_name + \"(\" + (args_ns.arg_strings | join(\", \")) + \")\"] -%}\n    {%- endfor -%}\n    {{- \"<|tool_call_start|>[\" + (tool_calls_ns.tool_calls | join(\", \")) + \"]<|tool_call_end|>\" -}}\n{%- endmacro -%}\n\n{%- set ns = namespace(system_prompt=\"\", last_user_index=-1) -%}\n{%- if messages and messages[0][\"role\"] == \"system\" -%}\n    {%- if messages[0].get(\"content\") -%}\n        {%- set ns.system_prompt = parse_content(messages[0][\"content\"]) -%}\n    {%- endif -%}\n    {%- set messages = messages[1:] -%}\n{%- endif -%}\n{%- if tools -%}\n    {%- set ns.system_prompt = ns.system_prompt + (\"\\n\" if ns.system_prompt else \"\") + \"List of tools: [\" -%}\n    {%- for tool in tools -%}\n        {%- if tool is not string -%}\n            {%- set tool = tool | tojson -%}\n        {%- endif -%}\n        {%- set ns.system_prompt = ns.system_prompt + tool -%}\n        {%- if not loop.last -%}\n            {%- set ns.system_prompt = ns.system_prompt + \", \" -%}\n        {%- endif -%}\n    {%- endfor -%}\n    {%- set ns.system_prompt = ns.system_prompt + \"]\" -%}\n{%- endif -%}\n{%- if ns.system_prompt -%}\n    {{- \"<|im_start|>system\\n\" + ns.system_prompt + \"<|im_end|>\\n\" -}}\n{%- endif -%}\n{%- for message in messages -%}\n    {%- if message[\"role\"] == \"user\" -%}\n        {%- set ns.last_user_index = loop.index0 -%}\n    {%- endif -%}\n{%- endfor -%}\n{%- for message in messages -%}\n    {{- \"<|im_start|>\" + message.role + \"\\n\" -}}\n    {%- if message.role == \"assistant\" -%}\n        {%- generation -%}\n        {%- set keep_thinking = preserve_thinking or loop.index0 > ns.last_user_index -%}\n        {%- set thinking = message.thinking or message.reasoning or message.reasoning_content -%}\n        {%- set thinking = thinking if thinking is string else \"\" -%}\n        {%- if thinking and keep_thinking -%}\n            {{- \"<think>\" + thinking + \"</think>\" -}}\n        {%- endif -%}\n        {%- set _cfm_tag = \"CONTINUE_FINAL_MESSAGE_TAG \" -%}\n        {%- set _has_cfm = false -%}\n        {%- set content = \"\" -%}\n        {%- if message.get(\"content\") -%}\n            {%- set content = parse_content(message.content) -%}\n        {%- endif -%}\n        {%- if not keep_thinking and \"</think>\" in content -%}\n            {%- set content = content.split(\"</think>\")[-1] | trim -%}\n        {%- endif -%}\n        {%- if content.endswith(_cfm_tag) -%}\n            {%- set _has_cfm = true -%}\n            {%- set _trunc_len = (content | length) - (_cfm_tag | length) -%}\n            {%- set content = content[:_trunc_len] -%}\n        {%- endif -%}\n        {{- content -}}\n        {%- if message.tool_calls -%}\n            {{- render_tool_calls(message.tool_calls) -}}\n        {%- endif -%}\n        {%- if _has_cfm -%}\n            {{- _cfm_tag -}}\n        {%- endif -%}\n        {{- \"<|im_end|>\\n\" -}}\n        {%- endgeneration -%}\n    {%- else %}\n        {%- if message.get(\"content\") -%}\n            {{- parse_content(message[\"content\"]) -}}\n        {%- endif -%}\n        {{- \"<|im_end|>\\n\" -}}\n    {%- endif %}\n{%- endfor -%}\n{%- if add_generation_prompt -%}\n    {{- \"<|im_start|>assistant\\n<think>\" -}}\n{%- endif -%}\n"
+  },
+  "cardData": {
+   "library_name": "transformers",
+   "license": "other",
+   "license_name": "lfm1.0",
+   "license_link": "LICENSE",
+   "language": [
+    "ar",
+    "zh",
+    "en",
+    "fr",
+    "de",
+    "hi",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "pl",
+    "pt",
+    "ru",
+    "es",
+    "th",
+    "vi"
+   ],
+   "pipeline_tag": "text-generation",
+   "tags": [
+    "liquid",
+    "lfm2.5",
+    "edge"
+   ],
+   "base_model": "LiquidAI/LFM2.5-2.6B-Base"
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForCausalLM",
+   "pipeline_tag": "text-generation",
+   "processor": "AutoTokenizer"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "LICENSE"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00001-of-00002.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00002.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [
+   "apathy-exe/LFM2.5-2.6B",
+   "librarian-bots/dataset-tldr",
+   "geocine/MiniMax-H3-Prompt-Enhancer-2.6B",
+   "prodnobody/space",
+   "Lev384501/LFM2.5-2.6B-ZeroGpu",
+   "ramdane/gpuramedde",
+   "prodnobody/gradio-space",
+   "JamieBlust/llm-playground",
+   "PhantomXXX2T/FunSpace_AI1"
+  ],
+  "createdAt": "2026-07-28T22:14:32.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 2697198592
+   },
+   "total": 2697198592
+  },
+  "usedStorage": 5412333054
+ },
+ "model_config": {
+  "architectures": [
+   "Lfm2ForCausalLM"
+  ],
+  "block_auto_adjust_ff_dim": false,
+  "block_dim": 2048,
+  "block_ffn_dim_multiplier": 1.0,
+  "block_mlp_init_scale": 1.0,
+  "block_multiple_of": 256,
+  "block_norm_eps": 1e-05,
+  "block_out_init_scale": 1.0,
+  "block_use_swiglu": true,
+  "block_use_xavier_init": true,
+  "bos_token_id": 124894,
+  "conv_L_cache": 3,
+  "conv_bias": false,
+  "conv_dim": 2048,
+  "conv_use_xavier_init": true,
+  "dtype": "bfloat16",
+  "eos_token_id": 124900,
+  "hidden_size": 2048,
+  "initializer_range": 0.02,
+  "intermediate_size": 10752,
+  "layer_types": [
+   "conv",
+   "conv",
+   "full_attention",
+   "conv",
+   "conv",
+   "full_attention",
+   "conv",
+   "conv",
+   "conv",
+   "full_attention",
+   "conv",
+   "conv",
+   "conv",
+   "full_attention",
+   "conv",
+   "conv",
+   "conv",
+   "full_attention",
+   "conv",
+   "conv",
+   "conv",
+   "full_attention",
+   "conv",
+   "conv",
+   "full_attention",
+   "conv",
+   "conv",
+   "full_attention",
+   "conv",
+   "conv"
+  ],
+  "max_position_embeddings": 131072,
+  "model_type": "lfm2",
+  "norm_eps": 1e-05,
+  "num_attention_heads": 32,
+  "num_heads": 32,
+  "num_hidden_layers": 30,
+  "num_key_value_heads": 8,
+  "pad_token_id": 124893,
+  "rope_parameters": {
+   "rope_theta": 10000000.0,
+   "rope_type": "default"
+  },
+  "tie_word_embeddings": true,
+  "transformers_version": "5.2.0",
+  "use_cache": true,
+  "use_pos_enc": true,
+  "vocab_size": 128000
+ }
+}

@@ -1,0 +1,323 @@
+{
+ "repo": "NousResearch/Hermes-4-70B",
+ "url": "https://huggingface.co/NousResearch/Hermes-4-70B",
+ "revision": "d5dec2bd6b3930a09ddefd0b7fc6523fe0720d09",
+ "card_metadata": {
+  "base_model": "meta-llama/Meta-Llama-3.1-70B",
+  "language": [],
+  "library_name": "transformers",
+  "license": "llama3",
+  "pipeline_tag": "text-generation",
+  "tags": [],
+  "widget": [],
+  "messages": [],
+  "content": "Explain the difference between BFS and DFS to a new CS student.",
+  "model-index": [],
+  "results": "[]"
+ },
+ "hub_metadata": {
+  "_id": "68a34925f057ffe5051b5b6b",
+  "id": "NousResearch/Hermes-4-70B",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "llama",
+   "text-generation",
+   "Llama-3.1",
+   "instruct",
+   "finetune",
+   "reasoning",
+   "hybrid-mode",
+   "chatml",
+   "function calling",
+   "tool use",
+   "json mode",
+   "structured outputs",
+   "atropos",
+   "dataforge",
+   "long context",
+   "roleplaying",
+   "chat",
+   "conversational",
+   "en",
+   "arxiv:2508.18255",
+   "base_model:meta-llama/Llama-3.1-70B",
+   "base_model:finetune:meta-llama/Llama-3.1-70B",
+   "license:llama3",
+   "text-generation-inference",
+   "endpoints_compatible",
+   "region:us"
+  ],
+  "downloads": 2499,
+  "likes": 208,
+  "modelId": "NousResearch/Hermes-4-70B",
+  "author": "NousResearch",
+  "sha": "d5dec2bd6b3930a09ddefd0b7fc6523fe0720d09",
+  "lastModified": "2025-09-02T06:40:36.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "example_title": "Hermes 4",
+    "messages": [
+     {
+      "role": "system",
+      "content": "You are Hermes 4, a capable, neutrally-aligned assistant. Prefer concise, correct answers."
+     },
+     {
+      "role": "user",
+      "content": "Explain the difference between BFS and DFS to a new CS student."
+     }
+    ]
+   }
+  ],
+  "model-index": [
+   {
+    "name": "Hermes-4-Llama-3.1-70B",
+    "results": []
+   }
+  ],
+  "config": {
+   "architectures": [
+    "LlamaForCausalLM"
+   ],
+   "model_type": "llama",
+   "tokenizer_config": {
+    "bos_token": "<|begin_of_text|>",
+    "eos_token": "<|eot_id|>",
+    "pad_token": "<|end_of_text|>"
+   },
+   "chat_template_jinja": "{%- set thinking_prompt = 'You are a deep thinking AI, you may use extremely long chains of thought to deeply consider the problem and deliberate with yourself via systematic reasoning processes to help come to a correct solution prior to answering. You should enclose your thoughts and internal monologue inside <think> </think> tags, and then provide your solution or response to the problem.' %}\n{%- set standard_prompt = 'You are Hermes, created by Nous Research.' %}\n{%- if not thinking is defined %}{% set thinking = false %}{% endif %}\n{%- if not keep_cots is defined %}{% set keep_cots = false %}{% endif %}\n{%- if thinking %}{%- set system_prompt = thinking_prompt %}{%- else %}{%- set system_prompt = standard_prompt %}{%- endif %}\n{%- if tools %}\n    {{- bos_token + '<|start_header_id|>system<|end_header_id|>\\n' }}\n    {%- if messages[0]['role'] == 'system' %}\n        {{- messages[0]['content'] }}\n    {%- else %}\n        {{- system_prompt }}\n    {%- endif %}\n    {{- \"\\n\\n# Tools\\n\\nYou are a function calling AI model. You may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>\" }}\n    {%- for tool in tools %}\n        {{- \"\\n\" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- \"\\n</tools>\\n\\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\\n<tool_call>\\n{\\\"name\\\": \\\"<function-name>\\\", \\\"arguments\\\": <args-json-object>}\\n</tool_call><|eot_id|>\" }}\n{%- else %}\n    {%- if messages[0]['role'] == 'system' %}\n        {{- bos_token + '<|start_header_id|>system<|end_header_id|>\\n\\n' + messages[0]['content'] + '<|eot_id|>' }}\n    {%- else %}\n        {{- bos_token + '<|start_header_id|>system<|end_header_id|>\\n\\n' + system_prompt + '<|eot_id|>' }}\n    {%- endif %}\n{%- endif %}\n{%- for message in messages %}\n    {%- if (message.role == \"user\") or (message.role == \"system\" and not loop.first) %}\n        {{- '<|start_header_id|>' + message.role + '<|end_header_id|>\\n\\n' + message.content + '<|eot_id|>' }}\n    {%- elif (message.role == \"assistant\" and not message.tool_calls) %}\n        {{- '<|start_header_id|>' + message.role + '<|end_header_id|>\\n' }}\n        {%- if message.content %}\n            {%- set content = message['content'] -%}\n            {%- if thinking %}\n                {%- if not keep_cots %}\n                    {%- set content = '<think> </think>' + content.split('</think>', 1)[1] -%}\n                {%- endif %}\n            {%- endif %}\n            {{- '\\n' + content + '<|eot_id|>' }}\n        {%- endif %}\n    {%- elif message.role == \"assistant\" %}\n        {{- '<|start_header_id|>' + message.role + '<|end_header_id|>\\n' }}\n        {%- if message.content %}\n            {%- set content = message['content'] -%}\n            {%- if thinking %}\n                {%- if not keep_cots %}\n                    {%- set content = '<think> </think>' + content.split('</think>', 1)[1] -%}\n                {%- endif %}\n            {%- endif %}\n            {{- '\\n' + content }}\n        {%- endif %}\n        {%- for tool_call in message.tool_calls %}\n            {%- if tool_call.function is defined %}\n                {%- set tool_call = tool_call.function %}\n            {%- endif %}\n            {{- '\\n<tool_call>\\n{\"name\": \"' }}\n            {{- tool_call.name }}\n            {{- '\", \"arguments\": ' }}\n            {{- tool_call.arguments | tojson }}\n            {{- '}\\n</tool_call>' }}\n        {%- endfor %}\n        {{- '<|eot_id|>' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if (loop.index0 == 0) or (messages[loop.index0 - 1].role != \"tool\") %}\n            {{- '<|start_header_id|>user<|end_header_id|>\\n' }}\n        {%- endif %}\n        {{- '\\n<tool_response>\\n' }}\n        {{- message.content }}\n        {{- '\\n</tool_response>' }}\n        {%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}\n            {{- '<|eot_id|>' }}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|start_header_id|>assistant<|end_header_id|>\\n\\n' }}\n{%- endif %}\n"
+  },
+  "cardData": {
+   "base_model": "meta-llama/Meta-Llama-3.1-70B",
+   "language": [
+    "en"
+   ],
+   "library_name": "transformers",
+   "license": "llama3",
+   "pipeline_tag": "text-generation",
+   "tags": [
+    "Llama-3.1",
+    "instruct",
+    "finetune",
+    "reasoning",
+    "hybrid-mode",
+    "chatml",
+    "function calling",
+    "tool use",
+    "json mode",
+    "structured outputs",
+    "atropos",
+    "dataforge",
+    "long context",
+    "roleplaying",
+    "chat"
+   ],
+   "widget": [
+    {
+     "example_title": "Hermes 4",
+     "messages": [
+      {
+       "role": "system",
+       "content": "You are Hermes 4, a capable, neutrally-aligned assistant. Prefer concise, correct answers."
+      },
+      {
+       "role": "user",
+       "content": "Explain the difference between BFS and DFS to a new CS student."
+      }
+     ]
+    }
+   ],
+   "model-index": [
+    {
+     "name": "Hermes-4-Llama-3.1-70B",
+     "results": []
+    }
+   ]
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForCausalLM",
+   "pipeline_tag": "text-generation",
+   "processor": "AutoTokenizer"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00001-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00015-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00016-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00017-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00018-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00019-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00020-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00021-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00022-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00023-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00024-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00025-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00026-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00027-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00028-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00029-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model-00030-of-00030.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [
+   "ReallyFloppyPenguin/NousResearch-Hermes-4-70B",
+   "mitdow/deepsite-project-g7pus",
+   "LogitCode/FlexChat",
+   "LogitCode/FlexChat-Warm",
+   "LogitCode/FlexChat-terminal",
+   "LogitCode/FlexChat-Gold",
+   "LogitCode/FlexChat-blue",
+   "shmr90661/haven-ai-backend",
+   "BuildingFutureAssets/hermes-gateway",
+   "JWSolanki/aahm-garmin-running-coach"
+  ],
+  "createdAt": "2025-08-18T15:39:17.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 70553706496
+   },
+   "total": 70553706496
+  },
+  "inference": "warm",
+  "usedStorage": 141124707699
+ },
+ "model_config": {
+  "architectures": [
+   "LlamaForCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "bos_token_id": 128000,
+  "eos_token_id": 128001,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 8192,
+  "initializer_range": 0.02,
+  "intermediate_size": 28672,
+  "max_position_embeddings": 131072,
+  "mlp_bias": false,
+  "model_type": "llama",
+  "num_attention_heads": 64,
+  "num_hidden_layers": 80,
+  "num_key_value_heads": 8,
+  "pretraining_tp": 1,
+  "rms_norm_eps": 1e-05,
+  "rope_scaling": {
+   "factor": 8.0,
+   "high_freq_factor": 4.0,
+   "low_freq_factor": 1.0,
+   "original_max_position_embeddings": 8192,
+   "rope_type": "llama3"
+  },
+  "rope_theta": 500000.0,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.52.4",
+  "use_cache": true,
+  "vocab_size": 128256
+ }
+}

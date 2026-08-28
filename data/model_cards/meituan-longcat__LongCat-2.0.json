@@ -1,0 +1,793 @@
+{
+ "repo": "meituan-longcat/LongCat-2.0",
+ "url": "https://huggingface.co/meituan-longcat/LongCat-2.0",
+ "revision": "834bf5ffe3047aa9f6cc7a64a9bc068b146b8274",
+ "card_metadata": {
+  "license": "mit",
+  "library_name": "LongCat-2.0",
+  "pipeline_tag": "text-generation",
+  "tags": []
+ },
+ "hub_metadata": {
+  "_id": "6a49a050bdd6506357029b12",
+  "id": "meituan-longcat/LongCat-2.0",
+  "private": false,
+  "pipeline_tag": "text-generation",
+  "library_name": "LongCat-2.0",
+  "tags": [
+   "LongCat-2.0",
+   "safetensors",
+   "transformers",
+   "text-generation",
+   "conversational",
+   "license:mit",
+   "eval-results",
+   "region:us"
+  ],
+  "downloads": 1435,
+  "likes": 262,
+  "modelId": "meituan-longcat/LongCat-2.0",
+  "author": "meituan-longcat",
+  "sha": "834bf5ffe3047aa9f6cc7a64a9bc068b146b8274",
+  "lastModified": "2026-07-08T06:29:21.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "LongcatCausalLM"
+   ],
+   "tokenizer_config": {
+    "bos_token": {
+     "__type": "AddedToken",
+     "content": "<longcat_s>",
+     "lstrip": false,
+     "normalized": true,
+     "rstrip": false,
+     "single_word": false
+    },
+    "eos_token": {
+     "__type": "AddedToken",
+     "content": "</longcat_s>",
+     "lstrip": false,
+     "normalized": true,
+     "rstrip": false,
+     "single_word": false
+    },
+    "pad_token": {
+     "__type": "AddedToken",
+     "content": "<longcat_pad>",
+     "lstrip": false,
+     "normalized": true,
+     "rstrip": false,
+     "single_word": false
+    },
+    "unk_token": {
+     "__type": "AddedToken",
+     "content": "<longcat_unk>",
+     "lstrip": false,
+     "normalized": true,
+     "rstrip": false,
+     "single_word": false
+    },
+    "chat_template": "{%- set tool_choice = tool_choice | default('auto') -%}\n{%- set enable_thinking = enable_thinking | default(true) -%}\n{%- set save_history_reasoning_content = save_history_reasoning_content | default(true) -%}\n{%- set ns = namespace(final_messages = [], tool_types = [], last_query_index = -1) -%}\n{%- for message in messages -%}\n    {%- set role = message.get('role') -%}\n    {%- set c = message.get('content') -%}\n    {%- if c is string -%}\n        {%- set ns.final_messages = ns.final_messages + [message] -%}\n    {%- elif c is iterable and c is not mapping -%}\n        {%- set parts = namespace(text=[], thinking=[], tool_calls=[], tool_results=[]) -%}\n        {%- for item in c -%}\n            {%- if item['type'] == 'text' -%}\n                {%- set parts.text = parts.text + [item['text']] -%}\n            {%- elif item['type'] == 'thinking' -%}\n                {%- if item['thinking'] -%}\n                    {%- set parts.thinking = parts.thinking + [item['thinking']] -%}\n                {%- endif -%}\n            {%- elif item['type'] == 'tool_use' -%}\n                {%- set parts.tool_calls = parts.tool_calls + [{\n                    'id': item['id'],\n                    'type': 'function',\n                    'function': {\n                        'name': item['name'],\n                        'arguments': item['input']\n                    }\n                }] -%}\n            {%- elif item['type'] == 'tool_result' -%}\n                {%- set parts.tool_results = parts.tool_results + [{\n                    'role': 'tool',\n                    'name': item.get('name', ''),\n                    'tool_call_id': item['tool_use_id'],\n                    'content': item['content']\n                }] -%}\n            {%- endif -%}\n        {%- endfor -%}\n        {%- set ns.final_messages = ns.final_messages + parts.tool_results -%}\n        {%- if not (parts.tool_results | length > 0 and parts.text | length == 0 and role == 'user') -%}\n            {%- set ns.final_messages = ns.final_messages + [{\n                'role': role,\n                'content': parts.text | join(''),\n                'reasoning_content': parts.thinking | join(''),\n                'tool_calls': parts.tool_calls\n            }] -%}\n        {%- endif -%}\n    {%- else -%}\n        {%- set ns.final_messages = ns.final_messages + [message] -%}\n    {%- endif -%}\n{%- endfor -%}\n{%- set messages = ns.final_messages -%}\n\n{%- for idx in range(messages|length) -%}\n    {%- set msg = messages[idx] -%}\n    {%- if msg.role == 'user' -%}\n        {%- set ns.last_query_index = idx -%}\n    {%- endif -%}\n{%- endfor -%}\n\n{%- if tools and tool_choice != 'none' -%}\n    {{- \"<longcat_tool_declare>\\n\" -}}\n    {{- \"# Tools\\n\" -}}\n    {{- \"You have access to the following tools:\\n\\n\" -}}\n    {%- for tool in tools -%}\n        {%- if tool.type not in ns.tool_types -%}\n            {%- set ns.tool_types = ns.tool_types + [tool.type] -%}\n            {{- \"## Tool namespace: \" ~ tool.type ~ \"\\n\\n\" -}}\n        {%- endif -%}\n        {%- if tool.type == 'code_interpreter' -%}\n            {%- set tool = {\"type\":\"code_interpreter\",\"function\":{\"name\":\"code_interpreter_preview\",\"description\":\"The code will be executed in a stateful Jupyter notebook sandbox environment, only supports local computation, data processing, and file operations.\\nCode sandbox environment (network isolated) Any external network requests or online API calls are prohibited.\\nIf online functionality is needed, please use other permitted tools.\\nCode will respond with the output of the execution or time out after 60.0 seconds. \",\"parameters\":{\"type\":\"object\",\"properties\":{\"language\":{\"type\":\"string\",\"description\":\"The programming language of the code to be executed. Available values: python (Default), java, go, js, ts, c, c++.\"},\"code\":{\"type\":\"string\",\"description\":\"Python code to be executed must not include the following:\\n- Importing network libraries such as requests, httplib, etc.\\n- Any form of HTTP requests.\\n- External API calls.\\n- Network port operations. Example: ```python\\nimport pandas as pd\\npd.DataFrame({'A':[1,2]})\\n```\"},\"timeout\":{\"type\":\"number\",\"description\":\"The maximum execution time of the code, in seconds. Default is 60.0.\"}}},\"required\":[\"code\"]}} -%}\n        {%- endif -%}\n        {{- \"### Tool name: \" + tool.function.name + \"\\n\" -}}\n        {{- \"Description: \" + tool.function.description + \"\\n\\n\" -}}\n        {{- \"InputSchema: \" + tool.function.parameters | tojson(ensure_ascii=False) + \"\\n\\n\" -}}\n    {%- endfor -%}\n    {{- '**Note**: For each function call, output the function name and arguments within the following XML format:\\n<longcat_tool_call>{function-name}\\n<longcat_arg_key>{arg-key-1}</longcat_arg_key>\\n<longcat_arg_value>{arg-value-1}</longcat_arg_value>\\n<longcat_arg_key>{arg-key-2}</longcat_arg_key>\\n<longcat_arg_value>{arg-value-2}</longcat_arg_value>\\n...\\n</longcat_tool_call>\\n' -}}\n    {{- \"</longcat_tool_declare>\"-}}\n{%- endif -%}\n\n{%- for msg in messages -%}\n    {%- if msg.role == \"system\" -%}\n        {{- \"<longcat_system>\" + msg.content -}}\n    {%- elif msg.role == \"user\" -%}\n        {{- \"<longcat_user>\" -}}\n        {%- if msg[\"files\"] -%}\n            {{- '<longcat_files>\\n' ~ msg.files | tojson(indent=2) ~ '\\n</longcat_files>' -}}\n        {%- endif -%}\n        {{- msg.content -}}\n        {%- if save_history_reasoning_content and enable_thinking is not none -%}\n            {%- if loop.last or messages[loop.index0 + 1].role != 'assistant' -%}\n                {# pass #}\n            {%- else -%}\n                {%- if enable_thinking == true -%}\n                    {{- \" /think_on\" -}}\n                    {%- if thinking_budget -%}\n                        {%- if thinking_budget < 1024 -%}\n                            {%- set thinking_budget = 1024 -%}\n                        {%- endif -%}\n                        {{- \"\\nthinking_budget: < \" ~ thinking_budget ~ \".\" -}}\n                    {%- endif -%}\n                    {{- \" \" -}}\n                {%- elif enable_thinking == false -%}\n                    {{- \" /think_off \" -}}\n                {%- endif -%}\n            {%- endif -%}\n        {%- elif loop.index0 >= ns.last_query_index and enable_thinking is not none -%}\n            {%- if loop.last or messages[loop.index0 + 1].role != 'assistant' -%}\n                {# pass #}\n            {%- else -%}\n                {%- if enable_thinking == true -%}\n                    {{- \" /think_on\" -}}\n                    {%- if thinking_budget -%}\n                        {%- if thinking_budget < 1024 -%}\n                            {%- set thinking_budget = 1024 -%}\n                        {%- endif -%}\n                        {{- \"\\nthinking_budget: < \" ~ thinking_budget ~ \".\" -}}\n                    {%- endif -%}\n                    {{- \" \" -}}\n                {%- elif enable_thinking == false -%}\n                    {{- \" /think_off \" -}}\n                {%- endif -%}\n            {%- endif -%}\n        {%- endif -%}\n    {%- elif msg.role == \"assistant\" -%}\n        {{- \"<longcat_assistant>\" -}}\n        {%- if save_history_reasoning_content == true or loop.index0 > ns.last_query_index -%}\n            {%- if enable_thinking == true -%}\n                {%- if msg.reasoning_content -%}\n                    {%- set reasoning_content = msg.reasoning_content | trim -%}\n                    {{- \"<longcat_think>\\n\" ~ reasoning_content ~ \"\\n</longcat_think>\\n\" -}}\n                {%- else -%}\n                    {{- \"<longcat_think>\\n\\n</longcat_think>\\n\" -}}\n                {%- endif -%}\n            {%- elif enable_thinking == false -%}\n                {{- \"<longcat_think>\\n\\n</longcat_think>\\n\" -}}\n            {%- endif -%}\n        {%- endif -%}\n        {%- if msg.content -%}\n            {{- msg.content -}}\n        {%- endif -%}\n        {%- if msg.tool_calls -%}\n            {%- for tool_call in msg.tool_calls -%}\n                {{- \"<longcat_tool_call>\" ~ tool_call.function.name ~ \"\\n\" -}}\n                {%- set _args = tool_call.function.arguments -%}\n                {%- for k, v in _args.items() -%}\n                    {{- \"<longcat_arg_key>\" ~ k ~ \"</longcat_arg_key>\\n\" -}}\n                    {{- \"<longcat_arg_value>\" ~ (v if v is string else v | tojson(ensure_ascii=False)) ~ \"</longcat_arg_value>\\n\" -}}\n                {% endfor -%}\n                {{- \"</longcat_tool_call>\\n\" -}}\n            {%- endfor -%}\n        {%- endif -%}\n        {{- \"</longcat_s>\" -}}\n    {%- elif msg.role == \"tool\" -%}\n        {%- if messages[loop.index0 - 1].role != \"tool\" -%}\n            {{- \"<longcat_observation>\" -}}\n        {%- endif -%}\n        {{- \"<longcat_tool_response>\" ~ msg.name ~ \"\\n\" ~ msg.content ~ \"</longcat_tool_response>\" -}}\n        {%- if loop.index0 == messages|length - 1 -%}\n            {# pass #}\n        {%- elif (save_history_reasoning_content or loop.index0 > ns.last_query_index) and messages[loop.index0 + 1].role != \"tool\" -%}\n            {%- if enable_thinking == true -%}\n                {{- \" /think_on\" -}}\n                {%- if thinking_budget -%}\n                    {%- if thinking_budget < 1024 -%}\n                        {%- set thinking_budget = 1024 -%}\n                    {%- endif -%}\n                    {{- \"\\nthinking_budget: < \" ~ thinking_budget ~ \".\" -}}\n                {%- endif -%}\n                {{- \" \" -}}\n            {%- elif enable_thinking == false -%}\n                {{- \" /think_off \" -}}\n            {%- endif -%}\n        {%- endif -%}\n    {%- endif -%}\n{%- endfor -%}\n{%- if add_generation_prompt -%}\n    {%- if enable_thinking == true -%}\n        {{- \" /think_on\" -}}\n        {%- if thinking_budget -%}\n            {%- if thinking_budget < 1024 -%}\n                {%- set thinking_budget = 1024 -%}\n            {%- endif -%}\n            {{- \"\\nthinking_budget: < \" ~ thinking_budget ~ \".\" -}}\n        {%- endif -%}\n        {{- \" <longcat_assistant><longcat_think>\" -}}\n    {%- elif enable_thinking == false -%}\n        {{- \" /think_off <longcat_assistant><longcat_think>\\n\\n</longcat_think>\\n\" -}}\n    {%- else -%}\n        {{- \" /think_off <longcat_assistant><longcat_think>\\n\\n</longcat_think>\\n\" -}}\n    {%- endif -%}\n{%- endif -%}"
+   }
+  },
+  "cardData": {
+   "license": "mit",
+   "library_name": "LongCat-2.0",
+   "pipeline_tag": "text-generation",
+   "tags": [
+    "transformers"
+   ]
+  },
+  "transformersInfo": {
+   "auto_model": "LongcatCausalLM"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "LICENSE"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "figures/longcat-pro-benchmark-charts-2026-06-29.svg"
+   },
+   {
+    "rfilename": "figures/longcat_logo.svg"
+   },
+   {
+    "rfilename": "figures/wechat_official_accounts.png"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00001-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00003-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00004-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00005-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00006-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00007-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00008-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00009-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00010-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00011-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00012-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00013-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00014-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00015-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00016-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00017-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00018-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00019-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00020-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00021-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00022-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00023-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00024-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00025-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00026-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00027-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00028-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00029-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00030-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00031-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00032-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00033-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00034-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00035-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00036-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00037-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00038-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00039-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00040-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00041-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00042-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00043-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00044-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00045-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00046-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00047-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00048-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00049-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00050-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00051-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00052-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00053-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00054-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00055-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00056-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00057-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00058-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00059-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00060-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00061-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00062-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00063-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00064-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00065-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00066-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00067-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00068-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00069-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00070-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00071-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00072-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00073-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00074-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00075-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00076-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00077-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00078-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00079-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00080-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00081-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00082-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00083-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00084-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00085-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00086-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00087-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00088-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00089-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00090-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00091-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00092-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00093-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00094-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00095-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00096-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00097-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00098-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00099-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00100-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00101-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00102-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00103-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00104-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00105-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00106-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00107-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00108-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00109-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00110-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00111-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00112-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00113-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00114-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00115-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00116-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00117-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00118-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00119-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00120-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00121-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00122-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00123-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00124-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00125-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00126-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00127-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00128-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00129-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00130-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00131-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00132-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00133-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00134-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00135-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00136-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00137-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00138-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00139-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00140-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00141-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00142-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00143-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00144-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00145-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00146-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00147-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00148-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00149-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00150-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00151-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00152-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00153-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00154-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00155-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00156-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00157-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00158-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00159-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00160-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00161-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00162-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00163-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00164-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00165-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00166-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00167-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00168-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00169-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00170-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00171-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00172-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00173-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00174-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00175-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00176-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00177-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00178-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00179-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00180-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00181-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00182-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00183-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00184-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00185-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00186-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00187-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00188-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00189-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00190-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00191-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00192-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00193-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model-00194-of-00194.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "special_tokens_map.json"
+   },
+   {
+    "rfilename": "tokenization_llama.py"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [],
+  "createdAt": "2026-07-05T00:07:44.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 1775271312256,
+    "F32": 289178880
+   },
+   "total": 1775560491136
+  },
+  "usedStorage": 3551710592048
+ },
+ "model_config": {
+  "architectures": [
+   "LongcatCausalLM"
+  ],
+  "attention_bias": false,
+  "attention_dropout": 0.0,
+  "vocab_size": 163840,
+  "hidden_size": 8192,
+  "ffn_hidden_size": 12288,
+  "expert_ffn_hidden_size": 2048,
+  "num_layers": 38,
+  "num_attention_heads": 64,
+  "kv_lora_rank": 512,
+  "q_lora_rank": 1536,
+  "qk_rope_head_dim": 64,
+  "v_head_dim": 128,
+  "qk_nope_head_dim": 128,
+  "mla_scale_q_lora": true,
+  "mla_scale_kv_lora": true,
+  "routed_scaling_factor": 9,
+  "n_routed_experts": 768,
+  "max_position_embeddings": 262144,
+  "rms_norm_eps": 1e-05,
+  "use_cache": true,
+  "bos_token_id": 1,
+  "eos_token_id": 2,
+  "rope_theta": 1000000.0,
+  "rope_scaling": {
+   "original_max_position_embeddings": 8192,
+   "rope_type": "deepseek_yarn",
+   "factor": 120,
+   "beta_fast": 32,
+   "beta_slow": 1,
+   "mscale": 1,
+   "mscale_all_dim": 1
+  },
+  "attention_method": "MLA",
+  "zero_expert_num": 128,
+  "zero_expert_type": "identity",
+  "moe_topk": 12,
+  "use_mla": 1,
+  "moe_switch_token_num": 1024,
+  "moe_impl": "mix",
+  "oe_vocab_size_ratio": 100.567,
+  "oe_neighbor_num": 5,
+  "oe_split_num": 4,
+  "mtp_num_layers": 3,
+  "mtp_replicate_modules": true,
+  "mtp_disable_over_tokenizer": true,
+  "index_n_heads": 32,
+  "index_head_dim": 128,
+  "index_topk": 2048,
+  "index_k_norm_type": "rms",
+  "cli_factor": 2,
+  "dsa_mtp_cli": true,
+  "index_local_tokens": 1024,
+  "index_init_tokens": 16
+ }
+}

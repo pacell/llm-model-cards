@@ -1,0 +1,312 @@
+{
+ "repo": "LGAI-EXAONE/EXAONE-4.5-33B",
+ "url": "https://huggingface.co/LGAI-EXAONE/EXAONE-4.5-33B",
+ "revision": "570aa4b15a4f45ba1133072b45f50198f6e3b4fd",
+ "card_metadata": {
+  "license": "other",
+  "license_name": "exaone",
+  "license_link": "LICENSE",
+  "language": [
+   "en",
+   "ko",
+   "es",
+   "de",
+   "ja",
+   "vi"
+  ],
+  "tags": [
+   "lg-ai",
+   "exaone"
+  ],
+  "pipeline_tag": "image-text-to-text",
+  "library_name": "transformers"
+ },
+ "hub_metadata": {
+  "_id": "69d0cd0fb7a1306f36686bac",
+  "id": "LGAI-EXAONE/EXAONE-4.5-33B",
+  "private": false,
+  "pipeline_tag": "image-text-to-text",
+  "library_name": "transformers",
+  "tags": [
+   "transformers",
+   "safetensors",
+   "exaone4_5",
+   "image-text-to-text",
+   "lg-ai",
+   "exaone",
+   "conversational",
+   "en",
+   "ko",
+   "es",
+   "de",
+   "ja",
+   "vi",
+   "arxiv:2604.08644",
+   "license:other",
+   "eval-results",
+   "endpoints_compatible",
+   "region:us"
+  ],
+  "downloads": 99571,
+  "likes": 183,
+  "modelId": "LGAI-EXAONE/EXAONE-4.5-33B",
+  "author": "LGAI-EXAONE",
+  "sha": "570aa4b15a4f45ba1133072b45f50198f6e3b4fd",
+  "lastModified": "2026-07-06T07:22:40.000Z",
+  "gated": false,
+  "disabled": false,
+  "widgetData": [
+   {
+    "text": "Hi, what can you help me with?"
+   },
+   {
+    "text": "What is 84 * 3 / 2?"
+   },
+   {
+    "text": "Tell me an interesting fact about the universe!"
+   },
+   {
+    "text": "Explain quantum computing in simple terms."
+   }
+  ],
+  "model-index": null,
+  "config": {
+   "architectures": [
+    "Exaone4_5_ForConditionalGeneration"
+   ],
+   "model_type": "exaone4_5",
+   "tokenizer_config": {
+    "bos_token": "[BOS]",
+    "eos_token": "<|endofturn|>",
+    "pad_token": "[PAD]",
+    "unk_token": "[UNK]"
+   },
+   "chat_template_jinja": "{% set image_count = namespace(value=0) %}\n{% set video_count = namespace(value=0) %}\n\n{%- set role_indicators = {\n    'user': '<|user|>\\n',\n    'assistant': '<|assistant|>\\n',\n    'system': '<|system|>\\n',\n    'tool': '<|tool|>\\n',\n    'tool_declare': '<|tool_declare|>\\n'\n} %}\n{%- set end_of_turn = '<|endofturn|>\\n' %}\n\n\n{%- macro declare_available_tools(tools) %}\n    {{- \"# Tools\" }}\n    {{- \"\\n\" }}\n    {%- for tool in tools %}\n        {{- \"<tool>\" }}\n        {{- tool | tojson(ensure_ascii=False) | safe }}\n        {{- \"</tool>\\n\" }}\n    {%- endfor %}\n{%- endmacro %}\n\n\n{%- set ns = namespace(last_query_index = messages|length - 1, last_query_index_not_yet_determined = true) %}\n{%- for message in messages[::-1] %}\n    {%- set index = (messages|length - 1) - loop.index0 %}\n    {%- if ns.last_query_index_not_yet_determined and message.role == \"user\" and message.content is string %}\n        {%- set ns.last_query_index = index -%}\n        {%- set ns.last_query_index_not_yet_determined = false -%}\n    {%- endif %}\n{%- endfor %}\n\n{%- if tools is defined and tools %}\n    {{- role_indicators['tool_declare'] }}\n    {{- declare_available_tools(tools) }}\n    {{- end_of_turn -}}  \n{%- endif %}\n\n{%- for i in range(messages | length) %}\n    {%- set msg = messages[i] %}\n    {%- set role = msg.role %}\n    {%- if role not in role_indicators %}\n        {{- raise_exception('Unknown role: ' ~ role) }}\n    {%- endif %}\n    \n    {%- if i == 0 %}\n        {%- if role == 'system' %}\n            {{- role_indicators['system'] }}\n            {{- msg.content }}\n            {{- end_of_turn -}}\n            {%- continue %}          \n        {%- endif %}\n    {%- endif %}\n\n    {%- if role == 'assistant' %}\n        {{- role_indicators['assistant'] }}\n\n        {%- set content = (msg.content if (msg.content is defined and msg.content) else \"\") -%}\n        {%- set reasoning = none -%}\n\n        {%- if msg.reasoning_content is defined and msg.reasoning_content%}\n            {%- set reasoning = msg.reasoning_content.strip() -%}\n        {%- elif content and \"</think>\" in content %}\n            {%- set _parts = content.split('</think>') -%}\n            {%- set reasoning = _parts[0].lstrip('<think>').strip() -%}\n            {%- set content = _parts[-1].strip() -%}\n        {%- endif %}\n\n        {%- if not (reasoning and i > ns.last_query_index) or (skip_think is defined and skip_think) %}\n            {%- set reasoning = none %}\n        {%- endif %}\n\n        {%- set content = content.strip() -%}\n        \n        {{- \"<think>\\n\" }}\n        {{- (reasoning if reasoning is not none else \"\") }}\n        {{- \"\\n</think>\\n\\n\" }}\n\n        {{- content }}\n\n        {%- if msg.tool_calls %}\n            {%- if content is defined and content %}\n                {{- \"\\n\" }}\n            {%- endif %}\n            {%- for tool_call in msg.tool_calls %}\n                {%- if tool_call.function is defined %}\n                    {%- set tool_call = tool_call.function %}\n                {%- endif %}\n\n                {%- if tool_call.arguments is defined %}\n                    {%- set arguments = tool_call.arguments %}\n                {%- elif tool_call.parameters is defined %}\n                    {%- set arguments = tool_call.parameters %}\n                {%- else %}\n                    {{- raise_exception('arguments or parameters are mandatory: ' ~ tool_call) }}\n                {%- endif %}\n                {%- if arguments is string %}\n                    {{- \"<tool_call>\" }}{\"name\": \"{{- tool_call.name }}\", \"arguments\": {{ arguments }}}{{- \"</tool_call>\" }}\n                {%- else %}\n                    {{- \"<tool_call>\" }}{\"name\": \"{{- tool_call.name }}\", \"arguments\": {{ arguments | tojson(ensure_ascii=False) | safe }}}{{- \"</tool_call>\" }}\n                {%- endif %}\n                {%- if not loop.last %}\n                    {{- \"\\n\" }}\n                {%- endif %}\n\n            {%- endfor %}\n        {%- endif %}\n        {{- end_of_turn -}}\n\n    {%- elif role == \"tool\" %}\n        {%- if i == 0 or messages[i - 1].role != \"tool\" %}\n            {{- role_indicators['tool'] }}\n        {%- endif %}\n        {%- if msg.content is defined %}          \n            {%- if msg.content is string %}  \n                {{- \"<tool_result>\" }}{{ msg.content }}{{- \"</tool_result>\" }} \n            {%- else %}\n                {{- \"<tool_result>\" }}{{ msg.content | tojson(ensure_ascii=False) | safe }}{{- \"</tool_result>\" }}            \n            {%- endif %}\n        {%- endif %}\n        {%- if loop.last or messages[i + 1].role != \"tool\" %}\n            {{- end_of_turn -}}\n        {%- else %}\n            {{- \"\\n\" }}\n        {%- endif %}\n\n    {%- else %}\n        {{- role_indicators[role] }}\n        {%- if msg.content is string %}\n            {{- msg.content }}\n        {%- else %}\n            {%- for content in msg.content %} \n                {%- if content.type == 'image' %}\n                    {%- set image_count.value = image_count.value + 1 %}\n                    {%- if add_vision_id %}Picture {{ image_count.value }}: {% endif %}\n                    {{- \"<vision><|image_pad|></vision>\\n\" }}\n                {%- elif content.type == 'video' %}\n                    {%- set video_count.value = video_count.value + 1 %}\n                    {%- if add_vision_id %}Video {{ video_count.value }}: {% endif %}\n                    {{- \"<vision><|video_pad|></vision>\\n\" }}\n                {%- elif content.type == 'text' %}\n                    {{- content.text }}\n                {%- else %}\n                    {{- content.text }}\n                {%- endif %}\n            {%- endfor %}\n        {%- endif %}\n        {{- end_of_turn -}}\n    {%- endif %}\n{% endfor %}\n\n\n{%- if add_generation_prompt %}\n    {{- role_indicators['assistant'] }}\n    {%- if enable_thinking is not defined or enable_thinking is true %}\n        {{- \"<think>\\n\" }}\n    {%- else %}\n        {{- \"<think>\\n\\n</think>\\n\\n\" }}\n    {%- endif %}\n{%- endif %}\n"
+  },
+  "cardData": {
+   "license": "other",
+   "license_name": "exaone",
+   "license_link": "LICENSE",
+   "language": [
+    "en",
+    "ko",
+    "es",
+    "de",
+    "ja",
+    "vi"
+   ],
+   "tags": [
+    "lg-ai",
+    "exaone"
+   ],
+   "pipeline_tag": "image-text-to-text",
+   "library_name": "transformers"
+  },
+  "transformersInfo": {
+   "auto_model": "AutoModelForMultimodalLM",
+   "pipeline_tag": "image-text-to-text",
+   "processor": "AutoProcessor"
+  },
+  "siblings": [
+   {
+    "rfilename": ".gitattributes"
+   },
+   {
+    "rfilename": "LICENSE"
+   },
+   {
+    "rfilename": "README.md"
+   },
+   {
+    "rfilename": "assets/EXAONE_Symbol+BI_3d.png"
+   },
+   {
+    "rfilename": "assets/exaone45_input1.jpg"
+   },
+   {
+    "rfilename": "assets/exaone45_input2.png"
+   },
+   {
+    "rfilename": "chat_template.jinja"
+   },
+   {
+    "rfilename": "config.json"
+   },
+   {
+    "rfilename": "generation_config.json"
+   },
+   {
+    "rfilename": "model-00001-of-00002.safetensors"
+   },
+   {
+    "rfilename": "model-00002-of-00002.safetensors"
+   },
+   {
+    "rfilename": "model.safetensors.index.json"
+   },
+   {
+    "rfilename": "preprocessor_config.json"
+   },
+   {
+    "rfilename": "processor_config.json"
+   },
+   {
+    "rfilename": "tokenizer.json"
+   },
+   {
+    "rfilename": "tokenizer_config.json"
+   }
+  ],
+  "spaces": [
+   "mayafree/Model-Genome-Korea"
+  ],
+  "createdAt": "2026-04-04T08:34:23.000Z",
+  "safetensors": {
+   "parameters": {
+    "BF16": 34350097664
+   },
+   "total": 34350097664
+  },
+  "usedStorage": 68714976459
+ },
+ "model_config": {
+  "architectures": [
+   "Exaone4_5_ForConditionalGeneration"
+  ],
+  "image_token_id": 67,
+  "model_type": "exaone4_5",
+  "text_config": {
+   "_num_mtp_layers": 1,
+   "architectures": [
+    "Exaone4ForCausalLM"
+   ],
+   "attention_dropout": 0.0,
+   "bos_token_id": 1,
+   "dtype": "bfloat16",
+   "eos_token_id": 53,
+   "hidden_act": "silu",
+   "hidden_size": 5120,
+   "initializer_range": 0.02,
+   "intermediate_size": 27392,
+   "layer_types": [
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "sliding_attention",
+    "full_attention"
+   ],
+   "max_position_embeddings": 262144,
+   "num_nextn_predict_layers": 1,
+   "mtp_loss_scaling_factor": 0.05,
+   "mtp_share_layers": true,
+   "model_type": "exaone4_5_text",
+   "num_attention_heads": 40,
+   "num_hidden_layers": 64,
+   "num_key_value_heads": 8,
+   "pad_token_id": 0,
+   "rms_norm_eps": 1e-05,
+   "rope_scaling": {
+    "factor": 16.0,
+    "high_freq_factor": 4.0,
+    "low_freq_factor": 1.0,
+    "original_max_position_embeddings": 8192,
+    "rope_theta": 1000000.0,
+    "rope_type": "llama3"
+   },
+   "sliding_window": 4096,
+   "sliding_window_pattern": "LLLG",
+   "use_cache": true,
+   "vocab_size": 153600
+  },
+  "tie_word_embeddings": false,
+  "transformers_version": "5.3.0.dev0",
+  "video_token_id": 68,
+  "vision_config": {
+   "depth": 28,
+   "dtype": "bfloat16",
+   "fullatt_block_indexes": [
+    6,
+    13,
+    20,
+    27
+   ],
+   "hidden_act": "silu",
+   "hidden_size": 2048,
+   "in_channels": 3,
+   "initializer_range": 0.02,
+   "intermediate_size": 5120,
+   "model_type": "exaone4_5_vision",
+   "num_heads": 32,
+   "num_key_value_heads": 8,
+   "out_hidden_size": 5120,
+   "patch_size": 14,
+   "spatial_merge_size": 2,
+   "temporal_patch_size": 2,
+   "tokens_per_second": 2,
+   "window_size": 112
+  },
+  "vision_end_token_id": 74,
+  "vision_start_token_id": 73,
+  "vision_token_id": 67,
+  "vocab_size": 153600
+ }
+}
